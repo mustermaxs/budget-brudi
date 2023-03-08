@@ -1,0 +1,53 @@
+.slideMenuWrapper {
+    display: flex;
+    position: absolute;
+    width: 85%;
+    height: 100%;
+    background-color: white;
+    /* border-right: 1px solid rgba(116, 116, 116, 0.363); */
+    box-shadow: 2px 0px 3px rgba(211, 211, 211, 0.712);
+    top: 0px;
+    /* left: -100vw; */
+    border-radius: 3px;
+    /* transition: left 300ms ease-out; */
+    /* left: -100vw; */
+
+}
+
+.open {
+    animation-name: bounce;
+    animation-duration: 450ms;
+    animation-timing-function: cubic-bezier(.28,.77,.35,1.12);
+    animation-fill-mode: forwards;
+}
+
+.close {
+    left: -100vw;
+    animation-name: bounce-back;
+    animation-duration: 150ms;
+}
+
+@keyframes bounce {
+    from {
+        left: -100vw;
+    }
+    to {
+        left: -10px;
+    }
+}
+
+.slideMenuLinks, .slideMenuLinks a {
+    margin-top: 15vh;
+    list-style-type: none;
+    text-decoration-line: none;
+    color: black;
+    font-size: 1.4rem;
+}
+
+@keyframes bounce-back {
+    from {
+        left: 0px;
+    }
+    to {
+        left: -100vw;
+    }}

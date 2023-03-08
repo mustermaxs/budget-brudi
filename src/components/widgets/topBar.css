@@ -1,0 +1,15 @@
+.topBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    height: 3rem;
+    width: 100%;
+    background: white;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 4px;
+
+}
+.topBarTitle {
+    margin-left: 1rem;
+    font-weight: 500;
+}
