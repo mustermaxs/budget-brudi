@@ -1,12 +1,24 @@
 import ReactDOM from "react-dom/client";
 import Menu from "../components/widgets/Menu";
+import ContentWrapper from "../components/widgets/ContentWrapper";
 
 function Registration() {
   return (
     <>
-      <div style={{ background: "black", height: "100%" }}>
-        <h2>Test</h2>
-      </div>
+      <ContentWrapper>
+        <div style={{ background: "white", width: "1rem", height: "1rem" }}>
+          asd
+        </div>
+        <div style={{ background: "white", width: "1rem", height: "1rem" }}>
+          asd
+        </div>
+        <div style={{ background: "white", width: "1rem", height: "1rem" }}>
+          asd
+        </div>
+        <div style={{ background: "white", width: "1rem", height: "1rem" }}>
+          asd
+        </div>
+      </ContentWrapper>
     </>
   );
 }

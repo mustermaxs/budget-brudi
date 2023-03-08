@@ -1,0 +1,23 @@
+.bb-inputWrapper {
+    margin-bottom: 1rem;
+}
+
+.bb-inputWrapper label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.2rem;
+}
+
+.bb-input {
+    height: 1.9rem;
+    border: 1px solid #D5D8DE;
+    border-radius: 4px;
+}
+
+.medium {
+    width: 50%;
+}
+
+.large {
+    width: 90%;
+}

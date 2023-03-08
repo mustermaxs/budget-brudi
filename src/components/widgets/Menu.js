@@ -18,7 +18,7 @@ function Menu(props) {
   ];
 
   const links = linksConfig.map((link) => (
-    <li key={link.href}>
+    <li data-isactivelink={link.href == props.currentPath} key={link.href}>
       <Link onClick={() => setState(false)} to={link.href}>
         {link.title}
       </Link>

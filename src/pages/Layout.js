@@ -15,7 +15,10 @@ function Layout(props) {
 
   return (
     <>
-      <Menu pageTitle={PAGE_TITLES[location.pathname]} />
+      <Menu
+        currentPath={location.pathname}
+        pageTitle={PAGE_TITLES[location.pathname]}
+      />
       <Outlet />
     </>
   );

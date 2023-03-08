@@ -4,14 +4,10 @@
     width: 85%;
     height: 100%;
     background-color: white;
-    /* border-right: 1px solid rgba(116, 116, 116, 0.363); */
     box-shadow: 2px 0px 3px rgba(211, 211, 211, 0.712);
     top: 0px;
-    /* left: -100vw; */
+    z-index: 10;
     border-radius: 3px;
-    /* transition: left 300ms ease-out; */
-    /* left: -100vw; */
-
 }
 
 .open {
@@ -42,6 +38,15 @@
     text-decoration-line: none;
     color: black;
     font-size: 1.4rem;
+}
+
+.slideMenuLinks li {
+    line-height: 2.5rem;
+}
+
+.slideMenuLinks li[data-isactivelink="true"] {
+    /* font-weight: 600; */
+    text-decoration-line: underline;
 }
 
 @keyframes bounce-back {
