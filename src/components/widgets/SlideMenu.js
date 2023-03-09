@@ -1,7 +1,6 @@
 import "./slideMenu.css";
 
 function SlideMenu(props) {
-  console.log("slidemenu: ", props.isOpen);
   return (
     <>
       <div
@@ -9,7 +8,10 @@ function SlideMenu(props) {
           props.isOpen ? "slideMenuWrapper open" : "slideMenuWrapper close"
         }
       >
-        <ul className="slideMenuLinks">{props.children}</ul>
+        <div id="linksArea">
+          <ul className="slideMenuLinks">{props.children}</ul>
+        </div>
+        <div id="closeOnClickArea" onClick={props.onToggle}></div>
       </div>
     </>
   );
