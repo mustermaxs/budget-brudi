@@ -4,10 +4,11 @@ import { Outlet } from "react-router-dom";
 import Menu from "../components/widgets/Menu";
 import TopBar from "../components/widgets/TopBar";
 
-const PAGE_TITLES = {
+const routesConfig = {
   "/": "Home",
   "/login": "Login",
   "/registration": "Registration",
+  "/profile": "Profile",
 };
 
 function Layout(props) {
@@ -15,10 +16,7 @@ function Layout(props) {
 
   return (
     <>
-      <Menu
-        currentPath={location.pathname}
-        pageTitle={PAGE_TITLES[location.pathname]}
-      />
+      <Menu currentPath={location.pathname} />
       <Outlet />
     </>
   );

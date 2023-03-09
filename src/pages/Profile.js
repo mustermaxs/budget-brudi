@@ -1,15 +1,15 @@
-import ReactDOM from "react-dom/client";
-import Menu from "../components/widgets/Menu";
 import ContentWrapper from "../components/widgets/ContentWrapper";
 import InputText from "../components/widgets/InputText";
 import InputCollection from "../components/widgets/InputCollection";
 import BbBtn from "../components/widgets/BbBtn";
+import InputCurrency from "../components/widgets/InputCurrency";
 
-function Registration() {
+function Profile(props) {
   const handleSubmit = (ev) => {
     ev.preventDefault();
-    console.log("submit form registration");
+    console.log("submit form profile");
   };
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -34,6 +34,9 @@ function Registration() {
               name="passwordrepeat"
               placeholder="Repeat Password"
             />
+          </InputCollection>{" "}
+          <InputCollection>
+            <InputCurrency size="small" currency="€" label="Budget Goal" />
           </InputCollection>
         </ContentWrapper>
         <BbBtn content="Submit" />
@@ -42,4 +45,4 @@ function Registration() {
   );
 }
 
-export default Registration;
+export default Profile;

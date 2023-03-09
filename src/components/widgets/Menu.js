@@ -5,8 +5,7 @@ import SlideMenu from "./SlideMenu";
 
 function Menu(props) {
   const [isOpen, setState] = useState(false);
-
-  const linksConfig = [
+  const menuLinks = [
     {
       href: "/login",
       title: "Login",
@@ -15,9 +14,20 @@ function Menu(props) {
       href: "/registration",
       title: "Registration",
     },
+    {
+      href: "/profile",
+      title: "Profile",
+    },
   ];
 
-  const links = linksConfig.map((link) => (
+  const getPageTitelByHref = (href) => {
+    var menuLinkObj = menuLinks.find((el) => el.href == href);
+    return menuLinkObj.title;
+  };
+
+  console.log("page title: ", getPageTitelByHref(props.currentPath));
+
+  const links = menuLinks.map((link) => (
     <li data-isactivelink={link.href == props.currentPath} key={link.href}>
       <Link onClick={() => setState(false)} to={link.href}>
         {link.title}
@@ -28,10 +38,13 @@ function Menu(props) {
   return (
     <>
       <TopBar
+        menuIsOpen={isOpen}
         onToggle={() => setState(!isOpen)}
-        config={{ ...props, isOpen }}
+        pageTitle={getPageTitelByHref(props.currentPath)}
       />
-      <SlideMenu isOpen={isOpen}>{links}</SlideMenu>
+      <SlideMenu onToggle={() => setState(!isOpen)} isOpen={isOpen}>
+        {links}
+      </SlideMenu>
     </>
   );
 }

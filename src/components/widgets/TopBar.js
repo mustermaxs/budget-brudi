@@ -12,14 +12,14 @@ function TopBar(props) {
     <>
       <div className="topBar">
         <div>
-          <span className="topBarTitle">{props.config.pageTitle}</span>
+          <span className="topBarTitle">{props.pageTitle}</span>
         </div>
         <div
           onClick={() => {
             props.onToggle();
-            toggleMenu();
+            // toggleMenu();
           }}
-          className={props.config.isOpen ? "closed" : ""}
+          className={props.menuIsOpen ? "closed" : ""}
           id="hamburger"
           title="Menü öffnen/schließen"
         >
