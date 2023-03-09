@@ -1,0 +1,29 @@
+import "./input.css";
+
+// props.size => large/medium/small
+
+function InputText(props) {
+  return (
+    <>
+      {props.label == undefined ? (
+        ""
+      ) : (
+        <label className="bb-input-label" for={props.id}>
+          {props.label}
+        </label>
+      )}
+
+      <input
+        placeholder={props.placeholder}
+        id={props.id}
+        name={props.name}
+        className={
+          "bb-input " + (props.size == undefined ? "large" : props.size)
+        }
+        type="text"
+      ></input>
+    </>
+  );
+}
+
+export default InputText;

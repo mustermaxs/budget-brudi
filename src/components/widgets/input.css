@@ -1,23 +1,61 @@
 .bb-inputWrapper {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
-.bb-inputWrapper label {
+.bb-input-label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     font-size: 1.2rem;
 }
 
 .bb-input {
-    height: 1.9rem;
+    height: 2.1rem;
     border: 1px solid #D5D8DE;
     border-radius: 4px;
+    padding: 0.1rem 0.8rem 0.1rem;
+    margin-bottom: 0.6rem;
 }
 
 .medium {
     width: 50%;
 }
 
+bb-input:focus {
+    border: 1px solid #072c7cff !important;
+}
+
 .large {
     width: 90%;
+}
+
+.inputCollection {
+    margin-bottom: 1.5rem;
+}
+
+.inputCollection + .inputCollection, .bb-input + .inputCollection, .inputCollection + .bb-input-label {
+    margin-top: 1.5rem;
+}
+
+.currency {
+    padding-left: 2.5rem;
+}
+
+.currency.medium {
+    width: calc(50% - 2.5rem) !important;
+
+}
+
+.currency.large {
+    width: calc(90% - 2.5rem) !important;
+}
+.currency.small {
+    width: calc(30% - 2.5rem) !important;
+}
+
+.currencySymbol {
+    position: absolute;
+    left: 2.2rem;
+    bottom: 3.4rem;
+    color: #797979;
+    font-size: 1.2rem;
 }
