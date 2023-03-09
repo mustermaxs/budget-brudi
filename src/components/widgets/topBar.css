@@ -2,13 +2,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative;
+    position: fixed;
     height: 3rem;
     width: 100%;
     background: white;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 4px;
     z-index: 9;
-
+    top: 0px;
 }
 .topBarTitle {
     margin-left: 1rem;
