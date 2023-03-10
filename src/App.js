@@ -10,6 +10,7 @@ import Layout from "./pages/Layout";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import Profile from "./pages/Profile";
+import Overview from "./pages/Overview";
 
 function App() {
   return (
@@ -20,6 +21,8 @@ function App() {
           <Route path="registration" element={<Registration />} />
           <Route path="login" element={<Login />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="overview" element={<Overview />} />
+          <Route path="*" element={<Login />} />
         </Route>
       </Routes>
     </BrowserRouter>

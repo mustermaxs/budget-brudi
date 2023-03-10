@@ -7,6 +7,10 @@ function Menu(props) {
   const [isOpen, setState] = useState(false);
   const menuLinks = [
     {
+      href: "/",
+      title: "Home",
+    },
+    {
       href: "/login",
       title: "Login",
     },
@@ -18,17 +22,21 @@ function Menu(props) {
       href: "/profile",
       title: "Profile",
     },
+    {
+      href: "/overview",
+      title: "Overview",
+    },
   ];
 
   const getPageTitelByHref = (href) => {
-    var menuLinkObj = menuLinks.find((el) => el.href == href);
+    var menuLinkObj = menuLinks.find((el) => el.href === href);
     return menuLinkObj.title;
   };
 
   console.log("page title: ", getPageTitelByHref(props.currentPath));
 
   const links = menuLinks.map((link) => (
-    <li data-isactivelink={link.href == props.currentPath} key={link.href}>
+    <li data-isactivelink={link.href === props.currentPath} key={link.href}>
       <Link onClick={() => setState(false)} to={link.href}>
         {link.title}
       </Link>
