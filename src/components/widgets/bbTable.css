@@ -1,0 +1,23 @@
+.bb-table {
+    width: 100%;
+    padding: 0rem 1rem 0rem;
+}
+
+.bb-table tr td.money {
+    text-align: right;
+}
+
+.bb-table tr td.money.expense {
+    color: red;
+}
+
+.bb-table tr td.money.income {
+    color: green;
+}
+
+.bb-table tr td.money::before {
+    content: "€";
+    display: inline;
+    position: relative;
+    padding-right: 1.0rem;
+}
