@@ -1,0 +1,44 @@
+.bb-drawerContainer {
+
+}
+
+.bb-drawerContainer summary {
+    list-style-type: none;
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.2rem !important;
+}
+
+.bb-drawerContainer .bb-input-label {
+    font-size: 1.0rem !important;
+}
+
+.arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    margin-bottom: 3px;
+    margin-left: 5px;
+    transition: all 100ms;
+  }
+  
+  .right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+  }
+  
+  .left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+  }
+  
+  .down {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+    margin-bottom: 0px;
+  }
+  .up {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
