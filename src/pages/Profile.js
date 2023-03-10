@@ -3,6 +3,7 @@ import InputText from "../components/widgets/InputText";
 import InputCollection from "../components/widgets/InputCollection";
 import BbBtn from "../components/widgets/BbBtn";
 import InputCurrency from "../components/widgets/InputCurrency";
+import DrawerContainer from "../components/widgets/DrawerContainer";
 
 function Profile(props) {
   const handleSubmit = (ev) => {
@@ -35,9 +36,6 @@ function Profile(props) {
               placeholder="Repeat Password"
             />
           </InputCollection>{" "}
-          <InputCollection>
-            <InputCurrency size="small" currency="€" label="Budget Goal" />
-          </InputCollection>
         </ContentWrapper>
         <BbBtn content="Submit" />
       </form>
