@@ -5,10 +5,10 @@ import "./input.css";
 function Input(props) {
   return (
     <>
-      {props.label == undefined ? (
+      {props.label === undefined ? (
         ""
       ) : (
-        <label className="bb-input-label" for={props.id}>
+        <label className="bb-input-label" htmlFor={props.id}>
           {props.label}
         </label>
       )}

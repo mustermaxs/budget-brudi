@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import TopBar from "./TopBar";
 import SlideMenu from "./SlideMenu";
+import { UserContext } from "../../contexts/UserContext";
 
 function Menu(props) {
   const [isOpen, setState] = useState(false);
+
+
   const menuLinks = [
     {
       href: "/",
@@ -28,14 +31,15 @@ function Menu(props) {
     },
   ];
 
-  const getPageTitelByHref = (href) => {
+  const getPageTitleByHref = (href) => {
     var menuLinkObj = menuLinks.find((el) => el.href === href);
     return menuLinkObj.title;
   };
 
-  console.log("page title: ", getPageTitelByHref(props.currentPath));
+  console.log("page title: ", getPageTitleByHref(props.currentPath));
 
   const links = menuLinks.map((link) => (
+
     <li data-isactivelink={link.href === props.currentPath} key={link.href}>
       <Link onClick={() => setState(false)} to={link.href}>
         {link.title}
@@ -48,7 +52,8 @@ function Menu(props) {
       <TopBar
         menuIsOpen={isOpen}
         onToggle={() => setState(!isOpen)}
-        pageTitle={getPageTitelByHref(props.currentPath)}
+        pageTitle={getPageTitleByHref(props.currentPath)}
+
       />
       <SlideMenu onToggle={() => setState(!isOpen)} isOpen={isOpen}>
         {links}

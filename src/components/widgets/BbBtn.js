@@ -9,6 +9,7 @@ function BbBtn(props) {
         <button
           type={props.type == undefined ? "submit" : "button"}
           className="bbbtn"
+          onClick={props.onClick}
         >
           <span>{props.content}</span>
         </button>
