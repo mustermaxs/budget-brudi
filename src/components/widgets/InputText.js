@@ -3,12 +3,15 @@ import "./input.css";
 // props.size => large/medium/small
 
 function InputText(props) {
+  // const handleChange = (ev) => {
+  //   props.onChange(ev.target.value);
+  // };
   return (
     <>
       {props.label == undefined ? (
         ""
       ) : (
-        <label className="bb-input-label" for={props.id}>
+        <label className="bb-input-label" htmlFor={props.id}>
           {props.label}
         </label>
       )}
@@ -21,6 +24,8 @@ function InputText(props) {
           "bb-input " + (props.size == undefined ? "large" : props.size)
         }
         type="text"
+        value={props.value}
+        onChange={(ev) => props.onChange(ev.target.value)}
       ></input>
     </>
   );

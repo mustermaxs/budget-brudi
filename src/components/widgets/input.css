@@ -69,3 +69,12 @@
     font-size: 1.0rem;
     width: 1rem;
 }
+
+.bb-link-small {
+    display: block;
+    width: fit-content;
+    margin: 0 auto;
+    text-align: center;
+    font-size: small;
+  }
+  
