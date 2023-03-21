@@ -11,7 +11,7 @@ const routes = [
     path: "",
     component: Login,
     privateRoute: false,
-    permissions: ["guest", "user", "admin"],
+    permissions: ["guest"],
   },
   {
     title: "Login",
@@ -45,14 +45,14 @@ const routes = [
     title: "Transactions",
     path: "transactions",
     component: Transactions,
-    privateRoute: false,
+    privateRoute: true,
     permissions: ["user", "admin"],
   },
   {
     title: "Goals",
     path: "goals",
     component: Goals,
-    privateRoute: false,
+    privateRoute: true,
     permissions: ["user", "admin"],
   },
 ];
