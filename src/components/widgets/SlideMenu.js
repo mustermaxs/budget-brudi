@@ -1,17 +1,15 @@
 import "./slideMenu.css";
 
-function SlideMenu(props) {
+function SlideMenu({ isOpen, children, onToggle }) {
   return (
     <>
       <div
-        className={
-          props.isOpen ? "slideMenuWrapper open" : "slideMenuWrapper close"
-        }
+        className={`slideMenuWrapper ${isOpen ? " open" : " close"}`}
       >
         <div id="linksArea">
-          <ul className="slideMenuLinks">{props.children}</ul>
+          <ul className="slideMenuLinks">{children}</ul>
         </div>
-        <div id="closeOnClickArea" onClick={props.onToggle}></div>
+        <div id="closeOnClickArea" onClick={onToggle}></div>
       </div>
     </>
   );
