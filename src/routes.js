@@ -4,6 +4,7 @@ import Profile from "./pages/Profile";
 import Overview from "./pages/Overview";
 import Transactions from "./pages/Transactions";
 import Goals from "./pages/Goals";
+import EditGoals from "./pages/EditGoals";
 
 const routes = [
   {
@@ -52,6 +53,13 @@ const routes = [
     title: "Goals",
     path: "goals",
     component: Goals,
+    privateRoute: true,
+    permissions: ["user", "admin"],
+  },
+  {
+    title: "Add Goal",
+    path: "addgoal",
+    component: EditGoals,
     privateRoute: true,
     permissions: ["user", "admin"],
   },

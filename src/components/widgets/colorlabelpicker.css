@@ -1,0 +1,30 @@
+.colorpicker-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    height: fit-content;
+}
+
+.colorpicker-wrapper .row {
+    display: flex;
+    flex-wrap: wrap;
+      width: inherit;
+    justify-content: flex-start;
+    margin-top: 10px;
+    flex-basis: 33.33333%;
+    
+}
+
+.color-label-container {
+    flex: 0 0 33.333333%;
+    margin-bottom: 15px;
+}
+
+.color-label {
+    width: 31px;
+    height: 31px;
+    border-radius: 100%;
+    background-color: black;
+    /* margin: 0 10px; */
+}

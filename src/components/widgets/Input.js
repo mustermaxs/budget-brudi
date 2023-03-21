@@ -18,7 +18,7 @@ function Input(props) {
         id={props.id}
         name={props.name}
         className={
-          "bb-input " + (props.size == undefined ? "large" : props.size)
+          "bb-input " + (props.size === undefined ? "large" : props.size)
         }
         type={props.type}
       ></input>
