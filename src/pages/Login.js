@@ -1,11 +1,11 @@
 import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import ContentWrapper from "../components/widgets/ContentWrapper";
-import InputText from "../components/widgets/InputText";
+import BBInput from "../components/widgets/BBInput";
 import { UserContext } from "../contexts/UserContext";
 import jwtDecode from "jwt-decode";
 import BbBtn from "../components/widgets/BbBtn";
-import useValue from "../components/hooks/useValue";
+import useValue from "../hooks/useValue";
 
 function Login() {
   const [inputValue, handleChange] = useValue({
@@ -58,14 +58,14 @@ function Login() {
   return (
     <ContentWrapper>
       <form>
-        <InputText
+        <BBInput
           id="username"
           name="username"
           label="Username"
           placeholder="Username"
           onChange={(value) => handleChange("username", value)}
         />
-        <InputText
+        <BBInput
           id="password"
           name="password"
           label="Password"

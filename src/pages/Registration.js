@@ -1,12 +1,12 @@
 import ReactDOM from "react-dom/client";
 import Menu from "../components/widgets/Menu";
 import ContentWrapper from "../components/widgets/ContentWrapper";
-import InputText from "../components/widgets/InputText";
+import BBInput from "../components/widgets/BBInput";
 import InputCollection from "../components/widgets/InputCollection";
 import BbBtn from "../components/widgets/BbBtn";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import useValue from "../components/hooks/useValue";
+import useValue from "../hooks/useValue";
 
 function Registration() {
   const [inputValues, handleChange] = useValue({
@@ -25,35 +25,35 @@ function Registration() {
   return (
     <>
       <ContentWrapper>
-        <InputText
+        <BBInput
           id="firstname"
           name="firstname"
           label="Personal Info"
           placeholder="First Name"
           onChange={(value) => handleChange("firstname", value)}
         />
-        <InputText
+        <BBInput
           id="surname"
           name="surname"
           placeholder="Surname"
           value={inputValues.surname || ""}
           onChange={(value) => handleChange("surname", value)}
         />
-        <InputText
+        <BBInput
           id="email"
           name="email"
           placeholder="Email"
           onChange={(value) => handleChange("email", value)}
         />
         <InputCollection>
-          <InputText
+          <BBInput
             id="password"
             name="password"
             placeholder="Password"
             label="Password"
             onChange={(value) => handleChange("password", value)}
           />{" "}
-          <InputText
+          <BBInput
             id="passwordrepeat"
             name="passwordrepeat"
             placeholder="Repeat Password"

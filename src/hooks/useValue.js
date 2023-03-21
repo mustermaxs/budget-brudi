@@ -6,9 +6,9 @@ function useValue(initialValues) {
   const handleChange = (inputName, newValue) => {
     setValue((prevValue) => ({
       ...prevValue,
-      [inputName]: newValue,
+      [inputName]: newValue.target.value,
     }));
-    console.log(newValue);
+    console.log(newValue.target.value);
   };
 
   return [inputValue, handleChange];
