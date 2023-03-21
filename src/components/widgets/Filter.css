@@ -1,6 +1,10 @@
 /* Card.css */
 .filter {
     margin: 1rem 0;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   label {
