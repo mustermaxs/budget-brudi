@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import decode from 'jwt-decode';
 
-const defaultUser = {isLoggedIn:false, role:"guest"};
+const defaultUser = { isLoggedIn: false, role: "guest" };
 
 const UserContext = createContext(defaultUser);
 
@@ -24,6 +24,7 @@ const UserProvider = ({ children }) => {
   }, []);
 
   const handleLogin = (token) => {
+
     const decodedToken = decode(token);
     const { username, firstname, surname, role } = decodedToken;
     setUser({
@@ -37,11 +38,11 @@ const UserProvider = ({ children }) => {
   };
 
   const handleLogout = () => {
-    setUser({isLoggedIn:false, role:"guest"});
+    setUser(defaultUser);
     localStorage.removeItem("token");
     window.location.href = "/login"; // Redirect to login page after logout
   };
-  
+
   return (
     <UserContext.Provider value={{ user, handleLogin, handleLogout }}>
       {children}

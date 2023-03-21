@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import ContentWrapper from "../components/widgets/ContentWrapper";
 import InputText from "../components/widgets/InputText";
 import { UserContext } from "../contexts/UserContext";
@@ -74,6 +74,9 @@ function Login() {
         />
         <BbBtn content="Login" type="submit" onClick={handleLoginFormSubmit} >Login</BbBtn>
       </form>
+      <Link className="bb-link-small" to="/registration">
+        Don't have an account yet? <br></br> Register here
+      </Link>
     </ContentWrapper>
   );
 }
