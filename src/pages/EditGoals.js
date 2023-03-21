@@ -8,8 +8,16 @@ import Spacer from "../components/widgets/Spacer";
 import Input from "../components/widgets/Input";
 import "../components/widgets/colorlabelpicker.css";
 import colors from "../assets/colors_mock";
+import useValue from "../hooks/useValue";
 
 function EditGoals(props) {
+  const [inputValue, handleChange] = useValue({
+    goaltitle: "",
+    budgetgoal: "",
+    date: "",
+    color: "",
+  });
+
   return (
     <>
       <ContentWrapper>
@@ -17,8 +25,9 @@ function EditGoals(props) {
           <BBInput
             type="text"
             label="Goal Title"
-            name="budgettitle"
+            name="goaltitle"
             placeholder="eg. Waikiki vacation"
+            onChange={(value) => handleChange("goaltitle", value)}
           />
           <Spacer />
           <BBInput
@@ -28,8 +37,15 @@ function EditGoals(props) {
             currency="€"
             placeholder="3000.00"
             size="small"
+            onChange={(value) => handleChange("budgetgoal", value)}
           />
-          <Input size="small" type="date" label="Reach goal by" />
+          <BBInput
+            size="small"
+            name="date"
+            type="date"
+            label="Reach goal by"
+            onChange={(value) => handleChange("date", value)}
+          />
           <Spacer />
           <label className="bb-input-label">Choose a color</label>
           <div className="color-label-wrapper">
@@ -37,8 +53,11 @@ function EditGoals(props) {
               {colors.map((color) => (
                 <div
                   className="color-label"
+                  name="color"
                   key={color}
                   style={{ backgroundColor: color }}
+                  // TODO set color state
+                  onClick={() => {}}
                 ></div>
               ))}
             </div>
