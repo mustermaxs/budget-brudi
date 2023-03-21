@@ -5,22 +5,16 @@ import BbBtn from "../components/widgets/BbBtn";
 import InputCurrency from "../components/widgets/InputCurrency";
 import DrawerContainer from "../components/widgets/DrawerContainer";
 import { useState } from "react";
+import useValue from "../components/hooks/useValue";
 
 function Profile(props) {
-  const [inputValues, setValue] = useState({
-    firstname: "",
+  const [inputValues, handleChange] = useValue({
+    firstname: "FIRSTNAME",
     surname: "",
     email: "",
     password: "",
     passwordrepeat: "",
   });
-
-  const handleChange = (name, newValue) => {
-    setValue((prevValue) => ({
-      ...prevValue,
-      [name]: newValue,
-    }));
-  };
 
   const handleSubmit = (ev) => {
     // TODO

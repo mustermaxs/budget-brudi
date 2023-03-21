@@ -4,23 +4,17 @@ import BbBtn from "../components/widgets/BbBtn";
 import ContentWrapper from "../components/widgets/ContentWrapper";
 import InputText from "../components/widgets/InputText";
 import { Link } from "react-router-dom";
+import useValue from "../components/hooks/useValue";
 
 function Login() {
-  const [inputValues, setValue] = useState({
+  const [inputValue, handleChange] = useValue({
     username: "",
     password: "",
   });
 
   const handleSubmit = () => {
     // TODO
-    console.log(inputValues);
-  };
-
-  const handleChange = (name, newValue) => {
-    setValue((prevValue) => ({
-      ...prevValue,
-      [name]: newValue,
-    }));
+    console.log(inputValue);
   };
 
   return (
