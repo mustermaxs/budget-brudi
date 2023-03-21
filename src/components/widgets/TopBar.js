@@ -18,11 +18,6 @@ function TopBar(props) {
         </div>
         {`${user && user.role}`}
 
-        {user.isLoggedIn &&
-          <div className="topBarLogout">
-            <button onClick={handleLogout}>Logout</button>
-          </div>}
-
         <div
           onClick={() => {
             props.onToggle();

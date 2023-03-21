@@ -2,17 +2,17 @@ import "./bbbtn.css";
 
 // SUBMIT by default
 
-function BbBtn(props) {
+function BbBtn({ onClick, type, content }) {
   return (
     <>
       <div className="bbbtn-wrapper">
         <button
-          onClick={() => props.onClick()}
-          type={props.type == undefined ? "submit" : "button"}
+          // onClick={() => props.onClick()}
+          type={type === undefined ? "submit" : "button"}
           className="bbbtn"
-          onClick={props.onClick}
+          onClick={onClick}
         >
-          <span>{props.content}</span>
+          <span>{content}</span>
         </button>
       </div>
     </>

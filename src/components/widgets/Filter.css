@@ -1,0 +1,30 @@
+/* Card.css */
+.filter {
+    margin: 1rem 0;
+  }
+  
+  label {
+    font-size: 1.2rem;
+    margin-right: 1rem;
+  }
+  
+  select {
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: #f5f5f5;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px #0077ff33;
+  }
+  
+  option {
+    font-size: 1.2rem;
+  }
+  

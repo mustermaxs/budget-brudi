@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import ContentWrapper from "../components/widgets/ContentWrapper";
 import InputText from "../components/widgets/InputText";
@@ -63,7 +63,7 @@ function Login() {
           name="username"
           label="Username"
           placeholder="Username"
-          onChange={(value) => handleChange("username", value)}
+          onChange={(event) => handleChange("username", event)}
         />
         <InputText
           id="password"
@@ -71,7 +71,7 @@ function Login() {
           label="Password"
           placeholder="Password"
           type="password"
-          onChange={(value) => handleChange("password", value)}
+          onChange={(event) => handleChange("password", event)}
         />
         <BbBtn content="Login" type="submit" onClick={handleLoginFormSubmit}>
           Login
