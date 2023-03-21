@@ -2,6 +2,14 @@ import "./input.css";
 
 // props.size => large/medium/small
 
+/**
+ * ! SUPER MESSY, I'm sorry :(
+ * muss man großteils wsl eh nur über das type-attribut
+ * regeln und nur f. die css-klassen conditionals schreiben
+ * ... mach ich morgen
+ *
+ */
+
 function BBInput(props) {
   // const handleChange = (ev) => {
   //   props.onChange(ev.target.value);
@@ -27,6 +35,7 @@ function BBInput(props) {
           placeholder={props.placeholder}
           id={props.id}
           name={props.name}
+          onChange={props.onChange}
           className={
             "bb-input currency " +
             (props.size === undefined ? "large" : props.size)
@@ -40,9 +49,26 @@ function BBInput(props) {
       </div>
     );
   };
+
+  const inputTypeDate = () => {
+    return (
+      <input
+        placeholder={props.placeholder}
+        id={props.id}
+        name={props.name}
+        onChange={props.onChange}
+        className={
+          "bb-input " + (props.size === undefined ? "large" : props.size)
+        }
+        type={props.type}
+      ></input>
+    );
+  };
+
   const inputElement = () => {
     if (props.type === "text") return inputTypeText();
     else if (props.type === "currency") return inputTypeCurrency();
+    else if (props.type === "date") return inputTypeDate();
     else return inputTypeText();
   };
 
