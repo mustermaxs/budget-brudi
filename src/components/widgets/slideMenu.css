@@ -19,6 +19,10 @@
     background-color: transparent;
 }
 
+#closeOnClickArea:hover {
+    cursor: pointer;
+}
+
 .open {
     animation-name: bounce;
     animation-duration: 400ms;

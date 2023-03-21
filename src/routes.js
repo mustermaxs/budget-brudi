@@ -18,14 +18,14 @@ const routes = [
         path: "login",
         component: Login,
         privateRoute: false,
-        permissions: ["guest", "user", "admin"],
+        permissions: ["guest"],
     },
     {
         title: "Registration",
         path: "registration",
         component: Registration,
         privateRoute: false,
-        permissions: ["guest", "user", "admin"],
+        permissions: ["guest"],
     },
     {
         title: "Profile",

@@ -21,6 +21,7 @@ function Menu(props) {
   const links = routes.map((route) => {
 
     return (
+      route.permissions.includes(user.role) &&
       <li data-isactivelink={route.path === path} key={route.path}>
         <Link onClick={() => setState(false)} to={`/${route.path}`}>
           {route.title}
