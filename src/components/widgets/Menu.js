@@ -5,10 +5,10 @@ import SlideMenu from "./SlideMenu";
 import { UserContext } from "../../contexts/UserContext";
 
 function Menu(props) {
+  const { user, handleLogout } = useContext(UserContext);
   const [isOpen, setState] = useState(false);
 
-
-  const menuLinks = [
+  const menuLinksNotLoggedIn = [
     {
       href: "/",
       title: "Home",
@@ -21,6 +21,9 @@ function Menu(props) {
       href: "/registration",
       title: "Registration",
     },
+  ];
+
+  const menuLinksIsLoggedIn = [
     {
       href: "/profile",
       title: "Profile",
@@ -29,34 +32,50 @@ function Menu(props) {
       href: "/overview",
       title: "Overview",
     },
+    {
+      href: "/transactions",
+      title: "Transactions",
+    },
   ];
 
-  const getPageTitleByHref = (href) => {
-    var menuLinkObj = menuLinks.find((el) => el.href === href);
+  const linksConfig = user.isLoggedIn
+    ? menuLinksIsLoggedIn
+    : menuLinksNotLoggedIn;
+
+  const getPageTitleByHref = (href, linkConfig) => {
+    var menuLinkObj = linkConfig.find((el) => el.href === href);
     return menuLinkObj.title;
   };
 
-  console.log("page title: ", getPageTitleByHref(props.currentPath));
-
-  const links = menuLinks.map((link) => (
-
-    <li data-isactivelink={link.href === props.currentPath} key={link.href}>
-      <Link onClick={() => setState(false)} to={link.href}>
-        {link.title}
-      </Link>
-    </li>
-  ));
+  const links = (linksConfig) => {
+    return linksConfig.map((link) => (
+      <li data-isactivelink={link.href === props.currentPath} key={link.href}>
+        <Link onClick={() => setState(false)} to={link.href}>
+          {link.title}
+        </Link>
+      </li>
+    ));
+  };
 
   return (
     <>
       <TopBar
         menuIsOpen={isOpen}
         onToggle={() => setState(!isOpen)}
-        pageTitle={getPageTitleByHref(props.currentPath)}
-
+        pageTitle={getPageTitleByHref(props.currentPath, linksConfig)}
       />
       <SlideMenu onToggle={() => setState(!isOpen)} isOpen={isOpen}>
-        {links}
+        {links(linksConfig)}
+        {user.isLoggedIn ? (
+          <li
+            style={{ marginTop: "2rem", cursor: "pointer" }}
+            onClick={handleLogout}
+          >
+            Logout
+          </li>
+        ) : (
+          ""
+        )}
       </SlideMenu>
     </>
   );
