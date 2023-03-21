@@ -25,23 +25,22 @@ function Login() {
         "token": "NULL",
       };
 
-      switch(usernameValue)
-      {
+      switch (usernameValue) {
         case "markus":
           response["token"] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hcmt1cyIsImZpcnN0bmFtZSI6Ik1hcmt1cyIsInN1cm5hbWUiOiJSw7ZzbmVyIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjE5MjE3NDY4LCJleHAiOjE2MTkyMjEwNjh9.RyjygfLJD-zoiiGH4KmOO4puaTAB2sXiZ2rqen-EvKw";
-        break;
+          break;
 
         case "max":
           response["token"] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1heCIsImZpcnN0bmFtZSI6Ik1heCIsInN1cm5hbWUiOiJTaW5ubCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTYxOTIxNzQ2OCwiZXhwIjoxNjE5MjIxMDY4fQ.Gfoj10_zqujNvzen6C_k0qaSIMLsVg8sAIcsqlNngis";
-        break;
+          break;
 
         case "mike":
           response["token"] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2UiLCJmaXJzdG5hbWUiOiJNaWtlIiwic3VybmFtZSI6IkFzdW5jaW9uIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2MTkyMTc0NjgsImV4cCI6MTYxOTIyMTA2OH0.DRYMj6PGmP08fU83e1HTvEYyUKmV7mHC5_3elfwhQwQ"
-        break;
-        
+          break;
+
         default:
           response = "NULL";
-        break;
+          break;
       }
 
 

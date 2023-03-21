@@ -5,47 +5,73 @@ import InputCollection from "../components/widgets/InputCollection";
 import BbBtn from "../components/widgets/BbBtn";
 import InputCurrency from "../components/widgets/InputCurrency";
 import DrawerContainer from "../components/widgets/DrawerContainer";
-import { UserContext } from "../contexts/UserContext";
-
+import { useState } from "react";
 
 function Profile(props) {
+  const [inputValues, setValue] = useState({
+    firstname: "",
+    surname: "",
+    email: "",
+    password: "",
+    passwordrepeat: "",
+  });
 
-  const { user, setUser } = useContext(UserContext);
+  const handleChange = (name, newValue) => {
+    setValue((prevValue) => ({
+      ...prevValue,
+      [name]: newValue,
+    }));
+  };
 
   const handleSubmit = (ev) => {
-    ev.preventDefault();
-    console.log("submit form profile");
+    // TODO
+    // console.log(inputValues);
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <ContentWrapper>
+      <ContentWrapper>
+        <InputText
+          id="firstname"
+          name="firstname"
+          label="Personal Info"
+          placeholder="First Name"
+          value={inputValues.name}
+          onChange={(value) => handleChange("firstname", value)}
+        />
+        <InputText
+          id="surname"
+          name="surname"
+          placeholder="Surname"
+          value={inputValues.name}
+          onChange={(value) => handleChange("surname", value)}
+        />
+        <InputText
+          id="email"
+          name="email"
+          placeholder="Email"
+          value={inputValues.name}
+          onChange={(value) => handleChange("email", value)}
+        />
+        <InputCollection>
           <InputText
-            id="firstname"
-            name="firstname"
-            label="Personal Info"
-            placeholder="First Name"
-            value={user.firstname}
+            id="password"
+            name="password"
+            placeholder="Password"
+            label="Password"
+            value={inputValues.name}
+            onChange={(value) => handleChange("password", value)}
+          />{" "}
+          <InputText
+            id="passwordrepeat"
+            name="passwordrepeat"
+            placeholder="Repeat Password"
+            value={inputValues.name}
+            onChange={(value) => handleChange("passwordrepeat", value)}
           />
-          <InputText id="surname" name="surname" placeholder="Surname" value={user.surname} />
-          <InputText id="email" name="email" placeholder="Email" value={user.email} />
-          <InputCollection>
-            <InputText
-              id="password"
-              name="password"
-              placeholder="Password"
-              label="Password"
-            />{" "}
-            <InputText
-              id="passwordrepeat"
-              name="passwordrepeat"
-              placeholder="Repeat Password"
-            />
-          </InputCollection>{" "}
-        </ContentWrapper>
-        <BbBtn content="Submit" />
-      </form>
+        </InputCollection>{" "}
+      </ContentWrapper>
+      <BbBtn content="Submit" type="button" onClick={handleSubmit} />
     </>
   );
 }

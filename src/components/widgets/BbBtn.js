@@ -7,6 +7,7 @@ function BbBtn(props) {
     <>
       <div className="bbbtn-wrapper">
         <button
+          onClick={() => props.onClick()}
           type={props.type == undefined ? "submit" : "button"}
           className="bbbtn"
           onClick={props.onClick}

@@ -3,6 +3,9 @@ import "./input.css";
 // props.size => large/medium/small
 
 function InputText(props) {
+  // const handleChange = (ev) => {
+  //   props.onChange(ev.target.value);
+  // };
   return (
     <>
       {props.label === undefined ? (
@@ -17,7 +20,6 @@ function InputText(props) {
         placeholder={props.placeholder}
         id={props.id}
         name={props.name}
-        defaultValue={props.value}
         className={
           "bb-input " + (props.size === undefined ? "large" : props.size)
         }
