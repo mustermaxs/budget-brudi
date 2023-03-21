@@ -10,6 +10,9 @@ const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+
+    // TODO check token valid
+
     if (token) {
       const decodedToken = decode(token);
       const { username, firstname, surname, role } = decodedToken;
