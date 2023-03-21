@@ -1,19 +1,46 @@
 .card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: calc(100% - 1rem);
-    height: 80px;
-    border-bottom: 1px solid grey;
-    overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+
+
+.card:nth-child(2)::before
+{
+  content: "";
+  display: block;
+  width: 100vw;
+  height: 1px;
+  background-color: #80808047;
+  position: absolute;
+  transform: translateY(-45px);
+  left: 0px;
+}
+
+  .card::after {
+    content: "";
+    display: block;
+    width: 100vw;
+    height: 1px;
+    background-color: #80808047;
+    position: absolute;
+    transform: translateY(45px);
+    left: 0px;
   }
   
   .icon-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 80px;
+    max-width: 80px;
     height: 80px;
+
   }
   
   .icon {
@@ -25,9 +52,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 200px;
+    width: 100%;
     height: 80px;
-    padding: 0 16px;
+    padding: 0 10px;
+    margin-left: 12px;
+    align-items: flex-start;
   }
   
   .title {
@@ -55,13 +84,14 @@
     margin-bottom: 4px;
     border-radius: 16px;
     background-color: #E5E7EB;
+    color: #7b7b7b;
   }
   
   .price-container {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    width: 90px;
+    width: 10rem;
     height: 80px;
   }
   
