@@ -2,7 +2,7 @@ import ContentWrapper from "../components/widgets/ContentWrapper";
 import DrawerContainer from "../components/widgets/DrawerContainer";
 import InputCollection from "../components/widgets/InputCollection";
 import InputCurrency from "../components/widgets/InputCurrency";
-import InputText from "../components/widgets/InputText";
+import BBInput from "../components/widgets/BBInput";
 import Input from "../components/widgets/Input";
 import BbBtn from "../components/widgets/BbBtn";
 import "../components/widgets/bbTable.css";
@@ -57,7 +57,8 @@ function Overview(props) {
         <form onSubmit={handleSubmit}>
           <DrawerContainer label="Budget goal">
             <InputCollection>
-              <InputCurrency
+              <BBInput
+                type="currency"
                 label="Budget goal"
                 size="small"
                 name="budgetgoal"
