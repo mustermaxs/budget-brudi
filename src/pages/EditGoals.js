@@ -32,22 +32,16 @@ function EditGoals(props) {
           <Input size="small" type="date" label="Reach goal by" />
           <Spacer />
           <label className="bb-input-label">Choose a color</label>
-          <div className="colorpicker-wrapper">
-            <div className="row">
-              {colors.concat(colors).map((color) => (
-                <div className="color-label-container" key={color}>
-                  <div
-                    className="color-label"
-                    style={{ backgroundColor: color }}
-                  ></div>
-                </div>
+          <div className="color-label-wrapper">
+            <div className="color-label-row">
+              {colors.map((color) => (
+                <div
+                  className="color-label"
+                  key={color}
+                  style={{ backgroundColor: color }}
+                ></div>
               ))}
             </div>
-            {/* <div className="row">
-              <div className="color-label"></div>
-              <div className="color-label"></div>
-              <div className="color-label"></div>
-            </div> */}
           </div>
         </InputCollection>
       </ContentWrapper>

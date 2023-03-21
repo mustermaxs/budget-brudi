@@ -1,30 +1,24 @@
-.colorpicker-wrapper {
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    width: 100%;
+.color-label-wrapper {
+    display: block;
+    width: 165px;
+    height: -moz-fit-content;
     height: fit-content;
+    margin: 0 auto;
 }
 
-.colorpicker-wrapper .row {
-    display: flex;
-    flex-wrap: wrap;
-      width: inherit;
-    justify-content: flex-start;
+.color-label-wrapper .color-label-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
     margin-top: 10px;
-    flex-basis: 33.33333%;
-    
-}
-
-.color-label-container {
-    flex: 0 0 33.333333%;
-    margin-bottom: 15px;
+    justify-items: center;
+    justify-content: center;
+    align-content: center;
 }
 
 .color-label {
     width: 31px;
     height: 31px;
     border-radius: 100%;
-    background-color: black;
-    /* margin: 0 10px; */
+    margin-bottom: 10px;
 }
