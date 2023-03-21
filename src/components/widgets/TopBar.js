@@ -1,23 +1,31 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import HamburgerIcon from "./Hamburger";
 import "./topBar.css";
+import { UserContext } from "../../contexts/UserContext"
+
 
 function TopBar(props) {
-  const toggleMenu = () => {
-    props.onToggle();
-  };
+
+  const { user, handleLogout } = useContext(UserContext);
+
 
   return (
     <>
       <div className="topBar">
         <div>
-          <span className="topBarTitle">{props.pageTitle}</span>
+          <Link to="/" className="topBarTitle">{`${props.pageTitle}`}</Link>
         </div>
+        {`${user && user.role}`}
+
+        {user.isLoggedIn &&
+          <div className="topBarLogout">
+            <button onClick={handleLogout}>Logout</button>
+          </div>}
+
         <div
           onClick={() => {
             props.onToggle();
-            // toggleMenu();
           }}
           className={props.menuIsOpen ? "closed" : ""}
           id="hamburger"

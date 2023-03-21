@@ -1,3 +1,4 @@
+import { React, useContext } from "react";
 import ContentWrapper from "../components/widgets/ContentWrapper";
 import InputText from "../components/widgets/InputText";
 import InputCollection from "../components/widgets/InputCollection";
@@ -18,7 +19,7 @@ function Profile(props) {
 
   const handleSubmit = (ev) => {
     // TODO
-    console.log(inputValues);
+    // console.log(inputValues);
   };
 
   return (

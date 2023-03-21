@@ -5,7 +5,7 @@ import "./input.css";
 function Input(props) {
   return (
     <>
-      {props.label == undefined ? (
+      {props.label === undefined ? (
         ""
       ) : (
         <label className="bb-input-label" htmlFor={props.id}>

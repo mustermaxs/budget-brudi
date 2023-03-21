@@ -8,7 +8,7 @@ function InputText(props) {
   // };
   return (
     <>
-      {props.label == undefined ? (
+      {props.label === undefined ? (
         ""
       ) : (
         <label className="bb-input-label" htmlFor={props.id}>
@@ -21,11 +21,10 @@ function InputText(props) {
         id={props.id}
         name={props.name}
         className={
-          "bb-input " + (props.size == undefined ? "large" : props.size)
+          "bb-input " + (props.size === undefined ? "large" : props.size)
         }
         type="text"
-        value={props.value}
-        onChange={(ev) => props.onChange(ev.target.value)}
+        onChange={props.onChange}
       ></input>
     </>
   );
