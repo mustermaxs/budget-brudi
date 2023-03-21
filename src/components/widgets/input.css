@@ -17,6 +17,10 @@
     /* transition: border 50ms; */
 }
 
+.spacerDown {
+    margin-bottom: 1.5rem;
+}
+
 .medium {
     width: 50%;
 }
