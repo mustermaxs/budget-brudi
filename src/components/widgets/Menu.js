@@ -10,7 +10,7 @@ function Menu(props) {
   const { user, handleLogout } = useContext(UserContext);
 
   const path = props.currentPath.slice(1,);
-  const [isOpen, setState] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
 
   const getPageTitleByHref = (href) => {
@@ -23,7 +23,7 @@ function Menu(props) {
     return (
       route.permissions.includes(user.role) &&
       <li data-isactivelink={route.path === path} key={route.path}>
-        <Link onClick={() => setState(false)} to={`/${route.path}`}>
+        <Link onClick={() => setIsOpen(false)} to={`/${route.path}`}>
           {route.title}
         </Link>
       </li>
@@ -33,18 +33,18 @@ function Menu(props) {
 
   const handleLogoutAndCloseMenu = () => {
     handleLogout();
-    setState(false);
+    setIsOpen(false);
   };
 
   return (
     <>
       <TopBar
         menuIsOpen={isOpen}
-        onToggle={() => setState(!isOpen)}
+        onToggle={() => setIsOpen(!isOpen)}
         pageTitle={getPageTitleByHref(path)}
 
       />
-      <SlideMenu onToggle={() => setState(!isOpen)} isOpen={isOpen}>
+      <SlideMenu onToggle={() => setIsOpen(!isOpen)} isOpen={isOpen}>
         {links}
         {user.isLoggedIn &&
           <li data-isactivelink={false} key={"logout"}>

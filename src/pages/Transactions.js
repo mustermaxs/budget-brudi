@@ -5,8 +5,11 @@ import Filter from "../components/widgets/Filter";
 
 function Transactions() {
   const [cards, setCards] = useState([]);
+  const [category, setCategory] = useState();
 
-  const categories = ["work", "transportation", "health"];
+  const handleFilterChange = (event) => {
+    setCategory(event.target.value);
+  };
 
   const mockData = [
     {
@@ -29,17 +32,20 @@ function Transactions() {
       date: "04.03.2023",
       tags: ["#Groceries"],
       price: 24.9,
-    },
+    }
   ];
 
-  const [category, setCategory] = useState();
+  const categories = Array.from(new Set([...mockData.map(i => i.category)]));
+
+
+  const filteredData = category ? mockData.filter((item) => item.category === category) : mockData;
 
   return (
     <>
       <ContentWrapper>
-        <Filter category={category} categories={categories} />
+        <Filter category={category} categories={categories} onChange={handleFilterChange} />
 
-        {mockData.map(({ category, title, date, tags, price }) => {
+        {filteredData.map(({ category, title, date, tags, price }) => {
           return (
             <Card
               type="category"

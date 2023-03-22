@@ -10,29 +10,31 @@ const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    // TODO check token valid
+
     if (token) {
-      const decodedToken = decode(token);
-      const { username, firstname, surname, role } = decodedToken;
+      const { username, firstname, surname, role } = decode(token);
+
       setUser({
         isLoggedIn: true,
         username,
         firstname,
         surname,
-        role
+        role,
       });
     }
   }, []);
 
   const handleLogin = (token) => {
 
-    const decodedToken = decode(token);
-    const { username, firstname, surname, role } = decodedToken;
+    const { username, firstname, surname, role } = decode(token);
+
     setUser({
       isLoggedIn: true,
       username,
       firstname,
       surname,
-      role
+      role,
     });
     localStorage.setItem("token", token);
   };
