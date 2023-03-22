@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import { React, useEffect, useState } from "react";
 import ContentWrapper from "../components/widgets/ContentWrapper";
@@ -9,14 +9,20 @@ import Input from "../components/widgets/Input";
 import "../components/widgets/colorlabelpicker.css";
 import colors from "../assets/colors_mock";
 import useValue from "../hooks/useValue";
+import BbBtn from "../components/widgets/BbBtn";
 
 function EditGoals(props) {
   const [inputValue, handleChange] = useValue({
     goaltitle: "",
-    budgetgoal: "",
+    budgetgoal: null,
     date: "",
     color: "",
   });
+
+  const handleSubmit = (ev) => {
+    ev.preventDefault();
+    // TODO
+  };
 
   return (
     <>
@@ -25,6 +31,7 @@ function EditGoals(props) {
           <BBInput
             type="text"
             label="Goal Title"
+            value={inputValue.goaltitle}
             name="goaltitle"
             placeholder="eg. Waikiki vacation"
             onChange={(value) => handleChange("goaltitle", value)}
@@ -34,6 +41,7 @@ function EditGoals(props) {
             label="Budget Goal"
             type="currency"
             name="budgetgoal"
+            value={inputValue.budgetgoal}
             currency="€"
             placeholder="3000.00"
             size="small"
@@ -43,6 +51,8 @@ function EditGoals(props) {
             size="small"
             name="date"
             type="date"
+            // placeholder={inputValue.date}
+            value={inputValue.date}
             label="Reach goal by"
             onChange={(value) => handleChange("date", value)}
           />
@@ -52,17 +62,25 @@ function EditGoals(props) {
             <div className="color-label-row">
               {colors.map((color) => (
                 <div
-                  className="color-label"
+                  className={
+                    inputValue.color === color
+                      ? "color-label active"
+                      : "color-label"
+                  }
                   name="color"
                   key={color}
+                  value={color}
+                  data-value={color}
                   style={{ backgroundColor: color }}
-                  // TODO set color state
-                  onClick={() => {}}
+                  onClick={(event) => {
+                    handleChange("color", event);
+                  }}
                 ></div>
               ))}
             </div>
           </div>
         </InputCollection>
+        <BbBtn content="Add Goal" type="submit" onClick={handleSubmit} />
       </ContentWrapper>
     </>
   );
