@@ -5,6 +5,8 @@
     height: 100vh;
     top: 0px;
     z-index: 10;
+    left: -100vw;
+
 }
 
 #linksArea {
