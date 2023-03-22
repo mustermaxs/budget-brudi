@@ -12,9 +12,11 @@ function SlideMenu({ isOpen, children, onToggle }) {
     ? "slideMenuWrapper"
     : `slideMenuWrapper ${isOpen ? "open" : "close"}`;
 
-  if (initialPageLoad.current) {
-    unsetInitialPageLoad();
-  }
+  setTimeout(() => {
+    if (initialPageLoad.current) {
+      unsetInitialPageLoad();
+    }
+  }, 200);
 
   return (
     <>
