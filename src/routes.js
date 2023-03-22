@@ -1,7 +1,7 @@
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import Profile from "./pages/Profile";
-import Overview from "./pages/Overview";
+import Balance from "./pages/Balance";
 import Transactions from "./pages/Transactions";
 import Goals from "./pages/Goals";
 import EditGoals from "./pages/EditGoals";
@@ -36,11 +36,11 @@ const routes = [
     permissions: ["user", "admin"],
   },
   {
-    title: "Overview",
-    path: "overview",
-    component: Overview,
+    title: "Balance",
+    path: "balance",
+    component: Balance,
     privateRoute: true,
-    permissions: ["admin"],
+    permissions: ["user", "admin"],
   },
   {
     title: "Transactions",

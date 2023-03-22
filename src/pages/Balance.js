@@ -7,7 +7,7 @@ import Input from "../components/widgets/Input";
 import BbBtn from "../components/widgets/BbBtn";
 import "../components/widgets/bbTable.css";
 
-function Overview(props) {
+function Analysis(props) {
   const tempStyle = {
     width: "15rem",
     height: "15rem",
@@ -74,4 +74,4 @@ function Overview(props) {
   );
 }
 
-export default Overview;
+export default Analysis;
