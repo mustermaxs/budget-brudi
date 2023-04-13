@@ -11,12 +11,15 @@ import colors from "../assets/colors_mock";
 import useValue from "../hooks/useValue";
 import BbBtn from "../components/widgets/BbBtn";
 
-function EditGoals(props) {
+function EditGoal(props) {
+  // TODO fetch goal from server,
+  //give object "useValue" function
+  // MOCK
   const [inputValue, handleChange] = useValue({
-    goaltitle: "",
-    budgetgoal: null,
-    date: "",
-    color: "",
+    goaltitle: "Vacation in Waikiki",
+    budgetgoal: 3700,
+    date: "2024-08-10",
+    color: "#535353",
   });
 
   const handleSubmit = (ev) => {
@@ -80,10 +83,10 @@ function EditGoals(props) {
             </div>
           </div>
         </InputCollection>
-        <BbBtn content="Add Goal" type="submit" onClick={handleSubmit} />
+        <BbBtn content="Update" type="submit" onClick={handleSubmit} />
       </ContentWrapper>
     </>
   );
 }
 
-export default EditGoals;
+export default EditGoal;
