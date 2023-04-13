@@ -2,7 +2,7 @@ import "./bbbtn.css";
 
 // SUBMIT by default
 
-function BbBtn({ onClick, type, content, position }) {
+function BbBtnRound({ onClick, type, content, position }) {
   const className = () => {
     var classNameBase = "bbbtn-wrapper";
     if (position == "bottom") classNameBase += " bottom";
@@ -15,7 +15,7 @@ function BbBtn({ onClick, type, content, position }) {
         <button
           // onClick={() => props.onClick()}
           type={type === undefined ? "submit" : "button"}
-          className="bbbtn"
+          className="bbbtn circle"
           onClick={onClick}
         >
           <span>{content}</span>
@@ -25,4 +25,4 @@ function BbBtn({ onClick, type, content, position }) {
   );
 }
 
-export default BbBtn;
+export default BbBtnRound;
