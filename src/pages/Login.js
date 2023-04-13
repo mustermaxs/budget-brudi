@@ -6,8 +6,11 @@ import { UserContext } from "../contexts/UserContext";
 import jwtDecode from "jwt-decode";
 import BbBtn from "../components/widgets/BbBtn";
 import useValue from "../hooks/useValue";
+import SplashScreen from "./SplashScreen";
+// import useSplashScreen from "../hooks/useSplashScreen";
 
 function Login() {
+  // const [hide, setHide] = useState("");
   const [inputValue, handleChange] = useValue({
     username: "",
     password: "",
@@ -57,6 +60,8 @@ function Login() {
 
   return (
     <ContentWrapper>
+      <SplashScreen showFor="0" />
+
       <form>
         <BBInput
           id="username"
