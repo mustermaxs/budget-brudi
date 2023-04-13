@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 function Profile(props) {
   // const { handleLogin } = useContext(UserContext);
   // const navigate = useNavigate();
+  // TODO fetch personal data
   const [inputValues, handleChange] = useValue({
     firstname: "FIRSTNAME",
     surname: "",

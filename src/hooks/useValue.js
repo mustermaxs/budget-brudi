@@ -12,6 +12,7 @@ function useValue(initialValues) {
       ...prevValue,
       [inputName]: newValue,
     }));
+    console.log(inputValue);
   };
 
   return [inputValue, handleChange];

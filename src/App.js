@@ -5,12 +5,10 @@ import Layout from "./pages/Layout";
 import Login from "./pages/Login";
 import PrivateRoute from "./components/PrivateRoute";
 import { UserProvider } from "./contexts/UserContext";
-import routes from "./routes"
+import routes from "./routes";
 
 const App = () => {
-
   const [loading, setLoading] = useState(true);
-
 
   //simulate loading
   useEffect(() => {
@@ -26,11 +24,10 @@ const App = () => {
           <div className="spinner"></div>
         </div>
       ) : (
-
         <UserProvider>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Layout />} >
+              <Route path="/" element={<Layout />}>
                 <Route index element={<Login />} />
                 {routes.map((route) => (
                   <Route
@@ -38,13 +35,15 @@ const App = () => {
                     path={route.path}
                     element={
                       // render private routes
-                      route.privateRoute ?
+                      route.privateRoute ? (
                         <PrivateRoute
                           component={route.component}
                           permissions={route.permissions}
-                        /> :
+                        />
+                      ) : (
                         // render public routes
                         <route.component />
+                      )
                     }
                   />
                 ))}
@@ -52,10 +51,10 @@ const App = () => {
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </BrowserRouter>
-        </UserProvider >
+        </UserProvider>
       )}
     </>
   );
-}
+};
 
 export default App;
