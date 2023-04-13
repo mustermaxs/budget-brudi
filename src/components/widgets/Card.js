@@ -3,7 +3,7 @@ import "./Card.css";
 import getRandomInt from "../../utils/Random";
 // import images from "../../assets/icons/food.png";
 
-const Card = ({ title, price, tags, icon, date, type }) => {
+const Card = ({ title, price, tags, icon, date, type, onClick }) => {
   const [tagState, setTagState] = useState(tags);
 
   // TODO import colorlabels from external resource?
@@ -20,29 +20,36 @@ const Card = ({ title, price, tags, icon, date, type }) => {
 
   // console.log(iconStyle);
   return (
-    <div className="card">
-      <div className="icon-container" style={iconStyle}>
-        {/* <img src={image} alt="icon" /> */}
+    <>
+      <div
+        className="card"
+        onClick={() => {
+          onClick(title);
+        }}
+      >
+        <div className="icon-container" style={iconStyle}>
+          {/* <img src={image} alt="icon" /> */}
+        </div>
+        <div className="text-container">
+          <h2 className="title">{title}</h2>
+          <p className="date">{date}</p>
+          {tags !== undefined && (
+            <div className="tags">
+              {tagState.map((tag) => (
+                <div className="tag" key={`${title}-${tag}`}>
+                  {tag}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        <div className="price-container">
+          <p className={`price ${price > 0 ? "green" : "red"}`}>
+            {price < 0 && "-"} € {price < 0 ? price.toString().slice(1) : price}
+          </p>
+        </div>
       </div>
-      <div className="text-container">
-        <h2 className="title">{title}</h2>
-        <p className="date">{date}</p>
-        {tags !== undefined && (
-          <div className="tags">
-            {tagState.map((tag) => (
-              <div className="tag" key={`${title}-${tag}`}>
-                {tag}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-      <div className="price-container">
-        <p className={`price ${price > 0 ? "green" : "red"}`}>
-          {price < 0 && "-"} € {price < 0 ? price.toString().slice(1,) : price}
-        </p>
-      </div>
-    </div>
+    </>
   );
 };
 
