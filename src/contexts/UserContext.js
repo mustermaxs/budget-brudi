@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import decode from 'jwt-decode';
+import decode from "jwt-decode";
 
 const defaultUser = { isLoggedIn: false, role: "guest" };
 
@@ -26,7 +26,6 @@ const UserProvider = ({ children }) => {
   }, []);
 
   const handleLogin = (token) => {
-
     const { username, firstname, surname, role } = decode(token);
 
     setUser({
