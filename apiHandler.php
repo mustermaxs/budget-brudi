@@ -13,6 +13,6 @@ $router = new Router($baseURL, $apiDir);
  * beim login im cookie od. so hinterlegt werden
  * (sonst könnte jeder sensible userdaten getten)
  */
-$router->post("/api/login/");
+$router->post("/api/login/:id[i]");
 
 $router->dispatch($url, $method);
