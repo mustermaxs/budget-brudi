@@ -2,8 +2,9 @@
 require_once getcwd() . "/api/BaseModel.php";
 
 /*##### EXPENSE FUNCTIONS #####*/
-class TransactionModel extends BaseModel
+class TransactionsModel extends BaseModel
 {
+    // brauchen Namen der Kategorien
     public function getExpenseByUserID($userId)
     {
         $query = "SELECT * FROM Expense
@@ -13,14 +14,19 @@ class TransactionModel extends BaseModel
         $stmt->bind_param("d", $userId);
         $stmt->execute();
         $result = $stmt->get_result();
-        $data = $result->fetch_array(MYSQLI_ASSOC);
+        $rows = [];
 
+        while ($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
 
-        return $data;
+        return $rows;
     }
 
     public function getExpenseByExpenseId($expenseId)
     {
+        // brauchen Namen der Kategorien
+
         $query = "SELECT * FROM Expense
         WHERE ExpenseID = ?";
 
@@ -32,7 +38,6 @@ class TransactionModel extends BaseModel
 
 
         return $data;
-
     }
 
     public function createNewExpense($userId, $categoryId, $title, $expenseDate, $expenseAmount)
@@ -55,6 +60,7 @@ class TransactionModel extends BaseModel
 
     public function getIncomeByUserId($userId)
     {
+        // brauchen Namen der Kategorien
 
         $query = "SELECT * FROM Income WHERE F_accountID = ?";
 
@@ -62,14 +68,19 @@ class TransactionModel extends BaseModel
         $stmt->bind_param("d", $userId);
         $stmt->execute();
         $result = $stmt->get_result();
-        $data = $result->fetch_array(MYSQLI_ASSOC);
+        $rows = [];
 
+        while ($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
 
-        return $data;
+        return $rows;
     }
 
     public function getIncomeByIncomeID($incomeId)
     {
+        // brauchen Namen der Kategorien
+
         $query = "SELECT * FROM Income WHERE IncomeID = ?";
 
         $stmt = $this->conn->prepare($query);

@@ -45,6 +45,13 @@ class Authenticator
     public function authenticate()
     {
         // checks if token was sent along with request
+        if (!array_key_exists("REDIRECT_HTTP_AUTHORIZATION", $_SERVER))
+        {
+            header('HTTP/1.0 400 Bad Request');
+            echo 'Token not found in request';
+            exit;
+        }
+        
         if (!preg_match('/Bearer\s(\S+)/', $_SERVER['REDIRECT_HTTP_AUTHORIZATION'], $matches)) {
             header('HTTP/1.0 400 Bad Request');
             echo 'Token not found in request';
