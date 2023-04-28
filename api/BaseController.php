@@ -1,4 +1,5 @@
 <?php
+require_once getcwd(). "/api/Response.php";
 
 abstract class BaseController {
 

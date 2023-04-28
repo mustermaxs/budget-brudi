@@ -1,4 +1,5 @@
 <?php
+
 require_once "./api/router.php";
 
 $url = $_SERVER["REQUEST_URI"];
@@ -13,6 +14,7 @@ $router = new Router($baseURL, $apiDir);
  * beim login im cookie od. so hinterlegt werden
  * (sonst könnte jeder sensible userdaten getten)
  */
+$router->get("/api/test");
 $router->post("/api/login/:id[i]");
 
 $router->dispatch($url, $method);

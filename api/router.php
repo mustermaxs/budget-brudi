@@ -32,24 +32,24 @@ class Router
         $this->baseURL = $baseURL;  // name of webapp (eg. appointment-finder)
     }
 
-    public function get(string $url)
+    public function get(string $url, array $middleware = [])
     {
         $regexPattern = $this->createRegexPattern($url);
         array_push($this->routes["GET"], $regexPattern);
     }
 
-    public function post(string $url)
+    public function post(string $url, array $middleware = [])
     {
         $regexPattern = $this->createRegexPattern($url);
         array_push($this->routes["POST"], $regexPattern);
     }
-    public function put(string $url)
+    public function put(string $url, array $middleware = [])
     {
         $regexPattern = $this->createRegexPattern($url);
         array_push($this->routes["PUT"], $regexPattern);
     }
 
-    public function delete(string $url)
+    public function delete(string $url, array $middleware = [])
     {
         $regexPattern = $this->createRegexPattern($url);
         array_push($this->routes["DELETE"], $regexPattern);
