@@ -2,7 +2,7 @@
 
 require_once getcwd() . "/api/BaseModel.php";
 
-class UserModel extends Model
+class UserModel extends BaseModel
 {
     public function getUserById(int $userId)
     {

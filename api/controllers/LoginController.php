@@ -15,14 +15,21 @@ class LoginController extends BaseController
         $username = $jsonPostData->username;
         $password = $jsonPostData->password;
 
+
         // hash password in LoginModel
         // $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         $loginSuccessful = $this->model->loginUser($username, $password);
 
-        if ($loginSuccessful)
-            $this->successResponse("login successful");
-        else
+        if ($loginSuccessful){
+            
+            $auth = new Authenticator();
+            $token = $auth->createToken("mustermax");
+            $response = array("token"=>  $token);
+            Response::successResponse("created token", $response);
+
+        } else {
             $this->errorResponse("login failed");
+        }
     }
 }

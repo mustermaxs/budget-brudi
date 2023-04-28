@@ -32,27 +32,27 @@ class Router
         $this->baseURL = $baseURL;  // name of webapp (eg. appointment-finder)
     }
 
-    public function get(string $url, array $middleware = [])
+    public function get(string $url, bool $doAuthenticate = false)
     {
         $regexPattern = $this->createRegexPattern($url);
-        array_push($this->routes["GET"], $regexPattern);
+        array_push($this->routes["GET"], array("pattern"=>$regexPattern,  "authenticate" => $doAuthenticate));
     }
 
-    public function post(string $url, array $middleware = [])
+    public function post(string $url, bool $doAuthenticate = false)
     {
         $regexPattern = $this->createRegexPattern($url);
-        array_push($this->routes["POST"], $regexPattern);
+        array_push($this->routes["POST"], array("pattern"=>$regexPattern,  "authenticate" => $doAuthenticate));
     }
-    public function put(string $url, array $middleware = [])
+    public function put(string $url, bool $doAuthenticate = false)
     {
         $regexPattern = $this->createRegexPattern($url);
-        array_push($this->routes["PUT"], $regexPattern);
+        array_push($this->routes["PUT"], array("pattern"=>$regexPattern,  "authenticate" => $doAuthenticate));
     }
 
-    public function delete(string $url, array $middleware = [])
+    public function delete(string $url, bool $doAuthenticate = false)
     {
         $regexPattern = $this->createRegexPattern($url);
-        array_push($this->routes["DELETE"], $regexPattern);
+        array_push($this->routes["DELETE"], array("pattern"=>$regexPattern,  "authenticate" => $doAuthenticate));
     }
 
 
@@ -78,8 +78,10 @@ class Router
         $this->addRequest("controller", $controller[1]);
 
         foreach ($patterns as $pattern) {
-            if (preg_match($pattern, $route, $matches)) {
+            if (preg_match($pattern["pattern"], $route, $matches)) {
                 $namedGroupMatches = array_filter($matches, "is_string", ARRAY_FILTER_USE_KEY);
+
+                $this->addRequest("authenticate", $pattern["authenticate"]);
 
                 foreach ($namedGroupMatches as $key => $value) {
                     $this->addRequest($key, $value);
@@ -140,9 +142,13 @@ class Router
         $controllerClassName = ucfirst($controllerName) . "Controller";
         $controllerPath = $this->apiControllerDir . $controllerClassName . ".php";
         $controllerAction = strtolower($this->getRequestMethod());
+        $auth = new Authenticator();
 
         if (!file_exists($controllerPath))
             $this->errorResponse("route doesn't exist", 400);
+
+        if ($this->requestDetails["authenticate"] && !$auth->authenticate())
+            $this->errorResponse("authentication failed");
 
         require_once $controllerPath;
         $controller = new $controllerClassName($this->requestDetails);
@@ -169,6 +175,8 @@ class Router
             $this->errorResponse("Requested route doesn't exist", 400);
         }
         $this->routeexists = true;
+
+        
 
         $this->initController();
     }
