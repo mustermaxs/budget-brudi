@@ -7,7 +7,7 @@ class UserModel extends BaseModel
     public function getUserById(int $userId)
     {
         $query =
-            "SELECT iserId, username, name, surname, email
+            "SELECT iserId, username, name, lastname, email
             FROM user
             WHERE userId = ?;";
 

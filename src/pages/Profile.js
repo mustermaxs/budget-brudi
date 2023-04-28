@@ -16,7 +16,7 @@ function Profile(props) {
   // TODO fetch personal data
   const [inputValues, handleChange] = useValue({
     firstname: "FIRSTNAME",
-    surname: "",
+    lastname: "",
     email: "",
     password: "",
     passwordrepeat: "",
@@ -39,11 +39,11 @@ function Profile(props) {
           onChange={(value) => handleChange("firstname", value)}
         />
         <BBInput
-          id="surname"
-          name="surname"
-          placeholder="Surname"
+          id="lastname"
+          name="lastname"
+          placeholder="Lastname"
           value={inputValues.name}
-          onChange={(value) => handleChange("surname", value)}
+          onChange={(value) => handleChange("lastname", value)}
         />
         <BBInput
           id="email"

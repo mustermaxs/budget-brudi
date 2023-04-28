@@ -1,17 +1,16 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import ContentWrapper from "../components/widgets/ContentWrapper";
 import BBInput from "../components/widgets/BBInput";
 import { UserContext } from "../contexts/UserContext";
-import jwtDecode from "jwt-decode";
 import BbBtn from "../components/widgets/BbBtn";
 import useValue from "../hooks/useValue";
 import SplashScreen from "./SplashScreen";
 
 function Login() {
   const [inputValue, handleChange] = useValue({
-    username: "mustermax",
-    password: 123,
+    username: null,
+    password: null,
   });
   const { handleLogin } = useContext(UserContext);
   const navigate = useNavigate();
@@ -22,8 +21,9 @@ function Login() {
     try {
 
 
-      handleLogin(inputValue);
-      // navigate("/profile");
+      if (handleLogin(inputValue)) {
+        navigate("/profile");
+      }
     } catch (error) {
       console.error(error);
       alert("Login failed");

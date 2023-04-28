@@ -31,6 +31,8 @@ $router = new Router($baseURL, $apiDir);
  // true = private api route -> authentication is needed
  // false = public api route
 $router->post("/api/login", false);
+$router->post("/api/register", false);
 $router->get("/api/test", true);
+
 
 $router->dispatch($url, $method);

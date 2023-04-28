@@ -12,23 +12,23 @@ const UserProvider = ({ children }) => {
     const token = localStorage.getItem("token");
 
     if (token) {
-      const { username, firstname, surname, role } = decode(token);
+      const { username, firstname, lastname, role } = decode(token);
 
       setUser({
         isLoggedIn: true,
         username,
         firstname,
-        surname,
+        lastname,
         role,
       });
     }
   }, []);
 
   const handleLogin = async (loginData) => {
-    const response = await fetch('https://b209-2a02-8388-1ac3-900-dee9-7301-16db-8eac.ngrok-free.app/budget-brudi/api/login/', {
+    const response = await fetch('http://localhost/budget-brudi/api/login/', {
       method: 'POST',
       mode: "cors",
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(loginData),
     });
 
@@ -37,23 +37,46 @@ const UserProvider = ({ children }) => {
       console.log(data)
 
       const { token } = data.data;
-    
+
       if (token) {
-        const { username, firstname, surname, role } = decode(token);
-    
+        const { username, firstname, lastname, role } = decode(token);
+
         setUser({
           isLoggedIn: true,
           username,
           firstname,
-          surname,
+          lastname,
           role,
         });
         localStorage.setItem("token", token);
+        return true;
       } else {
         console.error('Invalid token received');
       }
     }
-    
+
+  };
+
+  const handleRegister = async (registerData) => {
+    const response = await fetch('http://localhost/budget-brudi/api/register/', {
+      method: 'POST',
+      mode: "cors",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(registerData),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+
+      // Log in the user automatically after successful registration
+      await handleLogin({ username: registerData.username, password: registerData.password });
+
+      return true;
+    } else {
+      console.error('Registration failed');
+      return false;
+    }
   };
 
   const handleLogout = () => {
@@ -63,7 +86,7 @@ const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, handleLogin, handleLogout }}>
+    <UserContext.Provider value={{ user, handleLogin, handleLogout, handleRegister }}>
       {children}
     </UserContext.Provider>
   );
