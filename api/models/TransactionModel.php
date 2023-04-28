@@ -2,7 +2,7 @@
 require_once getcwd() . "/api/BaseModel.php";
 
 /*##### EXPENSE FUNCTIONS #####*/
-class transactionModel extends BaseModel
+class TransactionModel extends BaseModel
 {
     public function getExpenseByUserID($userId)
     {
