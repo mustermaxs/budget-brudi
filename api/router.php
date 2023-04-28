@@ -147,8 +147,12 @@ class Router
         if (!file_exists($controllerPath))
             $this->errorResponse("route doesn't exist", 400);
 
-        if ($this->requestDetails["authenticate"] && !$auth->authenticate())
-            $this->errorResponse("authentication failed");
+        if ($this->requestDetails["authenticate"])
+        {
+            if (!$auth->authenticate())
+                $this->errorResponse("authentication failed");
+            $this->addRequest("userId", $auth->getUserId());
+        }
 
         require_once $controllerPath;
         $controller = new $controllerClassName($this->requestDetails);
@@ -165,6 +169,12 @@ class Router
             foreach ($_GET as $key => $value) {
                 $this->addRequest($key, $value);
             }
+        }
+        else {
+            $postData = file_get_contents('php://input');
+            $jsonPostData = json_decode($postData, TRUE);
+            $this->requestDetails = array_merge($this->requestDetails, $jsonPostData);
+
         }
         $url = preg_replace('/\\?.*/', '', $url);       // remove optional search query params from url
         $this->addRequest("url", $url);
