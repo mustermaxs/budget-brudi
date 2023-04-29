@@ -10,15 +10,34 @@ class TransactionsController extends BaseController
         $this->model = new TransactionsModel();
     }
 
+    private function getExpenses()
+    {
+        if (isset($this->request["id"]))
+            return $this->model->getExpenseByExpenseId($this->request["id"], $this->request["limit"] ?? null);
+        
+        else
+            return $this->model->getExpenseByUserID($this->request["userId"]);       
+    }
+
+    private function getIncomes()
+    {
+        if (isset($this->request["id"]))
+            return $this->model->getIncomeByIncomeID($this->request["id"], $this->request["limit"] ?? null);
+        
+        else
+            return $this->model->getIncomeByUserId($this->request["userId"]);       
+    }
+
     public function get()
     {
-        $jsonPostData = $this->getPostData();
+        if (!isset($this->request["type"]))     // /api/transactions/  -> get all transactions
+            $data = $this->model->getAllTransactionsByUserId($this->request["userId"]);
 
-        if ($this->request["type"] == "expenses")
-            $data = $this->model->getExpenseByUserID($this->request["userId"]);
+        else if ($this->request["type"] == "expenses")
+            $data = $this->getExpenses();
 
         else if ($this->request["type"] == "income")
-            $data = $this->model->getIncomeByUserID($this->request["userId"]);
+            $data = $this->getIncomes();
 
         else 
             Response::errorResponse("transaction type invalid");

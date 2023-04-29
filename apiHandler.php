@@ -32,6 +32,8 @@ $router = new Router($baseURL, $apiDir);
  // false = public api route
 $router->post("/api/login", false);
 $router->get("/api/transactions/:type[a]", true);
+$router->get("/api/transactions/:type[a]/:id[i]", true);
+$router->get("/api/transactions/", true);
 $router->post("/api/register", false);
 
 

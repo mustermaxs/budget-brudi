@@ -5,13 +5,17 @@ require_once getcwd() . "/api/BaseModel.php";
 class TransactionsModel extends BaseModel
 {
     // brauchen Namen der Kategorien
-    public function getExpenseByUserID($userId)
+    public function getExpenseByUserID($userId, $limit=10)
     {
+        $limit = $limit ?? 10;
+
         $query = "SELECT * FROM Expense
-        WHERE F_accountID = ?";
+        WHERE F_accountID = ?
+        LIMIT ?;";
+
 
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("d", $userId);
+        $stmt->bind_param("dd", $userId, $limit);
         $stmt->execute();
         $result = $stmt->get_result();
         $rows = [];
@@ -23,15 +27,29 @@ class TransactionsModel extends BaseModel
         return $rows;
     }
 
-    public function getExpenseByExpenseId($expenseId)
+    public function getAllTransactionsByUserId($userId, $limit = 10)
+    {
+        $limit = $limit ?? 10;
+
+        $incomes = $this->getIncomeByUserId($userId, $limit);
+        $expenses = $this->getExpenseByUserID($userId, $limit);
+
+        $transactions = array_merge($incomes, $expenses);
+
+        return $transactions;
+    }
+
+    public function getExpenseByExpenseId($expenseId, $limit = 10)
     {
         // brauchen Namen der Kategorien
+        $limit = $limit ?? 10;
 
         $query = "SELECT * FROM Expense
-        WHERE ExpenseID = ?";
+        WHERE ExpenseID = ?
+        LIMIT ?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("d", $expenseId);
+        $stmt->bind_param("dd", $expenseId, $limit);
         $stmt->execute();
         $result = $stmt->get_result();
         $data = $result->fetch_array(MYSQLI_ASSOC);
@@ -58,14 +76,15 @@ class TransactionsModel extends BaseModel
 
     /*##### INCOME FUNCTIONS #####*/
 
-    public function getIncomeByUserId($userId)
+    public function getIncomeByUserId($userId, $limit = 10)
     {
         // brauchen Namen der Kategorien
+        $limit = $limit ?? 10;
 
-        $query = "SELECT * FROM Income WHERE F_accountID = ?";
+        $query = "SELECT * FROM Income WHERE F_accountID = ? LIMIT ?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("d", $userId);
+        $stmt->bind_param("dd", $userId, $limit);
         $stmt->execute();
         $result = $stmt->get_result();
         $rows = [];
@@ -77,14 +96,15 @@ class TransactionsModel extends BaseModel
         return $rows;
     }
 
-    public function getIncomeByIncomeID($incomeId)
+    public function getIncomeByIncomeID($incomeId, $limit = 10)
     {
         // brauchen Namen der Kategorien
+        $limit = $limit ?? 10;
 
-        $query = "SELECT * FROM Income WHERE IncomeID = ?";
+        $query = "SELECT * FROM Income WHERE IncomeID = ? LIMIT ?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("d", $incomeId);
+        $stmt->bind_param("dd", $incomeId, $limit);
         $stmt->execute();
         $result = $stmt->get_result();
         $data = $result->fetch_array(MYSQLI_ASSOC);
