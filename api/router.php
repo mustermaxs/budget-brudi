@@ -12,6 +12,7 @@
 
 class Router
 {
+    private string $url;
     private $requestDetails = [];
     private $apiControllerDir = null;
     private $baseURL = null;
@@ -35,24 +36,24 @@ class Router
     public function get(string $url, bool $doAuthenticate = false)
     {
         $regexPattern = $this->createRegexPattern($url);
-        array_push($this->routes["GET"], array("pattern"=>$regexPattern,  "authenticate" => $doAuthenticate));
+        array_push($this->routes["GET"], array("pattern" => $regexPattern,  "authenticate" => $doAuthenticate));
     }
 
     public function post(string $url, bool $doAuthenticate = false)
     {
         $regexPattern = $this->createRegexPattern($url);
-        array_push($this->routes["POST"], array("pattern"=>$regexPattern,  "authenticate" => $doAuthenticate));
+        array_push($this->routes["POST"], array("pattern" => $regexPattern,  "authenticate" => $doAuthenticate));
     }
     public function put(string $url, bool $doAuthenticate = false)
     {
         $regexPattern = $this->createRegexPattern($url);
-        array_push($this->routes["PUT"], array("pattern"=>$regexPattern,  "authenticate" => $doAuthenticate));
+        array_push($this->routes["PUT"], array("pattern" => $regexPattern,  "authenticate" => $doAuthenticate));
     }
 
     public function delete(string $url, bool $doAuthenticate = false)
     {
         $regexPattern = $this->createRegexPattern($url);
-        array_push($this->routes["DELETE"], array("pattern"=>$regexPattern,  "authenticate" => $doAuthenticate));
+        array_push($this->routes["DELETE"], array("pattern" => $regexPattern,  "authenticate" => $doAuthenticate));
     }
 
 
@@ -71,7 +72,7 @@ class Router
     // checks if requested url matches pattern in $routes ( /controller/[:optionalParams] )
     // if it does, it extracts query params (NOT search query) and stores them
     // in $requestDetails array
-    private function matchRoute(array $patterns, $url): bool
+    private function resolveRoute(array $patterns, $url): bool
     {
         $route = preg_replace("/(\?[a-z=]+)/", "", $url);
         preg_match("/\/api\/([a-z]+)\//", $route, $controller);
@@ -138,8 +139,7 @@ class Router
 
     private function initController()
     {
-        $controllerName = $this->requestDetails["controller"];
-        $controllerClassName = ucfirst($controllerName) . "Controller";
+        $controllerClassName = ucfirst($this->requestDetails["controller"]) . "Controller";
         $controllerPath = $this->apiControllerDir . $controllerClassName . ".php";
         $controllerAction = strtolower($this->getRequestMethod());
         $auth = new Authenticator();
@@ -147,8 +147,7 @@ class Router
         if (!file_exists($controllerPath))
             $this->errorResponse("route doesn't exist", 400);
 
-        if ($this->requestDetails["authenticate"])
-        {
+        if ($this->requestDetails["authenticate"]) {
             if (!$auth->authenticate())
                 $this->errorResponse("authentication failed");
             $this->addRequest("userId", $auth->getUserId());
@@ -159,34 +158,41 @@ class Router
         $controller->$controllerAction();
     }
 
+    private function handleGetRequest(string $url)
+    {
+        foreach ($_GET as $key => $value) {
+            $this->addRequest($key, $value);
+        }
+        $this->url = preg_replace('/\\?.*/', '', $url);   // remove optional search query params from url
+    }
+
+    private function storeSentData()
+    {
+        // store all json encoded client data in requestDetails
+        $postData = file_get_contents('php://input');
+        $jsonPostData = json_decode($postData, TRUE);
+        $this->requestDetails = array_merge($this->requestDetails, $jsonPostData);
+    }
+
     public function dispatch(string $url, string $requestMethod)
     {
-        $url = str_replace($this->baseURL, "", $url);   // cut the localhost... part
+        $this->url = str_replace($this->baseURL, "", $url);   // cut the localhost... part
         $method = strtoupper($requestMethod);
 
         // store query params in $requestDetails
-        if ($requestMethod == "GET") {
-            foreach ($_GET as $key => $value) {
-                $this->addRequest($key, $value);
-            }
-        }
-        else {
-            $postData = file_get_contents('php://input');
-            $jsonPostData = json_decode($postData, TRUE);
-            $this->requestDetails = array_merge($this->requestDetails, $jsonPostData);
+        if ($requestMethod == "GET")
+            $this->handleGetRequest($this->url);
 
-        }
-        $url = preg_replace('/\\?.*/', '', $url);       // remove optional search query params from url
-        $this->addRequest("url", $url);
+        $this->storeSentData();
+
+        $this->addRequest("url", $this->url);
         $this->addRequest("method", $requestMethod);
 
-        if (!$this->matchRoute($this->routes[$method], $url)) {
+        if (!$this->resolveRoute($this->routes[$method], $this->url)) {
             $this->routeexists = false;
             $this->errorResponse("Requested route doesn't exist", 400);
         }
         $this->routeexists = true;
-
-        
 
         $this->initController();
     }

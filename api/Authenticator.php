@@ -42,25 +42,25 @@ class Authenticator
         return $this->userId;
     }
 
+    // checks if token was sent along with request
+    private function getTokenFromHeader()
+    {
+        $jwt = null;
+
+        if (!array_key_exists("REDIRECT_HTTP_AUTHORIZATION", $_SERVER) ||
+        !preg_match('/Bearer\s(\S+)/', $_SERVER['REDIRECT_HTTP_AUTHORIZATION'], $matches))
+           return null;
+        
+        $jwt = $matches[1];
+
+        return $jwt;
+    }
+
     public function authenticate()
     {
-        // checks if token was sent along with request
-        if (!array_key_exists("REDIRECT_HTTP_AUTHORIZATION", $_SERVER))
-        {
-            header('HTTP/1.0 400 Bad Request');
-            echo 'Token not found in request';
-            exit;
-        }
+        $jwt = $this->getTokenFromHeader();
         
-        if (!preg_match('/Bearer\s(\S+)/', $_SERVER['REDIRECT_HTTP_AUTHORIZATION'], $matches)) {
-            header('HTTP/1.0 400 Bad Request');
-            echo 'Token not found in request';
-            exit;
-        }
-
-        $jwt = $matches[1];
         if (!$jwt) {
-            // No token was able to be extracted from the authorization header
             header('HTTP/1.0 400 Bad Request');
             echo 'Token not found in request';
         }
@@ -68,13 +68,11 @@ class Authenticator
         $token = JWT::decode($jwt, new Key($this->secretKey, 'HS512'));
         $now = new DateTimeImmutable();
 
-
         if (
             $token->iss !== $this->domainName ||
             $token->nbf > $now->getTimestamp() ||
             $token->exp < $now->getTimestamp()
         ) {
-            // TODO Error Handling
             header('HTTP/1.1 401 Unauthorized');
             exit;
         }
