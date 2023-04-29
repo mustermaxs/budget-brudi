@@ -11,7 +11,7 @@ class Response
             'status' => 'success',
             'message' => $message,
             'data' => $data,
-            'statuscode' => $statusCode
+            'status' => $statusCode
         ]);
         exit();
     }
@@ -22,7 +22,7 @@ class Response
         echo json_encode([
             'status' => 'error',
             'message' => $message,
-            'statuscode' => $statusCode
+            'status' => $statusCode
         ]);
         exit();
     }
