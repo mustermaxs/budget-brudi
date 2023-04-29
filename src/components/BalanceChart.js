@@ -12,9 +12,16 @@ const BalanceChart = (props) => {
                 {
                     label: "Balance",
                     data: props.data,
-                    backgroundColor: "rgba(75, 192, 192, 0.2)",
-                    borderColor: "rgba(75, 192, 192, 1)",
-                    borderWidth: 1,
+                    backgroundColor: "rgba(54, 162, 235, 0.2)",
+                    borderColor: "rgba(54, 162, 235, 1)",
+                    borderWidth: 2,
+                },
+                {
+                    label: "Balance Goal",
+                    data: props.goalData,
+                    backgroundColor: "rgba(75, 192, 75, 0.2)",
+                    borderColor: "rgba(75, 192, 75, 1)",
+                    borderWidth: 3,
                 },
             ],
         };
@@ -23,11 +30,6 @@ const BalanceChart = (props) => {
             scales: {
                 y: {
                     beginAtZero: true,
-                },
-            },
-            plugins: {
-                legend: {
-                    display: false,
                 },
             },
         };
@@ -41,8 +43,7 @@ const BalanceChart = (props) => {
         return () => {
             chartInstance.destroy();
         };
-    }, [props.labels, props.data]);
-
+    }, [props.labels, props.data, props.goalData]);
 
     return <canvas style={props.style} ref={chartRef}></canvas>;
 };

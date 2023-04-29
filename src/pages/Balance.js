@@ -16,16 +16,18 @@ function Analysis(props) {
 
   const handleSubmit = () => { };
 
-  //graph mock data
+  // graph mock data
   const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
   const data = [1000, 1200, 900, 1500, 1800, 1300];
+  const goalData = [1200, 1000, 1000, 1300, 1700, 1200];
+
 
   return (
     <>
       <ContentWrapper>
         {/* <div style={tempStyle}>Graph</div> */}
         {/* <h2 style={{ margin: "auto" }}>Balance</h2> */}
-        <BalanceChart style={style} labels={labels} data={data} />
+        <BalanceChart style={style} labels={labels} data={data} goalData={goalData} />
         <InputCollection label="Summary">
           <table className="bb-table">
             <tbody>
