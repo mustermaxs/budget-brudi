@@ -20,7 +20,19 @@ class LoginModel extends BaseModel
 
         if (!password_verify($password, $data["password"]))
             return array("successful"=>false, "userId"=>-1);
+
+            $query = "
+            SELECT *
+            FROM Account
+            WHERE F_userID = ?;";
+            
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("d", $data["userID"]);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $data = $result->fetch_array(MYSQLI_ASSOC);
         
-        return array("successful"=>true, "userId"=>$data["userID"]);
+            // userID ist eigentlich accountID
+        return array("successful"=>true, "userId"=>$data["AccountId"]);
     }
 }
