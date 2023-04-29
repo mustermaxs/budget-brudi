@@ -5,7 +5,7 @@ import "./bbbtn.css";
 function BbBtn({ onClick, type, content, position }) {
   const className = () => {
     var classNameBase = "bbbtn-wrapper";
-    if (position == "bottom") classNameBase += " bottom";
+    if (position === "bottom") classNameBase += " bottom";
 
     return classNameBase;
   };

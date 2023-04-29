@@ -1,11 +1,26 @@
-import { React, useEffect, useState } from "react";
+import React, { useState } from "react";
 import ContentWrapper from "../components/widgets/ContentWrapper";
 import Card from "../components/widgets/Card";
 import Filter from "../components/widgets/Filter";
+import BbBtn from "../components/widgets/BbBtn";
+import AddTransactionModal from "../components/widgets/AddTransactionModal";
 
 function Transactions() {
   const [cards, setCards] = useState([]);
   const [category, setCategory] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const addTransaction = (transaction) => {
+    setCards((prevCards) => [...prevCards, transaction]);
+  };
 
   const handleFilterChange = (event) => {
     setCategory(event.target.value);
@@ -35,8 +50,7 @@ function Transactions() {
     }
   ];
 
-  const categories = Array.from(new Set([...mockData.map(i => i.category)]));
-
+  const categories = Array.from(new Set([...mockData.map((i) => i.category)]));
 
   const filteredData = category ? mockData.filter((item) => item.category === category) : mockData;
 
@@ -58,7 +72,15 @@ function Transactions() {
             />
           );
         })}
+        <BbBtn content="+" onClick={openModal} />
+
       </ContentWrapper>
+
+      <AddTransactionModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onSubmit={addTransaction}
+      />
     </>
   );
 }

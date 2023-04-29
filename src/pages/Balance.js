@@ -6,27 +6,28 @@ import BBInput from "../components/widgets/BBInput";
 import Input from "../components/widgets/Input";
 import BbBtn from "../components/widgets/BbBtn";
 import "../components/widgets/bbTable.css";
+import BalanceChart from "../components/BalanceChart";
 
 function Analysis(props) {
-  const tempStyle = {
-    width: "15rem",
-    height: "15rem",
-    borderRadius: "10px",
-    background: "gray",
-    margin: "0 auto",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    color: "white",
-    marginBottom: "1.5rem",
-  };
 
-  const handleSubmit = () => {};
+  const style = {
+    marginTop: "2rem",
+  }
+
+  const handleSubmit = () => { };
+
+  // graph mock data
+  const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
+  const data = [1000, 1200, 900, 1500, 1800, 1300];
+  const goalData = [1200, 1000, 1000, 1300, 1700, 1200];
+
 
   return (
     <>
       <ContentWrapper>
-        <div style={tempStyle}>Graph</div>
+        {/* <div style={tempStyle}>Graph</div> */}
+        {/* <h2 style={{ margin: "auto" }}>Balance</h2> */}
+        <BalanceChart style={style} labels={labels} data={data} goalData={goalData} />
         <InputCollection label="Summary">
           <table className="bb-table">
             <tbody>
