@@ -75,7 +75,7 @@ class Router
     private function resolveRoute(array $patterns, $url): bool
     {
         $route = preg_replace("/(\?[a-z=]+)/", "", $url);
-        preg_match("/\/api\/([a-z]+)\//", $route, $controller);
+        preg_match("/\/api\/([a-z]+)\/?/", $route, $controller);
         $this->addRequest("controller", $controller[1]);
 
         foreach ($patterns as $pattern) {
@@ -170,7 +170,7 @@ class Router
     {
         // store all json encoded client data in requestDetails
         $postData = file_get_contents('php://input');
-        $jsonPostData = json_decode($postData, TRUE);
+        $jsonPostData = json_decode($postData, TRUE) ?? [];
         $this->requestDetails = array_merge($this->requestDetails, $jsonPostData);
     }
 
