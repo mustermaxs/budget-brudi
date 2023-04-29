@@ -21,7 +21,7 @@ class Authenticator
     {
 
         $currentDate = new DateTimeImmutable();
-        $expire_at  = $currentDate->modify('+30 minutes')->getTimestamp();      // Add 60 seconds
+        $expire_at  = $currentDate->modify('+120 minutes')->getTimestamp();      // Add 60 seconds
         $request_data = [
             'iat'  => $currentDate->getTimestamp(),         // Issued at: time when the token was generated
             'iss'  => $this->domainName,                          // Issuer
