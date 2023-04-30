@@ -1,6 +1,12 @@
 import { createContext, useEffect, useState } from "react";
 import decode from "jwt-decode";
 
+const jwtToken = {
+  get: () => {return localStorage.getItem("token")},
+  set: (value) => localStorage.setItem("token", value),
+  remove: () => localStorage.removeItem("token")
+};
+
 const defaultUser = { isLoggedIn: false, role: "guest" };
 
 const UserContext = createContext(defaultUser);
@@ -9,7 +15,7 @@ const UserProvider = ({ children }) => {
   const [user, setUser] = useState(defaultUser);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = jwtToken.get();
 
     if (token) {
       const { username, firstname, lastname, role } = decode(token);
@@ -48,7 +54,7 @@ const UserProvider = ({ children }) => {
           lastname,
           role,
         });
-        localStorage.setItem("token", token);
+        jwtToken.set(token);
         return true;
       } else {
         console.error('Invalid token received');
@@ -81,7 +87,7 @@ const UserProvider = ({ children }) => {
 
   const handleLogout = () => {
     setUser(defaultUser);
-    localStorage.removeItem("token");
+    jwtToken.remove();
     // window.location.href = "/login"; // Redirect to login page after logout
   };
 
@@ -92,4 +98,4 @@ const UserProvider = ({ children }) => {
   );
 };
 
-export { UserProvider, UserContext };
+export { UserProvider, UserContext, jwtToken };

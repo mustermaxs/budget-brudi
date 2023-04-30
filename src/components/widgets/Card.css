@@ -9,7 +9,34 @@
   cursor: pointer;
 }
 
+@media screen and (min-width: 860px) {
+  .card {
+    width: 30rem;
+  }
 
+  .card:nth-child(2)::before
+{
+  content: "";
+  display: block;
+  width: 32rem !important;
+  height: 1px;
+  background-color: #80808047;
+  position: absolute;
+  transform: translateY(-45px);
+  left: 0px;
+}
+
+  .card::after {
+    content: "";
+    display: block;
+    width: 32rem !important;
+    height: 1px;
+    background-color: #80808047;
+    position: absolute;
+    transform: translateY(45px);
+    left: 0px;
+  }
+}
 
 .card:nth-child(2)::before
 {
@@ -105,7 +132,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    width: 5rem;
+    width: fit-content;
     height: 80px;
   }
   

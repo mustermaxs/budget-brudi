@@ -1,14 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContentWrapper from "../components/widgets/ContentWrapper";
 import Card from "../components/widgets/Card";
 import Filter from "../components/widgets/Filter";
 import BbBtn from "../components/widgets/BbBtn";
 import AddTransactionModal from "../components/widgets/AddTransactionModal";
+import { jwtToken } from "../contexts/UserContext";
+import getRandomInt from "../utils/Random";
+import BbBtnRound from "../components/widgets/BbBtnRound";
 
 function Transactions() {
+  const [transactions, setTransactions] = useState([]);
   const [cards, setCards] = useState([]);
   const [category, setCategory] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('http://localhost/budget-brudi/api/transactions?limit=20', {
+      method: 'GET',
+      mode: "cors",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwtToken.get()}`
+      }
+    }).then((res) => {
+      return res.json();
+    }).then(transactions => {
+      console.log(transactions.data);
+      // TODO render transactions. vlt über state?
+      setLoading(false);
+      setTransactions(transactions.data);
+    });
+  }, []);
+
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -26,53 +50,33 @@ function Transactions() {
     setCategory(event.target.value);
   };
 
-  const mockData = [
-    {
-      category: "work",
-      title: "Work Expense",
-      date: "04.03.2023",
-      tags: ["#Groceries", "#Birthday"],
-      price: 24.9,
-    },
-    {
-      category: "transportation",
-      title: "Tesla Abo",
-      date: "04.03.2023",
-      tags: ["#Work", "#Birthday"],
-      price: -24.9,
-    },
-    {
-      category: "health",
-      title: "Apotheke",
-      date: "04.03.2023",
-      tags: ["#Groceries"],
-      price: 24.9,
-    }
-  ];
+  const categories = Array.from(new Set([...transactions.map((i) => i.Category)]));
 
-  const categories = Array.from(new Set([...mockData.map((i) => i.category)]));
-
-  const filteredData = category ? mockData.filter((item) => item.category === category) : mockData;
+  const filteredData = category ? transactions.filter((item) => item.Category === category) : transactions;
 
   return (
     <>
       <ContentWrapper>
-        <Filter category={category} categories={categories} onChange={handleFilterChange} />
+        <Filter category={category}  categories={categories} onChange={handleFilterChange} />
+        {filteredData.map(({ Category, Title, date, Amount }) => {
+      return (
+        <Card
+          type="category"
+          icon={Category}
+          title={Title}
+          date={date}
+          price={Amount}
+          key={getRandomInt(0,10000)}
+          onClick={() => {}}
+        />
+      );
+    })}
 
-        {filteredData.map(({ category, title, date, tags, price }) => {
-          return (
-            <Card
-              type="category"
-              icon={category}
-              title={title}
-              date={date}
-              tags={tags}
-              price={price}
-              key={title}
-            />
-          );
-        })}
-        <BbBtn content="+" onClick={openModal} />
+    {loading &&         <div className="loader-container">
+          <div className="spinner"></div>
+        </div>}
+
+        <BbBtnRound position="bottom" type="button" content="+" onClick={openModal} />
 
       </ContentWrapper>
 

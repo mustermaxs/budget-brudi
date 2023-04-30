@@ -31,7 +31,7 @@ class TransactionsController extends BaseController
     public function get()
     {
         if (!isset($this->request["type"]))     // /api/transactions/  -> get all transactions
-            $data = $this->model->getAllTransactionsByUserId($this->request["userId"]);
+            $data = $this->model->getAllTransactionsByUserId($this->request["userId"], $this->request["limit"]);
 
         else if ($this->request["type"] == "expenses")
             $data = $this->getExpenses();
