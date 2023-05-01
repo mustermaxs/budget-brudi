@@ -1,4 +1,5 @@
 <?php
+
 require_once getcwd() . "/api/BaseModel.php";
 
 class GoalModel extends BaseModel
@@ -14,7 +15,7 @@ class GoalModel extends BaseModel
         $stmt->execute();
         $goalId = $stmt->insert_id;//insert_id????
 
-        
+
         return $goalId;
     }
 
