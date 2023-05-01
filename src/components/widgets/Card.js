@@ -4,14 +4,14 @@ import getRandomInt from "../../utils/Random";
 import getIconPath from "../../assets/Icons";
 // import images from "../../assets/icons/food.png";
 
-const Card = ({ title, price, tags, icon, date, type, onClick }) => {
+const Card = ({ title, price, tags, icon, date, type, onClick, color }) => {
   const [tagState, setTagState] = useState(tags);
 
   // TODO import colorlabels from external resource?
   //* MOCK
   const colorLabels = ["#EAC435", "#345995", "#07A0C3", "#FB4D3D", "#CA1551"];
   const randomColor = colorLabels[getRandomInt(0, colorLabels.length - 1)];
-  
+
   //! ich habe versucht es in getIconPath() auszulagern,
   // aber das funktioniert iwie nicht mit den Pfaden, ka wieso
   const iconStyle = (() => {
@@ -31,19 +31,18 @@ const Card = ({ title, price, tags, icon, date, type, onClick }) => {
       "Household": "Household",
       "Sport": "Sport",
       "Default": "Blank"
-  };
+    };
 
-  var iconPath = categoryMapping[icon] || categoryMapping.Default;
+    var iconPath = categoryMapping[icon] || categoryMapping.Default;
 
-  console.log(icon);
-    if (type === "category")
-    {
+    console.log(icon);
+    if (type === "category") {
       return {
         backgroundImage: `url(${require(`../../assets/icons/icons_raw/${iconPath}.png`)})`,
       };
     }
 
-    else if (type === "goals") return { background: randomColor };
+    else if (type === "goals") return { background: color };
   })();
 
   return (

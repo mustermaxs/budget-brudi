@@ -32,7 +32,7 @@ class GoalsController extends BaseController
 
         if ($createGoalSuccessful){
             
-            Response::successResponse("registered successful");
+            Response::successResponse("goal created successfully");
 
         } else {
             $this->errorResponse("login failed");
