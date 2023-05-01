@@ -6,6 +6,7 @@
     bottom: 0px;
     height: fit-content;
     padding: 1.5rem;
+    z-index: 9;
 }
 
 .bbbtn {
@@ -40,13 +41,15 @@ button:hover {
 }
 
 .bbbtn-wrapper .circle {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 3.2rem;
+    height: 3.2rem;
     border-radius: 100%;
+    font-size: 1.7rem;
 }
 
 .bottom {
     left: 50%;
     transform: translateX(-50%);
-    position: absolute;
+    position: fixed !important;
+    bottom: 0px;
 }

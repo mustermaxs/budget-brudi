@@ -8,13 +8,15 @@ hr {
 }
 
 .loader-container {
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
   z-index: 1;
+  left: 0;
+  top: 0;
 }
 
 .spinner {

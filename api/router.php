@@ -106,7 +106,7 @@ class Router
 
     public function getRequestMethod()
     {
-        return $this->requestDetails["method"];
+        return $this->requestDetails["httpmethod"];
     }
 
     public function request()
@@ -177,18 +177,18 @@ class Router
     public function dispatch(string $url, string $requestMethod)
     {
         $this->url = str_replace($this->baseURL, "", $url);   // cut the localhost... part
-        $method = strtoupper($requestMethod);
+        $httpMethod = strtoupper($requestMethod);
 
         // store query params in $requestDetails
-        if ($requestMethod == "GET")
+        if ($httpMethod == "GET")
             $this->handleGetRequest($this->url);
 
         $this->storeSentData();
 
         $this->addRequest("url", $this->url);
-        $this->addRequest("method", $requestMethod);
+        $this->addRequest("httpmethod", $httpMethod);
 
-        if (!$this->resolveRoute($this->routes[$method], $this->url)) {
+        if (!$this->resolveRoute($this->routes[$httpMethod], $this->url)) {
             $this->routeexists = false;
             $this->errorResponse("Requested route doesn't exist", 400);
         }

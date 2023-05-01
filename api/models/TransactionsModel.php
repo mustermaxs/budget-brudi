@@ -9,7 +9,8 @@ class TransactionsModel extends BaseModel
     {
         $limit = $limit ?? 10;
 
-        $query = "SELECT * FROM Expense
+        $query = "SELECT * FROM Expense exp
+        JOIN Category cat ON cat.categoryID=exp.F_categoryID
         WHERE F_accountID = ?
         LIMIT ?;";
 
@@ -44,7 +45,8 @@ class TransactionsModel extends BaseModel
         // brauchen Namen der Kategorien
         $limit = $limit ?? 10;
 
-        $query = "SELECT * FROM Expense
+        $query = "SELECT * FROM Expense exp
+        JOIN Category cat ON cat.categoryID=exp.F_categoryID
         WHERE ExpenseID = ?
         LIMIT ?";
 
@@ -61,7 +63,7 @@ class TransactionsModel extends BaseModel
     public function createNewExpense($userId, $categoryId, $title, $expenseDate, $expenseAmount)
     {
 
-        $query = "INSERT INTO Expense (F_accountID, F_category_ID, Title, Date_Expense, ExpenseAmount)
+        $query = "INSERT INTO Expense (F_accountID, F_category_ID, Title, date, ExpenseAmount)
         VALUES (?, ?, ?, ?, ?)";
 
         $stmt = $this->conn->prepare($query);
@@ -81,7 +83,9 @@ class TransactionsModel extends BaseModel
         // brauchen Namen der Kategorien
         $limit = $limit ?? 10;
 
-        $query = "SELECT * FROM Income WHERE F_accountID = ? LIMIT ?";
+        $query = "SELECT * FROM Income inc
+        JOIN Category cat ON cat.categoryID=inc.F_categoryID
+         WHERE F_accountID = ? LIMIT ?";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param("dd", $userId, $limit);
@@ -101,7 +105,9 @@ class TransactionsModel extends BaseModel
         // brauchen Namen der Kategorien
         $limit = $limit ?? 10;
 
-        $query = "SELECT * FROM Income WHERE IncomeID = ? LIMIT ?";
+        $query = "SELECT * FROM Income inc
+        JOIN Category cat ON cat.categoryID=inc.F_categoryID
+        WHERE IncomeID = ? LIMIT ?";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param("dd", $incomeId, $limit);
@@ -115,7 +121,7 @@ class TransactionsModel extends BaseModel
 
     public function createIncome($userID, $categoryId, $title, $incomeDate, $incomeAmount)
     {
-        $query = "INSERT INTO Expense (F_accountID, F_category_ID, Title, Date_Income, IncomeAmount)
+        $query = "INSERT INTO Expense (F_accountID, F_category_ID, Title, date, IncomeAmount)
         VALUES (?, ?, ?, ?, ?)";
 
         $stmt = $this->conn->prepare($query);

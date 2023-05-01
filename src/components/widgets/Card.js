@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Card.css";
 import getRandomInt from "../../utils/Random";
+import getIconPath from "../../assets/Icons";
 // import images from "../../assets/icons/food.png";
 
 const Card = ({ title, price, tags, icon, date, type, onClick }) => {
@@ -10,15 +11,41 @@ const Card = ({ title, price, tags, icon, date, type, onClick }) => {
   //* MOCK
   const colorLabels = ["#EAC435", "#345995", "#07A0C3", "#FB4D3D", "#CA1551"];
   const randomColor = colorLabels[getRandomInt(0, colorLabels.length - 1)];
+  
+  //! ich habe versucht es in getIconPath() auszulagern,
+  // aber das funktioniert iwie nicht mit den Pfaden, ka wieso
   const iconStyle = (() => {
+    const categoryMapping = {
+      "Media Electronics": "Entertainment",
+      "Groceries": "Groceries",
+      "Restaurant": "Restaurant",
+      "Health": "Medicine",
+      "Bills": "Bills",
+      "Rent": "Rent",
+      "Subscriptions": "Entertainment",
+      "Transportation": "Transportation",
+      "Work": "Work",
+      "Salary": "Salary",
+      "Food": "Groceries",
+      "Savings": "Savings",
+      "Household": "Household",
+      "Sport": "Sport",
+      "Default": "Blank"
+  };
+
+  var iconPath = categoryMapping[icon] || categoryMapping.Default;
+
+  console.log(icon);
     if (type === "category")
+    {
       return {
-        backgroundImage: `url(${require(`../../assets/icons/icons_raw/${icon}.png`)})`,
+        backgroundImage: `url(${require(`../../assets/icons/icons_raw/${iconPath}.png`)})`,
       };
+    }
+
     else if (type === "goals") return { background: randomColor };
   })();
 
-  // console.log(iconStyle);
   return (
     <>
       <div
