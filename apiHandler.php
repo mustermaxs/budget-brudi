@@ -35,6 +35,8 @@ $router->get("/api/transactions/:type[a]", true);
 $router->get("/api/transactions/:type[a]/:id[i]", true);
 $router->get("/api/transactions/", true);
 $router->post("/api/register", false);
+$router->get("/api/categories/", false);
+$router->get("/api/categories/:id[i]", false);
 
 
 $router->dispatch($url, $method);
