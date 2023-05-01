@@ -29,11 +29,15 @@ $router = new Router($baseURL, $apiDir);
  */
 
  // true = private api route -> authentication is needed
- // false = public api route
+ // false = public api route  
 $router->post("/api/login", false);
 $router->get("/api/transactions/:type[a]", true);
 $router->get("/api/transactions/:type[a]/:id[i]", true);
 $router->get("/api/transactions", true);
+
+$router->get("/api/goals", true);
+  $router->post("/api/goals", true);
+
 $router->post("/api/register", false);
 $router->get("/api/categories/", false);
 $router->get("/api/categories/:id[i]", false);

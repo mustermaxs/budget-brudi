@@ -21,6 +21,10 @@ class UserController extends BaseController
         $this->successResponse("request successfull", $response);
     }
 
+
+
+
+    
     protected function getUserNameByUserId($userId)
     {
         $userId = $this->request["id"];
