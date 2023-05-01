@@ -53,11 +53,11 @@ class TransactionsController extends BaseController
         
         if ($this->request["type"] == "income")
         {
-            $this->model->createIncome($this->request["userId"], $this->request["categoryId"], $this->request["title"], $this->request["date"], $this->request["amount"])
+            $this->model->createIncome($this->request["userId"], $this->request["categoryId"], $this->request["title"], $this->request["date"], $this->request["amount"]);
         }
         if ($this->request["type"] == "expense")
         {
-            $this->model->createNewExpense($this->request["userId"], $this->request["categoryId"], $this->request["title"], $this->request["date"], $this->request["amount"])
+            $this->model->createNewExpense($this->request["userId"], $this->request["categoryId"], $this->request["title"], $this->request["date"], $this->request["amount"]);
         }
     }
 }
