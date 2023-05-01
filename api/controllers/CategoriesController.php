@@ -55,7 +55,7 @@ class CategoriesController extends BaseController
         else
             $data = $this->model->getCategoryByCategoryId($this->request["id"]);
         
-            if ($data = null)
+            if ($data == null)
                 Response::errorResponse("no categories found");
 
         Response::successResponse("categories loaded successfully", $data);

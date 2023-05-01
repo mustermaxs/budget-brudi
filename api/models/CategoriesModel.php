@@ -22,7 +22,7 @@ class CategoriesModel extends BaseModel
     public function getAllCategories()
     {
         $query =
-            "SELECT * FROM Category";
+            "SELECT Category as title, categoryID as id FROM Category";
             
         $result = $this->conn->query($query);
         
