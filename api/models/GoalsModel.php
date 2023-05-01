@@ -2,16 +2,16 @@
 
 require_once getcwd() . "/api/BaseModel.php";
 
-class GoalModel extends BaseModel
+class GoalsModel extends BaseModel
 {
-    public function createNewGoal($goaltitle, $amount, $date, $color) // should it be really $goalTitle? and not the ID?
+    public function createNewGoal($accountId, $goaltitle, $amount, $date, $color) // should it be really $goalTitle? and not the ID?
     {
 
-        $query = "INSERT INTO Goal (title, Amount, Date, color)
-        VALUES (?, ?, ?, ?)";
+        $query = "INSERT INTO Goal (F_accountID, title, amount, date, color)
+        VALUES (?, ?, ?, ?, ?)";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("sdsd", $goaltitle, $amount, $date, $color);
+        $stmt->bind_param("dsdsd",$accountId, $goaltitle, $amount, $date, $color);
         $stmt->execute();
         $goalId = $stmt->insert_id;//returns the autoincrement ID Nr
 
@@ -37,21 +37,25 @@ class GoalModel extends BaseModel
     }
 
     
-    public function getGoalsByUserID($userId)
+    public function getGoalsByAccountID($accountID)
     {                     
-
+        
         $query = "SELECT * FROM Goal 
-        WHERE userId = ?";
+        WHERE F_accountID = ?";
    
 
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("d", $userId);
+        $stmt->bind_param("d", $accountID);
         $stmt->execute();
         $result = $stmt->get_result();
-        $data = $result->fetch_array(MYSQLI_ASSOC);
+        $rows = [];
 
+        while ($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
 
-        return $data;
+        return $rows;
+
     }
 
 
