@@ -119,7 +119,7 @@ class TransactionsModel extends BaseModel
         return $data;
     }
 
-    public function createIncome($userID, $categoryId, $title, $incomeDate, $incomeAmount)
+    public function createIncome($userId, $categoryId, $title, $incomeDate, $incomeAmount)
     {
         $query = "INSERT INTO Expense (F_accountID, F_category_ID, Title, date, IncomeAmount)
         VALUES (?, ?, ?, ?, ?)";

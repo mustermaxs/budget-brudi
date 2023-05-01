@@ -45,4 +45,19 @@ class TransactionsController extends BaseController
         Response::successResponse($this->request["type"]." loaded successfully", $data);
 
     }
+
+    public function post()
+    {
+        if (!isset($this->request["type"]))
+            Response::errorResponse("no transaction type declared");
+        
+        if ($this->request["type"] == "income")
+        {
+            $this->model->createIncome($this->request["userId"], $this->request["categoryId"], $this->request["title"], $this->request["date"], $this->request["amount"])
+        }
+        if ($this->request["type"] == "expense")
+        {
+            $this->model->createNewExpense($this->request["userId"], $this->request["categoryId"], $this->request["title"], $this->request["date"], $this->request["amount"])
+        }
+    }
 }
