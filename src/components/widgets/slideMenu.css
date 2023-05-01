@@ -1,3 +1,10 @@
+:root {
+    --link-area-width-mobile: 85%;
+    --close-area-width-mobile: 15%;
+    --link-area-width-large: 20rem;
+    --close-area-width-large: calc(100vw - var(--link-area-width-large));
+}
+
 .slideMenuWrapper {
     display: flex;
     position: fixed;
@@ -7,6 +14,15 @@
     z-index: 10;
     left: -100vw;
 
+}
+
+@media screen and (min-width: 480px) {
+    #linksArea{
+        width: var(--link-area-width-large) !important;
+    }
+    #closeOnClickArea {
+        width: var(--close-area-width-large) !important;
+    }
 }
 
 #linksArea {
