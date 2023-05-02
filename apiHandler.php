@@ -4,7 +4,7 @@ require_once "./api/router.php";
 require_once getcwd(). "/api/Authenticator.php";
 require_once getcwd() . "/api/Response.php";
 
-header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
@@ -34,10 +34,9 @@ $router->post("/api/login", false);
 $router->get("/api/transactions/:type[a]", true);
 $router->get("/api/transactions/:type[a]/:id[i]", true);
 $router->get("/api/transactions", true);
-
+$router->get("/api/user", true);
 $router->get("/api/goals", true);
-  $router->post("/api/goals", true);
-
+$router->post("/api/goals", true);
 $router->post("/api/register", false);
 $router->get("/api/categories/", false);
 $router->get("/api/categories/:id[i]", false);
