@@ -22,7 +22,7 @@ const Filter = ({ categories, onChange }) => {
         <option value="">Filter by category</option>
         {categories.map((cg) => {
           return (
-            <option key={cg} value={`${cg}`}>
+            <option key={"filter"+cg} value={`${cg}`}>
               {cg}
             </option>
           );

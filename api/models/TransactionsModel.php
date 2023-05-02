@@ -63,7 +63,7 @@ class TransactionsModel extends BaseModel
     public function createNewExpense($userId, $categoryId, $title, $expenseDate, $expenseAmount)
     {
 
-        $query = "INSERT INTO Expense (F_accountID, F_category_ID, Title, date, ExpenseAmount)
+        $query = "INSERT INTO Expense (F_accountID, F_categoryID, Title, date, Amount)
         VALUES (?, ?, ?, ?, ?)";
 
         $stmt = $this->conn->prepare($query);
@@ -121,7 +121,7 @@ class TransactionsModel extends BaseModel
 
     public function createIncome($userID, $categoryId, $title, $incomeDate, $incomeAmount)
     {
-        $query = "INSERT INTO Expense (F_accountID, F_category_ID, Title, date, IncomeAmount)
+        $query = "INSERT INTO Expense (F_accountID, F_categoryID, Title, date, Amount)
         VALUES (?, ?, ?, ?, ?)";
 
         $stmt = $this->conn->prepare($query);

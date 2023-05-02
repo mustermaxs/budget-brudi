@@ -45,4 +45,28 @@ class TransactionsController extends BaseController
         Response::successResponse($this->request["type"]." loaded successfully", $data);
 
     }
+
+    // TODO
+    public function post()
+    {
+        if (@$this->request["type"]
+        && @$this->request["amount"]
+        && @$this->request["date"]
+        && @$this->request["title"]
+        && @$this->request["categoryID"])
+        {
+            $insertedId = null;
+
+            if ($this->request["type"] == "income")
+                $insertedId = $this->model->createIncome($this->request["userId"], $this->request["categoryID"], $this->request["title"], $this->request["date"], $this->request["amount"]);
+
+            else if ($this->request["type"] == "expense")
+                $insertedId = $this->model->createNewExpense($this->request["userId"], $this->request["categoryID"], $this->request["title"], $this->request["date"], $this->request["amount"]);
+            
+            if ($insertedId >= 1)
+                Response::successResponse("created new transaction");
+        }
+
+        Response::errorResponse("creating new transaction failed");
+    }
 }

@@ -31,6 +31,21 @@ function Transactions() {
       setLoading(false);
       setTransactions(transactions.data);
     });
+
+    // fetch('http://localhost/budget-brudi/api/categories', {
+    //   method: 'GET',
+    //   mode: "cors",
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': `Bearer ${jwtToken.get()}`
+    //   }
+    // }).then((res) => {
+    //   return res.json();
+    // }).then(categories => {
+    //   console.log(categories.data);
+    //   setLoading(false);
+    //   setTransactions(categories.data);
+    // });
   }, []);
 
 
@@ -42,8 +57,27 @@ function Transactions() {
     setIsModalOpen(false);
   };
 
+  const postNewTransaction = async (newTransaction) => {
+    // TODO validate input
+
+    fetch("http://localhost/budget-brudi/api/transactions", {
+      method: "POST",
+      mode: "cors",
+      body: JSON.stringify({
+        type: newTransaction.type, amount: newTransaction.Amount, date: newTransaction.date, title: newTransaction.Title, categoryID: newTransaction.categoryID
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${jwtToken.get()}`
+      }
+    });
+  }
+
   const addTransaction = (transaction) => {
-    setCards((prevCards) => [...prevCards, transaction]);
+    setTransactions((prev) => [...prev, transaction]);
+    postNewTransaction(transaction);
+    setIsModalOpen(false);
+    console.log("test")
   };
 
   const handleFilterChange = (event) => {
@@ -72,7 +106,7 @@ function Transactions() {
       );
     })}
 
-    {loading &&         <div className="loader-container">
+    {loading && <div className="loader-container">
           <div className="spinner"></div>
         </div>}
 
