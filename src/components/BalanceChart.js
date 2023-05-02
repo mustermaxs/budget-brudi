@@ -43,7 +43,7 @@ const BalanceChart = (props) => {
         return () => {
             chartInstance.destroy();
         };
-    }, [props.labels, props.data, props.goalData]);
+    }, []);
 
     return <canvas style={props.style} ref={chartRef}></canvas>;
 };
