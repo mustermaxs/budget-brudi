@@ -1,26 +1,46 @@
-import { React, useContext } from "react";
+import { React, useContext, useState } from "react";
 import ContentWrapper from "../components/widgets/ContentWrapper";
 import BBInput from "../components/widgets/BBInput";
 import InputCollection from "../components/widgets/InputCollection";
 import BbBtn from "../components/widgets/BbBtn";
 import InputCurrency from "../components/widgets/InputCurrency";
 import DrawerContainer from "../components/widgets/DrawerContainer";
-import { useState } from "react";
+import { jwtToken } from "../contexts/UserContext";
 import useValue from "../hooks/useValue";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function Profile(props) {
   // const { handleLogin } = useContext(UserContext);
   // const navigate = useNavigate();
   // TODO fetch personal data
-  const [inputValues, handleChange] = useValue({
-    firstname: "FIRSTNAME",
-    lastname: "",
-    email: "",
-    password: "",
-    passwordrepeat: "",
-  });
+  // const [inputValues, handleChange] = useValue({
+  //   firstname: "",
+  //   lastname: "",
+  //   email: "",
+  //   password: "",
+  //   passwordrepeat: "",
+  // });
+
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    fetch('http://localhost/budget-brudi/api/user', {
+      method: 'GET',
+      mode: "cors",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwtToken.get()}`
+      }
+    }).then((res) => {
+      return res.json();
+    }).then(fetchedUser => {
+      console.log(fetchedUser);
+      setUser(fetchedUser.data);
+    });
+  }, [])
+
 
   const handleSubmit = (ev) => {
     // TODO
@@ -35,42 +55,42 @@ function Profile(props) {
           name="firstname"
           label="Personal Info"
           placeholder="First Name"
-          value={inputValues.name}
-          onChange={(value) => handleChange("firstname", value)}
+          value={user.firstname}
+        // onChange={(value) => setUser("firstname", value)}
         />
         <BBInput
           id="lastname"
           name="lastname"
           placeholder="Lastname"
-          value={inputValues.name}
-          onChange={(value) => handleChange("lastname", value)}
+          value={user.lastname}
+        // onChange={(value) => handleChange("lastname", value)}
         />
         <BBInput
           id="email"
           name="email"
           placeholder="Email"
-          value={inputValues.name}
-          onChange={(value) => handleChange("email", value)}
+          value={user.email}
+        // onChange={(value) => handleChange("email", value)}
         />
-        <InputCollection>
+        {/* <InputCollection>
           <BBInput
             id="password"
             name="password"
             placeholder="Password"
-            label="Password"
-            value={inputValues.name}
-            onChange={(value) => handleChange("password", value)}
+            label="Change Password"
+            value={user.password}
+          // onChange={(value) => handleChange("password", value)}
           />{" "}
           <BBInput
             id="passwordrepeat"
             name="passwordrepeat"
             placeholder="Repeat Password"
-            value={inputValues.name}
+            value={user.password2}
             onChange={(value) => handleChange("passwordrepeat", value)}
           />
-        </InputCollection>{" "}
+        </InputCollection>{" "} */}
       </ContentWrapper>
-      <BbBtn content="Submit" type="button" onClick={handleSubmit} />
+      {/* <BbBtn content="Submit" type="button" onClick={handleSubmit} /> */}
     </>
   );
 }

@@ -24,29 +24,12 @@ class UserController extends BaseController
 
 
 
-    
-    protected function getUserNameByUserId($userId)
-    {
-        $userId = $this->request["id"];
-        $user = $this->model->getUserById($userId);
 
-        $this->successResponse("SUCCESS!", $user);
-    }
-
-    public function get()
+    public function get() 
     {
-        switch ($this->request["action"]) {
-            case "getid":
-                $this->getUserIdByUserName($this->request["username"]);
-                break;
-            case "getname":
-                $this->getUserNameByUserId($this->request["id"]);
-                break;
-            default:
-                $this->getUserNameByUserId($this->request["id"]);
-                break;
-        }
-        $this->errorResponse("request malformed");
+        $user = $this->model->getUserById($this->request["userId"]);
+        $this->successResponse("request successfull", $user);
+
     }
 
     public function post()
@@ -54,6 +37,8 @@ class UserController extends BaseController
         $jsonPostData = $this->getPostData();
         $username = $jsonPostData->userName;
         $email = $jsonPostData->email;
-        $this->model->addUser($username, $email);
+        $this->model->updateUser($username, $email);
     }
 }
+
+
