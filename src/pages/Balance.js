@@ -7,18 +7,89 @@ import Input from "../components/widgets/Input";
 import BbBtn from "../components/widgets/BbBtn";
 import "../components/widgets/bbTable.css";
 import BalanceChart from "../components/BalanceChart";
+import { jwtToken } from "../contexts/UserContext";
+import { useEffect, useRef, useState } from "react";
 
 function Analysis(props) {
+  const [overview, setOverview] = useState({balance: "?", expenses: "?", income: "?"});
+  const [balances, setBalances] = useState([0,0,0,0]);
+  const renderChart = useRef(true);
+
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+
+  const currentMonthIndex = () => {
+    const date = new Date();
+    return date.getMonth();
+  }
+
+  // gets dates from start of year until current month
+  // returns them in array
+  const getMonthLabels = () => {
+    let dates = months.slice(0, currentMonthIndex() + 1);
+    console.log(dates);
+  }
+
+  useEffect(() => {
+    // fetcht balance, expenses, income
+
+    fetch('http://localhost/budget-brudi/api/accounts', {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${jwtToken.get()}`,
+      }
+    }).then(res => {return res.json()})
+    .then(overview => {
+      // Transform strings to numbers and round to two decimal places
+      const transformedOverview = Object.entries(overview.data).reduce(
+        (acc, [key, value]) => ({ ...acc, [key]: Number(value).toFixed(2) }),
+        {}
+      );
+      setOverview(transformedOverview);
+    });
+
+    // TODO fetcht balance in gewissen Zeitraum
+    var balancesByDate = [];
+    
+    const balancesPromise = new Promise((resolve, reject) => {
+      if (!renderChart.current)
+        reject();
+      const year = new Date().getFullYear();
+      
+    for (let month = 0; month <= currentMonthIndex(); month++)
+    {
+      fetch(`http://localhost/budget-brudi/api/accounts/date?month=${month}&year=${year}`, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${jwtToken.get()}`,
+        }
+      }).then(res => {return res.json()})
+      .then(res => {
+        balancesByDate[month] = res.data.balance ?? 0.00;
+
+        if (month === currentMonthIndex())
+          resolve(balancesByDate);
+      })
+    }
+  }).then(data => {
+    if (!renderChart.current)
+      return;
+    setBalances(data);
+    renderChart.current = false;
+    console.log("balances: ",data)
+  })
+  }, []);
 
   const style = {
     marginTop: "2rem",
   }
 
-  const handleSubmit = () => { };
 
   // graph mock data
-  const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
-  const data = [1000, 1200, 900, 1500, 1800, 1300];
+  const labels = months.slice(0, currentMonthIndex() + 1);
   const goalData = [1200, 1000, 1000, 1300, 1700, 1200];
 
 
@@ -27,17 +98,17 @@ function Analysis(props) {
       <ContentWrapper>
         {/* <div style={tempStyle}>Graph</div> */}
         {/* <h2 style={{ margin: "auto" }}>Balance</h2> */}
-        <BalanceChart style={style} labels={labels} data={data} goalData={goalData} />
+         {!renderChart.current && <BalanceChart style={style} labels={labels} data={balances} goalData={goalData} />}
         <InputCollection label="Summary">
           <table className="bb-table">
             <tbody>
               <tr>
                 <td>Amount left to goal:</td>
-                <td className="money expense">234.90</td>
+                <td className="money expense">??? TODO</td>
               </tr>
               <tr>
                 <td>Balance:</td>
-                <td className="money income">10765.69</td>
+                <td className="money income">{overview.balance}</td>
               </tr>
             </tbody>
           </table>
@@ -46,30 +117,15 @@ function Analysis(props) {
             <tbody>
               <tr>
                 <td>Expenses:</td>
-                <td className="money expense">234.69</td>
+                <td className="money expense">{overview.expenses}</td>
               </tr>
               <tr>
                 <td>Income:</td>
-                <td className="money income">3467.90</td>
+                <td className="money income">{overview.income}</td>
               </tr>
             </tbody>
           </table>
         </InputCollection>
-        <form onSubmit={handleSubmit}>
-          <DrawerContainer label="Budget goal">
-            <InputCollection>
-              <BBInput
-                type="currency"
-                label="Budget goal"
-                size="small"
-                name="budgetgoal"
-                currency="€"
-              />
-              <Input size="small" type="date" label="Reach goal by" />
-            </InputCollection>
-            <BbBtn content="Save" />
-          </DrawerContainer>
-        </form>
       </ContentWrapper>
     </>
   );

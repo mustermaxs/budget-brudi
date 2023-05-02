@@ -11,58 +11,53 @@ import { Link } from "react-router-dom";
 import "../components/widgets/link.css";
 import { useNavigate } from "react-router-dom";
 import { React, useEffect, useState } from "react";
+import { jwtToken } from "../contexts/UserContext";
 
 function Goals(props) {
   const navigate = useNavigate();
   const [cards, setCards] = useState([]);
 
-  const categories = ["work", "transportation", "health"];
+  useEffect(() => {
+    fetch('http://localhost/budget-brudi/api/goals', {
+      method: 'GET',
+      mode: "cors",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwtToken.get()}`
+      }
+    }).then((res) => {
+      return res.json();
+    }).then(goals => {
+      console.log(goals.data);
+      setCards(goals.data);
+    });
+  }, [])
 
-  const mockData = [
-    {
-      id: 1,
-      category: "work",
-      title: "Hawaii vacation",
-      date: "04.03.2023",
-      tags: ["#Groceries", "#Birthday"],
-      price: 24.9,
-    },
-    {
-      id: 2,
-      title: "Tesla",
-      date: "04.03.2023",
-      tags: ["#Work", "#Birthday"],
-      price: -24.9,
-    },
-    {
-      id: 3,
-      category: "health",
-      title: "New bicycle",
-      date: "04.03.2023",
-      tags: ["#Groceries"],
-      price: 24.9,
-    },
-  ];
+              //   TODO redirect to "edit goal" page
+              // temporär deaktiviert
+              // unklar ob wir es implementieren wollen
+              // onClick={handleClick}
+  // const handleClick = (title) => {
+  //   console.log("clicked on goal:", title);
+  //   navigate("/editgoal?id=1");
+  // };
 
-  const handleClick = (title) => {
-    console.log("clicked on goal:", title);
-    navigate("/editgoal?id=1");
-  };
-
-  const [category, setCategory] = useState();
   return (
     <>
       <ContentWrapper>
-        {mockData.map(({ category, title, date, tags, price, id }) => {
+        {cards.map(({ Title, Date, Amount, GoalID }) => {
           return (
             <Card
               type="goals"
-              title={title}
-              date={date}
-              price={price}
-              key={id}
+              title={Title}
+              date={Date}
+              price={Amount}
+              key={GoalID}
               //   TODO redirect to "edit goal" page
-              onClick={handleClick}
+              // temporär deaktiviert
+              // unklar ob wir es implementieren wollen
+              // onClick={handleClick}
+              onClick={() => {}}
             />
           );
         })}
