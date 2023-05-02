@@ -56,4 +56,45 @@ class UserController extends BaseController
         $email = $jsonPostData->email;
         $this->model->addUser($username, $email);
     }
+
+    public function setFirstName($userId, $firstName)
+    {
+        $query =
+            "UPDATE users SET name = ?
+            WHERE userId = ?";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("ds", $userId, $firstName);
+            $stmt->execute();
+
+            return $user["userId"];
+    }
+
+    public function setLastName($userId, $lastName)
+    {
+        $query =
+            "UPDATE users SET lastname = ?
+            WHERE userId = ?";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("ds", $userId, $lastName);
+            $stmt->execute();
+
+            return $user["userId"];
+    }
+
+    public function setEMail($userId, $eMail)
+    {
+        $query =
+            "UPDATE users SET email = ?
+            WHERE userId = ?";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("ds", $userId, $eMail);
+            $stmt->execute();
+
+            return $user["userId"];
+    }
 }
+
+
