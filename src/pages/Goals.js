@@ -11,7 +11,6 @@ import { jwtToken } from "../contexts/UserContext";
 import "../components/widgets/link.css";
 import { useNavigate } from "react-router-dom";
 import { React, useEffect, useState } from "react";
-import { jwtToken } from "../contexts/UserContext";
 
 function Goals(props) {
   const navigate = useNavigate();
@@ -46,13 +45,14 @@ function Goals(props) {
   return (
     <>
       <ContentWrapper>
-        {cards.map(({ Title, Date, Amount, GoalID }) => {
+        {cards.map(({ Title, Date, Amount, GoalID, Color }) => {
           return (
             <Card
               type="goals"
               title={Title}
               date={Date}
               price={Amount}
+              color={Color}
               key={GoalID}
               //   TODO redirect to "edit goal" page
               // temporär deaktiviert

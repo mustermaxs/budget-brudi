@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from "react";
 function Analysis(props) {
   const [overview, setOverview] = useState({balance: "?", expenses: "?", income: "?"});
   const [balances, setBalances] = useState([0,0,0,0]);
+  const [goals, setGoals] = useState({data: [], total: 0.00});
   const renderChart = useRef(true);
 
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
@@ -28,6 +29,24 @@ function Analysis(props) {
     let dates = months.slice(0, currentMonthIndex() + 1);
     console.log(dates);
   }
+
+  // GET GOALS
+  useEffect(() => {
+    fetch('http://localhost/budget-brudi/api/goals', {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${jwtToken.get()}`,
+      }
+    }).then(res => res.json())
+    .then(goalsRes => {
+      let sumOfGoals = goalsRes.data.reduce((acc, current) => 
+      acc + parseFloat(current.Amount), 0);
+      setGoals({data: goalsRes.data, total: sumOfGoals});
+      console.log("goals: ",goals);
+    })
+  }, [])
 
   useEffect(() => {
     // fetcht balance, expenses, income
@@ -90,6 +109,7 @@ function Analysis(props) {
 
   // graph mock data
   const labels = months.slice(0, currentMonthIndex() + 1);
+  // TODO goal data v. server einfügen mit korrektem Zeitraum
   const goalData = [1200, 1000, 1000, 1300, 1700, 1200];
 
 
@@ -104,7 +124,7 @@ function Analysis(props) {
             <tbody>
               <tr>
                 <td>Amount left to goal:</td>
-                <td className="money expense">??? TODO</td>
+                <td className="money expense">{overview.balance - goals.total}</td>
               </tr>
               <tr>
                 <td>Balance:</td>
