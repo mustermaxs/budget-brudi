@@ -7,7 +7,7 @@ import Input from "../components/widgets/Input";
 import BbBtnRound from "../components/widgets/BbBtnRound";
 import Card from "../components/widgets/Card";
 import "../components/widgets/bbTable.css";
-import { Link } from "react-router-dom";
+import { jwtToken } from "../contexts/UserContext";
 import "../components/widgets/link.css";
 import { useNavigate } from "react-router-dom";
 import { React, useEffect, useState } from "react";
@@ -42,6 +42,7 @@ function Goals(props) {
   //   navigate("/editgoal?id=1");
   // };
 
+  const [category, setCategory] = useState();
   return (
     <>
       <ContentWrapper>

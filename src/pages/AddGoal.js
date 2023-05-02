@@ -5,7 +5,7 @@ import ContentWrapper from "../components/widgets/ContentWrapper";
 import InputCollection from "../components/widgets/InputCollection";
 import BBInput from "../components/widgets/BBInput";
 import Spacer from "../components/widgets/Spacer";
-import Input from "../components/widgets/Input";
+import { jwtToken } from "../contexts/UserContext";
 import "../components/widgets/colorlabelpicker.css";
 import colors from "../assets/colors_mock";
 import useValue from "../hooks/useValue";
@@ -13,7 +13,7 @@ import BbBtn from "../components/widgets/BbBtn";
 
 function AddGoal(props) {
   const [inputValue, handleChange] = useValue({
-    goaltitle: "",
+    title: "",
     budgetgoal: "",
     date: "",
     color: "",
@@ -21,7 +21,21 @@ function AddGoal(props) {
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
-    // TODO
+
+    fetch('http://localhost/budget-brudi/api/goals', {
+      method: 'POST',
+      mode: "cors",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwtToken.get()}`
+      },
+      body: JSON.stringify(inputValue),
+    }).then((res) => {
+      return res.json();
+    }).then(goals => {
+      console.log(goals);
+
+    });
   };
 
   return (
@@ -31,21 +45,21 @@ function AddGoal(props) {
           <BBInput
             type="text"
             label="Goal Title"
-            value={inputValue.goaltitle}
+            value={inputValue.title}
             name="goaltitle"
             placeholder="eg. Waikiki vacation"
-            onChange={(value) => handleChange("goaltitle", value)}
+            onChange={(value) => handleChange("title", value)}
           />
           <Spacer />
           <BBInput
             label="Budget Goal"
             type="currency"
             name="budgetgoal"
-            value={inputValue.budgetgoal}
+            value={inputValue.amount}
             currency="€"
             placeholder="3000.00"
             size="small"
-            onChange={(value) => handleChange("budgetgoal", value)}
+            onChange={(value) => handleChange("amount", value)}
           />
           <BBInput
             size="small"
