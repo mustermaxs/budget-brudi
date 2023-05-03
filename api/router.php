@@ -21,6 +21,7 @@ class Router
         "GET" => [],
         "POST" => [],
         "PUT" => [],
+        "PATCH" => [],
         "DELETE" => []
     ];
 
@@ -44,6 +45,13 @@ class Router
         $regexPattern = $this->createRegexPattern($url);
         array_push($this->routes["POST"], array("pattern" => $regexPattern,  "authenticate" => $doAuthenticate));
     }
+
+    public function patch(string $url, bool $doAuthenticate = false)
+    {
+        $regexPattern = $this->createRegexPattern($url);
+        array_push($this->routes["PATCH"], array("pattern" => $regexPattern,  "authenticate" => $doAuthenticate));
+    }
+
     public function put(string $url, bool $doAuthenticate = false)
     {
         $regexPattern = $this->createRegexPattern($url);

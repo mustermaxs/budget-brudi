@@ -23,6 +23,14 @@ class GoalsController extends BaseController
 
         Response::successResponse("goals fetched successfully", $data);
     }
+
+    public function put()
+    {
+        // TODO update goal
+
+        // temporary response while method not implemented
+        Response::successResponse("temporary response, method not implement");
+    }
    
     public function post()
     {
