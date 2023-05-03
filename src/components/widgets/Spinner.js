@@ -11,7 +11,6 @@ function Spinner()
             if (ev.detail.showSpinner)
             {
                 nbrOfSubscribers.current++;
-                console.log("spinner: ", nbrOfSubscribers);
                 !showSpinner && setShowSpinner(true);
             }
             else
