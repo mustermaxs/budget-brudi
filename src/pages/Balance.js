@@ -48,12 +48,12 @@ function Analysis(props) {
       loadingAnim.hide();
       setGoals({data: goalsRes.data, total: sumOfGoals});
       console.log("goals: ",goals);
-    })
-  }, [])
+    });
+  }, []);
 
   useEffect(() => {
     // fetcht balance, expenses, income
-
+    loadingAnim.show();
     fetch('http://localhost/budget-brudi/api/accounts', {
       method: "GET",
       mode: "cors",
@@ -69,12 +69,14 @@ function Analysis(props) {
         {}
       );
       setOverview(transformedOverview);
+      loadingAnim.hide();
     });
 
     // TODO fetcht balance in gewissen Zeitraum
     var balancesByDate = [];
     
     const balancesPromise = new Promise((resolve, reject) => {
+      loadingAnim.show();
       if (!renderChart.current)
         reject();
       const year = new Date().getFullYear();
@@ -101,7 +103,8 @@ function Analysis(props) {
       return;
     setBalances(data);
     renderChart.current = false;
-    console.log("balances: ",data)
+    console.log("balances: ",data);
+    loadingAnim.hide();
   })
   }, []);
 

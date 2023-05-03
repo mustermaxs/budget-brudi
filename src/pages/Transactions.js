@@ -63,7 +63,7 @@ function Transactions() {
 
   const postNewTransaction = async (newTransaction) => {
     // TODO validate input
-
+    loadingAnim.show();
     fetch("http://localhost/budget-brudi/api/transactions", {
       method: "POST",
       mode: "cors",
@@ -74,6 +74,8 @@ function Transactions() {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${jwtToken.get()}`
       }
+    }).then(res => res.json()).then(response => {
+      loadingAnim.hide();
     });
   }
 

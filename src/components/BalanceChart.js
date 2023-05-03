@@ -1,10 +1,12 @@
 import React, { useRef, useEffect } from "react";
 import Chart from "chart.js/auto";
+import { loadingAnim } from "./widgets/Spinner";
 
 const BalanceChart = (props) => {
     const chartRef = useRef();
 
     useEffect(() => {
+        loadingAnim.show();
         const ctx = chartRef.current.getContext("2d");
         const data = {
             labels: props.labels,
@@ -40,6 +42,8 @@ const BalanceChart = (props) => {
             options: options,
         });
 
+        loadingAnim.hide();
+        
         return () => {
             chartInstance.destroy();
         };
