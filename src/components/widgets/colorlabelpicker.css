@@ -17,14 +17,25 @@
 }
 
 .color-label {
-    width: 31px;
-    height: 31px;
+    width: 37px;
+    height: 37px;
     border-radius: 100%;
     margin-bottom: 10px;
     cursor: pointer;
 }
 
 .color-label.active {
-    box-shadow: 0px 0px 3px #000000, inset 0px 0px 2px black;
+    /* box-shadow: 0px 0px 3px #000000, inset 0px 0px 2px black; */
+}
 
+.color-label.active::after {
+    display: block;
+    content: '\2713';
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 4px;
+    text-shadow: 0px 0px 1px black;
+    margin-left: 2px;
+    font-size: 1.3rem;
 }
