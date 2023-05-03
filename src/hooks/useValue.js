@@ -15,7 +15,7 @@ function useValue(initialValues) {
     console.log(inputValue);
   };
 
-  return [inputValue, handleChange];
+  return [inputValue, handleChange, setValue];
 }
 
 export default useValue;
