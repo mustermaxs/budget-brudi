@@ -42,7 +42,7 @@ class TransactionsController extends BaseController
         else 
             Response::errorResponse("transaction type invalid");
 
-        Response::successResponse($this->request["type"]." loaded successfully", $data);
+        Response::successResponse("data loaded successfully", $data);
 
     }
 
