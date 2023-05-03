@@ -12,11 +12,16 @@ class GoalsController extends BaseController
  
     public function get()
     {
+        if (isset($this->request["id"]))
+            $data = $this->model->getGoalById($this->request["id"]);
+        
+        else
+            $data = $this->model->getGoalsByAccountID($this->request["userId"]);
 
-        $goals = $this->model->getGoalsByAccountID($this->request["userId"]);
+        if ($data === null)
+            Response::errorResponse("fetching goal/s failed");
 
-        Response::successResponse("goals fetched successfully", $goals);
-            
+        Response::successResponse("goals fetched successfully", $data);
     }
    
     public function post()

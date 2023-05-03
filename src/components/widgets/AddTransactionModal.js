@@ -22,7 +22,7 @@ const AddTransactionModal = ({ isOpen, onClose, onSubmit }) => {
     };
 
     useEffect(() => {
-        fetch('http://localhost/budget-brudi/api/categories/', {
+        fetch('http://localhost/budget-brudi/api/categories', {
             method: 'GET',
             mode: "cors",
             headers: {

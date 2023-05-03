@@ -5,7 +5,7 @@ require_once getcwd(). "/api/Authenticator.php";
 require_once getcwd() . "/api/Response.php";
 
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE, PATCH");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
@@ -37,9 +37,10 @@ $router->post("/api/transactions", true);
 $router->get("/api/transactions", true);
 $router->get("/api/user", true);
 $router->get("/api/goals", true);
+$router->get("/api/goals/:id[i]", true);
 $router->post("/api/goals", true);
 $router->post("/api/register", false);
-$router->get("/api/categories/", false);
+$router->get("/api/categories", false);
 $router->get("/api/categories/:id[i]", false);
 $router->get("/api/accounts", true);
 $router->get("/api/accounts/:method[a]", true); // e.g. by date

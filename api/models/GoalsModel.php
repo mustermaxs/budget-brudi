@@ -23,7 +23,7 @@ class GoalsModel extends BaseModel
     {                     
 
         $query = "SELECT * FROM Goal 
-        WHERE GaolID = ?";
+        WHERE GoalID = ?";
    
 
         $stmt = $this->conn->prepare($query);
