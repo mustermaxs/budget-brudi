@@ -9,6 +9,7 @@ import "../components/widgets/bbTable.css";
 import BalanceChart from "../components/BalanceChart";
 import { jwtToken } from "../contexts/UserContext";
 import { useEffect, useRef, useState } from "react";
+import { loadingAnim } from "../components/widgets/Spinner";
 
 function Analysis(props) {
   const [overview, setOverview] = useState({balance: "?", expenses: "?", income: "?"});
@@ -32,6 +33,7 @@ function Analysis(props) {
 
   // GET GOALS
   useEffect(() => {
+    loadingAnim.show();
     fetch('http://localhost/budget-brudi/api/goals', {
       method: "GET",
       mode: "cors",
@@ -43,6 +45,7 @@ function Analysis(props) {
     .then(goalsRes => {
       let sumOfGoals = goalsRes.data.reduce((acc, current) => 
       acc + parseFloat(current.Amount), 0);
+      loadingAnim.hide();
       setGoals({data: goalsRes.data, total: sumOfGoals});
       console.log("goals: ",goals);
     })

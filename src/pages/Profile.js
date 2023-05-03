@@ -10,6 +10,7 @@ import useValue from "../hooks/useValue";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { loadingAnim } from "../components/widgets/Spinner";
 
 function Profile(props) {
   // const { handleLogin } = useContext(UserContext);
@@ -26,6 +27,7 @@ function Profile(props) {
   const [user, setUser] = useState({});
 
   useEffect(() => {
+    loadingAnim.show();
     fetch('http://localhost/budget-brudi/api/user', {
       method: 'GET',
       mode: "cors",
@@ -36,6 +38,7 @@ function Profile(props) {
     }).then((res) => {
       return res.json();
     }).then(fetchedUser => {
+      loadingAnim.hide();
       console.log(fetchedUser);
       setUser(fetchedUser.data);
     });

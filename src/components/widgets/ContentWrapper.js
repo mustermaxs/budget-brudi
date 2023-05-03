@@ -1,9 +1,13 @@
 import "./contentWrapper.css";
+import {Spinner} from "./Spinner";
 
 function ContentWrapper(props) {
   return (
     <>
-      <div className="contentWrapper">{props.children}</div>
+      <div className="contentWrapper">
+        <Spinner />
+        {props.children}
+        </div>
     </>
   );
 }

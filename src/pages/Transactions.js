@@ -7,6 +7,8 @@ import AddTransactionModal from "../components/widgets/AddTransactionModal";
 import { jwtToken } from "../contexts/UserContext";
 import getRandomInt from "../utils/Random";
 import BbBtnRound from "../components/widgets/BbBtnRound";
+import { loadingAnim } from "../components/widgets/Spinner";
+
 
 function Transactions() {
   const [transactions, setTransactions] = useState([]);
@@ -16,6 +18,7 @@ function Transactions() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    loadingAnim.show();
     fetch('http://localhost/budget-brudi/api/transactions?limit=20', {
       method: 'GET',
       mode: "cors",
@@ -28,6 +31,7 @@ function Transactions() {
     }).then(transactions => {
       console.log(transactions.data);
       // TODO render transactions. vlt über state?
+      loadingAnim.hide();
       setLoading(false);
       setTransactions(transactions.data);
     });
