@@ -4,13 +4,8 @@ import getRandomInt from "../../utils/Random";
 import getIconPath from "../../assets/Icons";
 // import images from "../../assets/icons/food.png";
 
-const Card = ({ title, price, tags, icon, date, type, onClick, color }) => {
+const Card = ({ title, price, tags, icon, date, type, onClick, color, id }) => {
   const [tagState, setTagState] = useState(tags);
-
-  // TODO import colorlabels from external resource?
-  //* MOCK
-  const colorLabels = ["#EAC435", "#345995", "#07A0C3", "#FB4D3D", "#CA1551"];
-  const randomColor = colorLabels[getRandomInt(0, colorLabels.length - 1)];
 
   //! ich habe versucht es in getIconPath() auszulagern,
   // aber das funktioniert iwie nicht mit den Pfaden, ka wieso
@@ -35,7 +30,7 @@ const Card = ({ title, price, tags, icon, date, type, onClick, color }) => {
 
     var iconPath = categoryMapping[icon] || categoryMapping.Default;
 
-    console.log(icon);
+    
     if (type === "category") {
       return {
         backgroundImage: `url(${require(`../../assets/icons/icons_raw/${iconPath}.png`)})`,
@@ -45,16 +40,17 @@ const Card = ({ title, price, tags, icon, date, type, onClick, color }) => {
     else if (type === "goals") return { background: color };
   })();
 
+  const handleClick = (cardId) => {
+    onClick(cardId);
+  };
+
   return (
     <>
       <div
         className="card"
-        onClick={() => {
-          onClick(title);
-        }}
+        onClick={() => {handleClick(id);}}
       >
         <div className="icon-container" style={iconStyle}>
-          {/* <img src={image} alt="icon" /> */}
         </div>
         <div className="text-container">
           <h2 className="title">{title}</h2>

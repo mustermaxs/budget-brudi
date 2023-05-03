@@ -10,21 +10,66 @@ import "../components/widgets/colorlabelpicker.css";
 import colors from "../assets/colors_mock";
 import useValue from "../hooks/useValue";
 import BbBtn from "../components/widgets/BbBtn";
+import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { jwtToken } from "../contexts/UserContext";
+import { loadingAnim } from "../components/widgets/Spinner";
 
 function EditGoal(props) {
-  // TODO fetch goal from server,
-  //give object "useValue" function
-  // MOCK
-  const [inputValue, handleChange] = useValue({
-    goaltitle: "Vacation in Waikiki",
-    budgetgoal: 3700,
-    date: "2024-08-10",
-    color: "#535353",
-  });
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [goal, setGoal] = useState({Title: "", Date: "", Color: "", Amount: ""});
+  const [inputValue, handleChange, setValue] = useValue({...goal})
+  const requestedGoalId = useRef(searchParams.get("id"))
+
+  //TODO refactoren
+  useEffect(() => {
+    loadingAnim.show();
+    
+    if (requestedGoalId.current === undefined || requestedGoalId.current == null)
+    {
+      navigate("/goals");
+      return;
+    }
+    
+      fetch(`http://localhost/budget-brudi/api/goals/${requestedGoalId.current}`, {
+        method: 'GET',
+        mode: "cors",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${jwtToken.get()}`
+        }
+      }).then((res) => res.json())
+      .then((fetchedGoal) => {
+        loadingAnim.hide();
+        console.log(fetchedGoal.data);
+        setValue({...fetchedGoal.data});
+      })
+      .catch((error) => {
+        console.error("Error fetching goal:", error);
+        // TODO error modal, error handling
+        //! was wenn id invalid ist?
+      });
+  }, []);
 
   const handleSubmit = (ev) => {
-    ev.preventDefault();
-    // TODO
+    if (requestedGoalId.current === undefined || requestedGoalId.current == null)
+    {
+      navigate("/goals");
+      return;
+    }
+    fetch(`http://localhost/budget-brudi/api/goals/${requestedGoalId.current}`, {
+      method: 'PUT',
+      mode: "cors",
+      body: JSON.stringify(inputValue),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwtToken.get()}`
+      }
+    }).then(res => res.json()).then((postRes) => {
+      console.log(postRes);
+    })
+    // TODO error modal & error handling
   };
 
   return (
@@ -34,30 +79,29 @@ function EditGoal(props) {
           <BBInput
             type="text"
             label="Goal Title"
-            value={inputValue.goaltitle}
-            name="goaltitle"
+            value={inputValue.Title }
+            name="Title"
             placeholder="eg. Waikiki vacation"
-            onChange={(value) => handleChange("goaltitle", value)}
+            onChange={(value) => handleChange("Title", value)}
           />
           <Spacer />
           <BBInput
             label="Budget Goal"
             type="currency"
-            name="budgetgoal"
-            value={inputValue.budgetgoal}
+            name="Amount"
+            value={inputValue.Amount}
             currency="€"
             placeholder="3000.00"
             size="small"
-            onChange={(value) => handleChange("budgetgoal", value)}
+            onChange={(value) => handleChange("Amount", value)}
           />
           <BBInput
             size="small"
-            name="date"
+            name="Date"
             type="date"
-            // placeholder={inputValue.date}
-            value={inputValue.date}
+            value={inputValue.Date}
             label="Reach goal by"
-            onChange={(value) => handleChange("date", value)}
+            onChange={(value) => handleChange("Date", value)}
           />
           <Spacer />
           <label className="bb-input-label">Choose a color</label>
@@ -66,17 +110,17 @@ function EditGoal(props) {
               {colors.map((color) => (
                 <div
                   className={
-                    inputValue.color === color
+                    inputValue.Color === color
                       ? "color-label active"
                       : "color-label"
                   }
-                  name="color"
+                  name="Color"
                   key={color}
                   value={color}
                   data-value={color}
                   style={{ backgroundColor: color }}
                   onClick={(event) => {
-                    handleChange("color", event);
+                    handleChange("Color", event);
                   }}
                 ></div>
               ))}

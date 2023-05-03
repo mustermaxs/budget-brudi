@@ -11,12 +11,14 @@ import { jwtToken } from "../contexts/UserContext";
 import "../components/widgets/link.css";
 import { useNavigate } from "react-router-dom";
 import { React, useEffect, useState } from "react";
+import { loadingAnim } from "../components/widgets/Spinner";
 
 function Goals(props) {
   const navigate = useNavigate();
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
+    loadingAnim.show();
     fetch('http://localhost/budget-brudi/api/goals', {
       method: 'GET',
       mode: "cors",
@@ -27,19 +29,15 @@ function Goals(props) {
     }).then((res) => {
       return res.json();
     }).then(goals => {
+      loadingAnim.hide();
       console.log(goals.data);
       setCards(goals.data);
     });
-  }, [])
+  }, []);
 
-              //   TODO redirect to "edit goal" page
-              // temporär deaktiviert
-              // unklar ob wir es implementieren wollen
-              // onClick={handleClick}
-  // const handleClick = (title) => {
-  //   console.log("clicked on goal:", title);
-  //   navigate("/editgoal?id=1");
-  // };
+  const redirectToGoal = (id) => {
+    navigate(`/editgoal?id=${id}`);
+  }
 
   const [category, setCategory] = useState();
   return (
@@ -54,11 +52,8 @@ function Goals(props) {
               price={Amount}
               color={Color}
               key={GoalID}
-              //   TODO redirect to "edit goal" page
-              // temporär deaktiviert
-              // unklar ob wir es implementieren wollen
-              // onClick={handleClick}
-              onClick={() => {}}
+              id={GoalID}
+              onClick={redirectToGoal}
             />
           );
         })}
