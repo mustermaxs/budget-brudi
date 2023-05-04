@@ -18,7 +18,7 @@ function TopBar(props) {
         <div>
           <span className="topBarTitle">{props.pageTitle}</span>
         </div>
-        {`${user && user.role}`}
+        {/* {`${user && user.role}`} */}
 
         <div
           onClick={() => {

@@ -13,7 +13,7 @@ function Menu(props) {
 
   const getPageTitleByHref = (href) => {
     const route = routes.find((route) => route.path === href);
-    return route ? route.title : "NULL";
+    return route ? route.title : "";
   };
 
   const links = routes
