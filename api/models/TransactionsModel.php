@@ -5,7 +5,7 @@ require_once getcwd() . "/api/BaseModel.php";
 class TransactionsModel extends BaseModel
 {
     // brauchen Namen der Kategorien
-    public function getExpenseByUserID($userId, $limit=10)
+    public function getExpenseByAccountId($accountId, $limit=10)
     {
         $limit = $limit ?? 10;
 
@@ -16,7 +16,7 @@ class TransactionsModel extends BaseModel
 
 
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("dd", $userId, $limit);
+        $stmt->bind_param("dd", $accountId, $limit);
         $stmt->execute();
         $result = $stmt->get_result();
         $rows = [];
@@ -28,12 +28,12 @@ class TransactionsModel extends BaseModel
         return $rows;
     }
 
-    public function getAllTransactionsByUserId($userId, $limit = 10)
+    public function getAllTransactionsByAccountId($accountId, $limit = 10)
     {
         $limit = $limit ?? 10;
 
-        $incomes = $this->getIncomeByUserId($userId, $limit);
-        $expenses = $this->getExpenseByUserID($userId, $limit);
+        $incomes = $this->getIncomeByAccountId($accountId, $limit);
+        $expenses = $this->getExpenseByAccountId($accountId, $limit);
 
         $transactions = array_merge($incomes, $expenses);
 
@@ -60,14 +60,14 @@ class TransactionsModel extends BaseModel
         return $data;
     }
 
-    public function createNewExpense($userId, $categoryId, $title, $expenseDate, $expenseAmount)
+    public function createNewExpense($accountId, $categoryId, $title, $expenseDate, $expenseAmount)
     {
 
         $query = "INSERT INTO Expense (F_accountID, F_categoryID, Title, date, Amount)
         VALUES (?, ?, ?, ?, ?)";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("ddssd", $userId, $categoryId, $title, $expenseDate, $expenseAmount);
+        $stmt->bind_param("ddssd", $accountId, $categoryId, $title, $expenseDate, $expenseAmount);
         $stmt->execute();
         $expenseId = $stmt->insert_id;
 
@@ -78,7 +78,7 @@ class TransactionsModel extends BaseModel
 
     /*##### INCOME FUNCTIONS #####*/
 
-    public function getIncomeByUserId($userId, $limit = 10)
+    public function getIncomeByAccountId($accountId, $limit = 10)
     {
         // brauchen Namen der Kategorien
         $limit = $limit ?? 10;
@@ -88,7 +88,7 @@ class TransactionsModel extends BaseModel
          WHERE F_accountID = ? LIMIT ?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("dd", $userId, $limit);
+        $stmt->bind_param("dd", $accountId, $limit);
         $stmt->execute();
         $result = $stmt->get_result();
         $rows = [];
@@ -119,13 +119,13 @@ class TransactionsModel extends BaseModel
         return $data;
     }
 
-    public function createIncome($userId, $categoryId, $title, $incomeDate, $incomeAmount)
+    public function createIncome($accountId, $categoryId, $title, $incomeDate, $incomeAmount)
     {
         $query = "INSERT INTO Expense (F_accountID, F_categoryID, Title, date, Amount)
         VALUES (?, ?, ?, ?, ?)";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("ddssd", $userId, $categoryId, $title, $incomeDate, $incomeAmount);
+        $stmt->bind_param("ddssd", $accountId, $categoryId, $title, $incomeDate, $incomeAmount);
         $stmt->execute();
         $incomeId = $stmt->insert_id;
 

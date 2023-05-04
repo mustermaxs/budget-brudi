@@ -1,13 +1,13 @@
 <?php
 
 require_once getcwd() . "/api/BaseController.php";
-require_once getcwd() . "/api/models/UserModel.php";
+require_once getcwd() . "/api/models/UsersModel.php";
 
-class UserController extends BaseController
+class UsersController extends BaseController
 {
     protected function init()
     {
-        $this->model = new UserModel();
+        $this->model = new UsersModel();
     }
 
     public function getUserIdByUserName(string $userName)

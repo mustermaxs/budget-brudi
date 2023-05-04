@@ -16,7 +16,7 @@ class GoalsController extends BaseController
             $data = $this->model->getGoalById($this->request["id"]);
         
         else
-            $data = $this->model->getGoalsByAccountID($this->request["userId"]);
+            $data = $this->model->getGoalsByAccountID($this->request["accountId"]);
 
         if ($data === null)
             Response::errorResponse("fetching goal/s failed");
@@ -34,7 +34,7 @@ class GoalsController extends BaseController
    
     public function post()
     {
-        $accountId = $this->request["userId"];
+        $accountId = $this->request["accountId"];
         $title = $this->request["title"];
         $amount = $this->request["amount"];
         $date = $this->request["date"];
