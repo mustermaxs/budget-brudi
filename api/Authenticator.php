@@ -11,17 +11,17 @@ class Authenticator
 {
     private $secretKey = '68V0zWFrS72GbpPreidkQFLfj4v9m3Ti+DXc8OB0gcM=';
     private $domainName = "budget-brudi";
-    private int $userId;
+    private array $userDetails;
 
     public function __construct()
     {
     }
 
-    public function createToken(string $username, int $userId)
+    public function createToken(string $username, int $userId, int $accountId)
     {
 
         $currentDate = new DateTimeImmutable();
-        $expire_at  = $currentDate->modify('+120 minutes')->getTimestamp();      // Add 60 seconds
+        $expire_at  = $currentDate->modify('+999 minutes')->getTimestamp();      // Add 60 seconds
         $request_data = [
             'iat'  => $currentDate->getTimestamp(),         // Issued at: time when the token was generated
             'iss'  => $this->domainName,                          // Issuer
@@ -30,6 +30,7 @@ class Authenticator
             'username' => $username,
             'role' => "admin",
             'userId' => $userId,
+            'accountId'=>$accountId,
             'mood' => "(╯°□°)╯︵ ┻━┻"
         ];
 
@@ -37,9 +38,9 @@ class Authenticator
         return JWT::encode($request_data, $this->secretKey, 'HS512');
     }
 
-    public function getUserId()
+    public function getUserDetails() : array
     {
-        return $this->userId;
+        return $this->userDetails;
     }
 
     // checks if token was sent along with request
@@ -77,7 +78,8 @@ class Authenticator
             exit;
         }
 
-        $this->userId = $token->userId;
+        $this->userDetails["userId"] = $token->userId;
+        $this->userDetails["accountId"] = $token->accountId;
 
         return true;
     }

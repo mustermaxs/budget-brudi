@@ -1,7 +1,7 @@
 <?php
 require_once getcwd() . "/api/BaseModel.php";
 
-class UserModel extends BaseModel
+class UsersModel extends BaseModel
 {
     public function getUserById(int $userId)
     {
@@ -18,6 +18,9 @@ class UserModel extends BaseModel
 
         return $user;
     }
+
+    public function getUserIdByAccountId(int $accountId)
+    {}
 
     public function getUserIdByUserName(string $userName)
     {

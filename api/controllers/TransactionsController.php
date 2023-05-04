@@ -16,7 +16,7 @@ class TransactionsController extends BaseController
             return $this->model->getExpenseByExpenseId($this->request["id"], $this->request["limit"] ?? null);
         
         else
-            return $this->model->getExpenseByUserID($this->request["userId"]);       
+            return $this->model->getExpenseByAccountId($this->request["accountId"]);       
     }
 
     private function getIncomes()
@@ -25,13 +25,13 @@ class TransactionsController extends BaseController
             return $this->model->getIncomeByIncomeID($this->request["id"], $this->request["limit"] ?? null);
         
         else
-            return $this->model->getIncomeByUserId($this->request["userId"]);       
+            return $this->model->getIncomeByAccountId($this->request["accountId"]);       
     }
 
     public function get()
     {
         if (!isset($this->request["type"]))     // /api/transactions/  -> get all transactions
-            $data = $this->model->getAllTransactionsByUserId($this->request["userId"], $this->request["limit"]);
+            $data = $this->model->getAllTransactionsByAccountId($this->request["accountId"], $this->request["limit"]);
 
         else if ($this->request["type"] == "expenses")
             $data = $this->getExpenses();
@@ -58,10 +58,10 @@ class TransactionsController extends BaseController
             $insertedId = null;
 
             if ($this->request["type"] == "income")
-                $insertedId = $this->model->createIncome($this->request["userId"], $this->request["categoryID"], $this->request["title"], $this->request["date"], $this->request["amount"]);
+                $insertedId = $this->model->createIncome($this->request["accountId"], $this->request["categoryID"], $this->request["title"], $this->request["date"], $this->request["amount"]);
 
             else if ($this->request["type"] == "expense")
-                $insertedId = $this->model->createNewExpense($this->request["userId"], $this->request["categoryID"], $this->request["title"], $this->request["date"], $this->request["amount"]);
+                $insertedId = $this->model->createNewExpense($this->request["accountId"], $this->request["categoryID"], $this->request["title"], $this->request["date"], $this->request["amount"]);
             
             if ($insertedId >= 1)
                 Response::successResponse("created new transaction");

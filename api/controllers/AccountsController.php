@@ -19,9 +19,9 @@ class AccountsController extends BaseController
         ) {
             $year = $this->request["year"];
             $month = $this->request["month"];
-            $userId = $this->request["userId"];
+            $accountId = $this->request["accountId"];
 
-            return $this->model->getBalanceByMonthYearAccountId($month, $year, $userId);
+            return $this->model->getBalanceByMonthYearAccountId($month, $year, $accountId);
         }
         else
             return null;
@@ -33,7 +33,7 @@ class AccountsController extends BaseController
             $data = $this->getBalanceByDate();
 
         else
-            $data = $this->model->getAccountOverviewById($this->request["userId"]);
+            $data = $this->model->getAccountOverviewById($this->request["accountId"]);
 
         if ($data == null)
             Response::errorResponse("loading account details failed");

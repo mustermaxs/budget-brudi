@@ -158,7 +158,7 @@ class Router
         if ($this->requestDetails["authenticate"]) {
             if (!$auth->authenticate())
                 $this->errorResponse("authentication failed");
-            $this->addRequest("userId", $auth->getUserId());
+            $this->requestDetails = array_merge($this->requestDetails, $auth->getUserDetails());
         }
 
         require_once $controllerPath;

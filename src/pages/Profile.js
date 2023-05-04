@@ -28,7 +28,7 @@ function Profile(props) {
 
   useEffect(() => {
     loadingAnim.show();
-    fetch('http://localhost/budget-brudi/api/user', {
+    fetch('http://localhost/budget-brudi/api/users', {
       method: 'GET',
       mode: "cors",
       headers: {
@@ -58,23 +58,23 @@ function Profile(props) {
           name="firstname"
           label="Personal Info"
           placeholder="First Name"
-          value={user.firstname}
+          value={user.firstname || ""}
         // onChange={(value) => setUser("firstname", value)}
         />
         <BBInput
           id="lastname"
           name="lastname"
           placeholder="Lastname"
-          value={user.lastname}
+          value={user.lastname || ""}
         // onChange={(value) => handleChange("lastname", value)}
         />
-        <BBInput
+        {/* <BBInput
           id="email"
           name="email"
           placeholder="Email"
-          value={user.email}
+          value={user.email || ""}
         // onChange={(value) => handleChange("email", value)}
-        />
+        /> */}
         {/* <InputCollection>
           <BBInput
             id="password"

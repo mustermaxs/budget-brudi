@@ -19,7 +19,7 @@ class LoginController extends BaseController
         if ($loginRequest["successful"]){
             
             $auth = new Authenticator();
-            $token = $auth->createToken("mustermax", $loginRequest["userId"]);
+            $token = $auth->createToken("mustermax", $loginRequest["userId"], $loginRequest["accountId"]);
             $response = array("token"=>  $token);
             
             Response::successResponse("created token", $response);

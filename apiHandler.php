@@ -31,7 +31,7 @@ $router = new Router($baseURL, $apiDir);
  // true = private api route -> authentication is needed
  // false = public api route  
 $router->post("/api/login", false);
-$router->get("/api/user", true);
+$router->get("/api/users", true);
 
 $router->get("/api/transactions/:type[a]", true);
 $router->get("/api/transactions/:type[a]/:id[i]", true);
