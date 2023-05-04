@@ -1,0 +1,107 @@
+.card {
+  display: flex;
+  width: 100%;
+  height: 80px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  cursor: pointer;
+  justify-content: flex-start;
+  align-items: center;
+  }
+  
+  @media screen and (min-width: 860px) {
+    .card {
+      width: 30rem;
+    }
+  
+    .card:nth-child(2)::before
+  {
+    content: "";
+    display: block;
+    width: 32rem !important;
+    height: 1px;
+    background-color: #80808047;
+    position: absolute;
+    transform: translateY(-45px);
+    left: 0px;
+  }
+  
+    .card::after {
+      content: "";
+      display: block;
+      width: 32rem !important;
+      height: 1px;
+      background-color: #80808047;
+      position: absolute;
+      transform: translateY(45px);
+      left: 0px;
+    }
+  }
+  
+  .card:nth-child(2)::before
+  {
+    content: "";
+    display: block;
+    width: 100vw;
+    height: 1px;
+    background-color: #80808047;
+    position: absolute;
+    transform: translateY(-45px);
+    left: 0px;
+  }
+  
+    .card::after {
+      content: "";
+      display: block;
+      width: 100vw;
+      height: 1px;
+      background-color: #80808047;
+      position: absolute;
+      transform: translateY(45px);
+      left: 0px;
+    }
+    
+    .icon-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 100%;
+      box-shadow: 0px 0px 1.5px 0px #565656a3;
+      border: 0.5px solid rgb(178 178 178 / 53%);
+      margin-left: 2px;
+      /* background-image: url(../../assets/icons/icons_raw/house.png); */
+      /* background-size: cover; */
+      background-size: 60%;
+      background-repeat: no-repeat;
+      background-position: center;
+  
+    }
+    
+    .icon {
+      width: 40px;
+      height: 40px;
+    }
+    
+    .text-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 53%;
+      height: 80px;
+      padding: 0 10px;
+      margin-left: 7px;
+      align-items: flex-start;
+    }
+    
+    .title {
+      font-size: 16px;
+      font-weight: 500;
+      margin: 0;
+    }
+    
+.blankLink {
+  color: black;
+  text-decoration: none;
+}
