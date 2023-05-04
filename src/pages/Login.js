@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import ContentWrapper from "../components/widgets/ContentWrapper";
 import BBInput from "../components/widgets/BBInput";
@@ -6,6 +6,7 @@ import { UserContext } from "../contexts/UserContext";
 import BbBtn from "../components/widgets/BbBtn";
 import useValue from "../hooks/useValue";
 import SplashScreen from "./SplashScreen";
+import { jwtToken } from "../contexts/UserContext";
 
 function Login() {
   const [inputValue, handleChange] = useValue({
@@ -19,10 +20,11 @@ function Login() {
     event.preventDefault();
 
     try {
+      await handleLogin(inputValue);
 
-
-      if (handleLogin(inputValue)) {
-        navigate("/profile");
+      if (jwtToken.get() !== null)
+      {
+        navigate("/home");
       }
     } catch (error) {
       console.error(error);
@@ -33,8 +35,6 @@ function Login() {
 
   return (
     <ContentWrapper>
-      <SplashScreen showFor="0" />
-
       <form>
         <BBInput
           id="username"

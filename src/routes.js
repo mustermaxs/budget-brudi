@@ -6,14 +6,15 @@ import Transactions from "./pages/Transactions";
 import Goals from "./pages/Goals";
 import AddGoal from "./pages/AddGoal";
 import EditGoal from "./pages/EditGoal";
+import Home from "./pages/Home";
 
 const routes = [
   {
     title: "Home",
-    path: "",
-    component: Login,
-    privateRoute: false,
-    permissions: ["guest"],
+    path: "home",
+    component: Home,
+    privateRoute: true,
+    permissions: ["user", "admin"],
   },
   {
     title: "Login",
