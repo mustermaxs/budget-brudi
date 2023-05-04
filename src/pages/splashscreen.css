@@ -1,5 +1,5 @@
 .splash-screen-container{
-    display: block;
+    display: none;
     width: 100vw;
     height: 100vh;
     position: fixed;
@@ -7,11 +7,25 @@
     left: 0;
     z-index: 100;
     background-color: rgb(185 252 105);
+    opacity: 1;
 }
 
 .hide {
-    display: none;
+    display: block;
+    animation-name: hide-splash-screen;
+    animation-duration: 0s;
+    animation-fill-mode: forwards;
+    opacity: 1;
+
 }
+
+@keyframes hide-splash-screen {
+    to {
+        opacity: 0;
+        display: none;
+    }
+}
+
 
 #logo-container {
     background-image: url(../../src/assets/icons/icons_raw/budgetbuddy_own_logo.png);
