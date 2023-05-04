@@ -11,7 +11,7 @@ class GoalsModel extends BaseModel
         VALUES (?, ?, ?, ?, ?)";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("dsdsd",$accountId, $goaltitle, $amount, $date, $color);
+        $stmt->bind_param("dsdss",$accountId, $goaltitle, $amount, $date, $color);
         $stmt->execute();
         $goalId = $stmt->insert_id;//returns the autoincrement ID Nr
 
