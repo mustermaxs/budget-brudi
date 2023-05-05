@@ -1,9 +1,23 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useMemo } from "react";
 import Chart from "chart.js/auto";
 import { loadingAnim } from "./widgets/Spinner";
 
-const TransactionsCategoriesChart = (props) => {
+function getSortedData(data, labels) {
+    let sortedData = data
+        .map((value, index) => ({ value, label: labels[index] }))
+        .sort((a, b) => b.value - a.value);
+
+    let sortedLabels = sortedData.map((entry) => entry.label);
+    let sortedValues = sortedData.map((entry) => entry.value);
+
+    return { sortedLabels, sortedValues };
+}
+
+const TransactionsCategoriesChart = ({data, labels, title}) => {
     const chartRef = useRef();
+    const {sortedLabels, sortedValues} = useMemo(() => {
+        return getSortedData(data, labels);
+    }, [data, labels]);
 
     const chartStyle = {
         margin: "2rem",
@@ -13,13 +27,6 @@ const TransactionsCategoriesChart = (props) => {
     const titleStyle = {
         marginTop: "0"
     }
-
-    const sortedData = props.data
-        .map((value, index) => ({ value, label: props.labels[index] }))
-        .sort((a, b) => b.value - a.value);
-
-    const sortedLabels = sortedData.map((entry) => entry.label);
-    const sortedValues = sortedData.map((entry) => entry.value);
 
     useEffect(() => {
         loadingAnim.show();
