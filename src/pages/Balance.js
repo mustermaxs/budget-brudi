@@ -12,9 +12,9 @@ import { useEffect, useRef, useState } from "react";
 import { loadingAnim } from "../components/widgets/Spinner";
 
 function Analysis(props) {
-  const [overview, setOverview] = useState({balance: "?", expenses: "?", income: "?"});
-  const [balances, setBalances] = useState([0,0,0,0]);
-  const [goals, setGoals] = useState({data: [], total: 0.00});
+  const [overview, setOverview] = useState({ balance: "?", expenses: "?", income: "?" });
+  const [balances, setBalances] = useState([0, 0, 0, 0]);
+  const [goals, setGoals] = useState({ data: [], total: 0.00 });
   const renderChart = useRef(true);
 
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
@@ -42,13 +42,13 @@ function Analysis(props) {
         "Authorization": `Bearer ${jwtToken.get()}`,
       }
     }).then(res => res.json())
-    .then(goalsRes => {
-      let sumOfGoals = goalsRes.data.reduce((acc, current) => 
-      acc + parseFloat(current.Amount), 0);
-      loadingAnim.hide();
-      setGoals({data: goalsRes.data, total: sumOfGoals});
-      console.log("goals: ",goals);
-    });
+      .then(goalsRes => {
+        let sumOfGoals = goalsRes.data.reduce((acc, current) =>
+          acc + parseFloat(current.Amount), 0);
+        loadingAnim.hide();
+        setGoals({ data: goalsRes.data, total: sumOfGoals });
+        console.log("goals: ", goals);
+      });
   }, []);
 
   useEffect(() => {
@@ -61,51 +61,50 @@ function Analysis(props) {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${jwtToken.get()}`,
       }
-    }).then(res => {return res.json()})
-    .then(overview => {
-      // Transform strings to numbers and round to two decimal places
-      const transformedOverview = Object.entries(overview.data).reduce(
-        (acc, [key, value]) => ({ ...acc, [key]: Number(value).toFixed(2) }),
-        {}
-      );
-      setOverview(transformedOverview);
-      loadingAnim.hide();
-    });
+    }).then(res => { return res.json() })
+      .then(overview => {
+        // Transform strings to numbers and round to two decimal places
+        const transformedOverview = Object.entries(overview.data).reduce(
+          (acc, [key, value]) => ({ ...acc, [key]: Number(value).toFixed(2) }),
+          {}
+        );
+        setOverview(transformedOverview);
+        loadingAnim.hide();
+      });
 
     // TODO fetcht balance in gewissen Zeitraum
     var balancesByDate = [];
-    
+
     const balancesPromise = new Promise((resolve, reject) => {
       loadingAnim.show();
       if (!renderChart.current)
         reject();
       const year = new Date().getFullYear();
-      
-    for (let month = 0; month <= currentMonthIndex(); month++)
-    {
-      fetch(`http://localhost/budget-brudi/api/accounts/date?month=${month}&year=${year}`, {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${jwtToken.get()}`,
-        }
-      }).then(res => {return res.json()})
-      .then(res => {
-        balancesByDate[month] = res.data.balance ?? 0.00;
 
-        if (month === currentMonthIndex())
-          resolve(balancesByDate);
-      })
-    }
-  }).then(data => {
-    if (!renderChart.current)
-      return;
-    setBalances(data);
-    renderChart.current = false;
-    console.log("balances: ",data);
-    loadingAnim.hide();
-  })
+      for (let month = 0; month <= currentMonthIndex(); month++) {
+        fetch(`http://localhost/budget-brudi/api/accounts/date?month=${month}&year=${year}`, {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${jwtToken.get()}`,
+          }
+        }).then(res => { return res.json() })
+          .then(res => {
+            balancesByDate[month] = res.data.balance ?? 0.00;
+
+            if (month === currentMonthIndex())
+              resolve(balancesByDate);
+          })
+      }
+    }).then(data => {
+      if (!renderChart.current)
+        return;
+      setBalances(data);
+      renderChart.current = false;
+      console.log("balances: ", data);
+      loadingAnim.hide();
+    })
   }, []);
 
   const style = {
@@ -124,7 +123,7 @@ function Analysis(props) {
       <ContentWrapper>
         {/* <div style={tempStyle}>Graph</div> */}
         {/* <h2 style={{ margin: "auto" }}>Balance</h2> */}
-         {!renderChart.current && <BalanceChart style={style} labels={labels} data={balances} goalData={goalData} />}
+        {!renderChart.current && <BalanceChart style={style} labels={labels} data={balances} goalData={goalData} />}
         <InputCollection label="Summary">
           <table className="bb-table">
             <tbody>
