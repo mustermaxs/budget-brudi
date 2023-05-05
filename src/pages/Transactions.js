@@ -8,14 +8,47 @@ import { jwtToken } from "../contexts/UserContext";
 import getRandomInt from "../utils/Random";
 import BbBtnRound from "../components/widgets/BbBtnRound";
 import { loadingAnim } from "../components/widgets/Spinner";
+import TransactionsCategoriesChart from "../components/TransactionsCategoriesChart";
+import "./Transactions.css"
+
 
 
 function Transactions() {
   const [transactions, setTransactions] = useState([]);
-  const [cards, setCards] = useState([]);
   const [category, setCategory] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [chartLabels, setChartLabels] = useState([]);
+  const [chartData, setChartData] = useState([]);
+  const [displayMode, setDisplayMode] = useState("income");
+
+
+  const aggregateCategoryData = (transactions, displayMode) => {
+    const filteredTransactions = transactions.filter((transaction) => {
+      const amount = parseFloat(transaction.Amount);
+      if (displayMode === "income") {
+        return amount > 0;
+      } else if (displayMode === "expense") {
+        return amount < 0;
+      }
+    });
+
+    const categorySums = filteredTransactions.reduce((acc, transaction) => {
+      const category = transaction.Category;
+      const amount = parseFloat(transaction.Amount);
+      if (!acc[category]) {
+        acc[category] = 0;
+      }
+      acc[category] += amount;
+      return acc;
+    }, {});
+
+    const chartLabels = Object.keys(categorySums);
+    const chartData = Object.values(categorySums);
+    return { chartLabels, chartData };
+  };
+
+
 
   useEffect(() => {
     loadingAnim.show();
@@ -29,29 +62,18 @@ function Transactions() {
     }).then((res) => {
       return res.json();
     }).then(transactions => {
-      console.log(transactions.data);
-      // TODO render transactions. vlt über state?
       loadingAnim.hide();
       setLoading(false);
       setTransactions(transactions.data);
     });
 
-    // fetch('http://localhost/budget-brudi/api/categories', {
-    //   method: 'GET',
-    //   mode: "cors",
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Authorization': `Bearer ${jwtToken.get()}`
-    //   }
-    // }).then((res) => {
-    //   return res.json();
-    // }).then(categories => {
-    //   console.log(categories.data);
-    //   setLoading(false);
-    //   setTransactions(categories.data);
-    // });
   }, []);
 
+  useEffect(() => {
+    const { chartLabels, chartData } = aggregateCategoryData(transactions, displayMode);
+    setChartLabels(chartLabels);
+    setChartData(chartData);
+  }, [transactions, displayMode]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -83,7 +105,6 @@ function Transactions() {
     setTransactions((prev) => [...prev, transaction]);
     postNewTransaction(transaction);
     setIsModalOpen(false);
-    console.log("test")
   };
 
   const handleFilterChange = (event) => {
@@ -94,25 +115,45 @@ function Transactions() {
 
   const filteredData = category ? transactions.filter((item) => item.Category === category) : transactions;
 
+
+  const handleDisplayModeChange = (mode) => {
+    setDisplayMode(mode);
+    const { chartLabels, chartData } = aggregateCategoryData(transactions, mode);
+    setChartLabels(chartLabels);
+    setChartData(chartData);
+  };
+
   return (
     <>
       <ContentWrapper>
-        <Filter category={category}  categories={categories} onChange={handleFilterChange} />
-        {filteredData.map(({ Category, Title, date, Amount }) => {
-      return (
-        <Card
-          type="category"
-          icon={Category}
-          title={Title}
-          date={date}
-          price={Amount}
-          key={getRandomInt(0,10000)}
-          onClick={() => {}}
-        />
-      );
-    })}
+        <div className="chartDiv">
+          <div className="tabs">
+            <button className={displayMode === "income" ? "active-tab" : ""} onClick={() => handleDisplayModeChange("income")}>
+              Income
+            </button>
+            <button className={displayMode === "expense" ? "active-tab" : ""} onClick={() => handleDisplayModeChange("expense")}>
+              Expense
+            </button>
+          </div>
 
-    {loading && <div className="loader-container">
+          <TransactionsCategoriesChart title={displayMode} labels={chartLabels} data={chartData} />
+        </div>
+        <Filter category={category} categories={categories} onChange={handleFilterChange} />
+        {filteredData.map(({ Category, Title, date, Amount }) => {
+          return (
+            <Card
+              type="category"
+              icon={Category}
+              title={Title}
+              date={date}
+              price={Amount}
+              key={getRandomInt(0, 10000)}
+              onClick={() => { }}
+            />
+          );
+        })}
+
+        {loading && <div className="loader-container">
           <div className="spinner"></div>
         </div>}
 

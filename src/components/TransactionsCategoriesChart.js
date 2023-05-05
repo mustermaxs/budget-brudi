@@ -2,21 +2,33 @@ import React, { useRef, useEffect } from "react";
 import Chart from "chart.js/auto";
 import { loadingAnim } from "./widgets/Spinner";
 
-const GoalsChart = (props) => {
+const TransactionsCategoriesChart = (props) => {
     const chartRef = useRef();
 
     const chartStyle = {
         margin: "2rem",
+        marginBottom: "1rem"
     };
+
+    const titleStyle = {
+        marginTop: "0"
+    }
+
+    const sortedData = props.data
+        .map((value, index) => ({ value, label: props.labels[index] }))
+        .sort((a, b) => b.value - a.value);
+
+    const sortedLabels = sortedData.map((entry) => entry.label);
+    const sortedValues = sortedData.map((entry) => entry.value);
 
     useEffect(() => {
         loadingAnim.show();
         const ctx = chartRef.current.getContext("2d");
         const data = {
-            labels: props.labels,
+            labels: sortedLabels,
             datasets: [
                 {
-                    data: props.data,
+                    data: sortedValues,
                     backgroundColor: [
                         "rgba(255, 99, 132, 0.2)",
                         "rgba(54, 162, 235, 0.2)",
@@ -44,7 +56,7 @@ const GoalsChart = (props) => {
             options: {
                 plugins: {
                     legend: {
-                        position: "bottom",
+                        position: "none",
                     },
                 },
             },
@@ -56,9 +68,9 @@ const GoalsChart = (props) => {
         return () => {
             chartInstance.destroy();
         };
-    }, [props.data, props.labels]);
+    }, [sortedValues, sortedLabels]);
 
     return <canvas style={chartStyle} ref={chartRef}></canvas>;
 };
 
-export default GoalsChart;
+export default TransactionsCategoriesChart;
