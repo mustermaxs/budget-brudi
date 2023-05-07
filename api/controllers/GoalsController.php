@@ -50,7 +50,24 @@ class GoalsController extends BaseController
         } else {
             $this->errorResponse("login failed");
         }
+    }
 
+    public function put()
+    {
+        $accountId = $this->request["accountId"];
+        $title = $this->request["title"];
+        $amount = $this->request["amount"];
+        $date = $this->request["date"];
+        $color = $this->request["color"];
+
+        $updateGoalsuccessful = $this->model->updateGoal($accountId, $title, $amount, $date, $color);
+
+        if($updateGoalsuccessful)
+        {
+            Response::successResponse("Goal updated successfully");
+        } else {
+            $this->errorResponse("update failed");
+        }
 
     }
 }

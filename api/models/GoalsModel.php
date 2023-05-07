@@ -58,6 +58,13 @@ class GoalsModel extends BaseModel
 
     }
 
+    public function updateGoal($accountId, $title, $amount, $date, $color)
+    {
+        $query = "UPDATE goals SET title=?, amount=?, date=?, color=?
+                  WHERE accountId=?";
 
-
+        $stmt = $this->conn->prepare($query);
+        return $stmt->execute([$title, $amount, $date, $color, $accountId]);       
+    }
+    
 }
