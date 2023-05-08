@@ -81,4 +81,21 @@ class GoalsModel extends BaseModel
             return ServiceResponse::send($e);
         }
     }
+
+    public function deleteGoal($goalId)
+    {
+        try {
+            $query = "DELETE FROM Goal WHERE GoalID = ?";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("d", $goalId);
+            $stmt->execute();
+
+            return ServiceResponse::success();
+
+        } catch (mysqli_sql_exception $e) {
+            return ServiceResponse::send($e);
+        }
+    }
+    
 }

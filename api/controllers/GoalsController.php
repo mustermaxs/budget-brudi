@@ -63,4 +63,16 @@ class GoalsController extends BaseController
             Response::errorResponse($response->message);
         }
     }
+
+    public function delete()
+    {
+        $goalId = $this->request["id"];
+        $response = $this->model->deleteGoal($goalId);
+
+        if ($response->ok) {
+            Response::successResponse("Goal deleted successfully");
+        } else {
+            Response::errorResponse($response->message);
+        }
+    }
 }

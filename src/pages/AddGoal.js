@@ -9,9 +9,11 @@ import { jwtToken } from "../contexts/UserContext";
 import "../components/widgets/colorlabelpicker.css";
 import colors from "../assets/colors_mock";
 import useValue from "../hooks/useValue";
+import { useNavigate } from "react-router-dom";
 import BbBtn from "../components/widgets/BbBtn";
 
 function AddGoal(props) {
+  const navigate = useNavigate();
   const [inputValue, handleChange] = useValue({
     title: "",
     budgetgoal: "",
@@ -34,7 +36,7 @@ function AddGoal(props) {
       return res.json();
     }).then(goals => {
       console.log(goals);
-
+      navigate("/goals");
     });
   };
 
