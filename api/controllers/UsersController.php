@@ -31,7 +31,7 @@ class UsersController extends BaseController
         if ($response->ok){
             Response::successResponse("Register successful");
         } else {
-            Response::errorResponse($response->massage);
+            Response::errorResponse($response->message);
         }
     }
 
@@ -47,7 +47,7 @@ class UsersController extends BaseController
         if ($response->ok){
             Response::successResponse("Profile updated successfully");
         } else {
-            Response::errorResponse($response->massage);
+            Response::errorResponse($response->message);
         }
 
     }
