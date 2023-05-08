@@ -16,6 +16,7 @@ function Goals() {
   const [cards, setCards] = useState([]);
   const [chartLabels, setChartLabels] = useState([]);
   const [chartData, setChartData] = useState([]);
+  const [chartDataColor, setChartDataColor] = useState([]);
 
 
   useEffect(() => {
@@ -35,6 +36,8 @@ function Goals() {
 
         setChartLabels(goals.data.map(goal => goal.Title));
         setChartData(goals.data.map(goal => parseFloat(goal.Amount)));
+        setChartDataColor(goals.data.map(goal => goal.Color));
+
 
         console.log(goals)
 
@@ -55,7 +58,7 @@ function Goals() {
 
       <ContentWrapper>
         <div className="chartDiv">
-          <GoalsChart title="income" labels={chartLabels} data={chartData} />
+          <GoalsChart title="income" labels={chartLabels} data={chartData} colors={chartDataColor} />
 
         </div>
 

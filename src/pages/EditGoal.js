@@ -18,32 +18,31 @@ import { loadingAnim } from "../components/widgets/Spinner";
 function EditGoal(props) {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [goal, setGoal] = useState({Title: "", Date: "", Color: "", Amount: ""});
-  const [inputValue, handleChange, setValue] = useValue({...goal})
+  const [goal, setGoal] = useState({ Title: "", Date: "", Color: "", Amount: "" });
+  const [inputValue, handleChange, setValue] = useValue({ ...goal })
   const requestedGoalId = useRef(searchParams.get("id"))
 
   //TODO refactoren
   useEffect(() => {
     loadingAnim.show();
-    
-    if (requestedGoalId.current === undefined || requestedGoalId.current == null)
-    {
+
+    if (requestedGoalId.current === undefined || requestedGoalId.current == null) {
       navigate("/goals");
       return;
     }
-    
-      fetch(`http://localhost/budget-brudi/api/goals/${requestedGoalId.current}`, {
-        method: 'GET',
-        mode: "cors",
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${jwtToken.get()}`
-        }
-      }).then((res) => res.json())
+
+    fetch(`http://localhost/budget-brudi/api/goals/${requestedGoalId.current}`, {
+      method: 'GET',
+      mode: "cors",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwtToken.get()}`
+      }
+    }).then((res) => res.json())
       .then((fetchedGoal) => {
         loadingAnim.hide();
         console.log(fetchedGoal.data);
-        setValue({...fetchedGoal.data});
+        setValue({ ...fetchedGoal.data });
       })
       .catch((error) => {
         console.error("Error fetching goal:", error);
@@ -53,8 +52,7 @@ function EditGoal(props) {
   }, []);
 
   const handleSubmit = (ev) => {
-    if (requestedGoalId.current === undefined || requestedGoalId.current == null)
-    {
+    if (requestedGoalId.current === undefined || requestedGoalId.current == null) {
       navigate("/goals");
       return;
     }
@@ -72,6 +70,22 @@ function EditGoal(props) {
     // TODO error modal & error handling
   };
 
+  const handleDelete = () => {
+    fetch(`http://localhost/budget-brudi/api/goals/${requestedGoalId.current}`, {
+      method: 'DELETE',
+      mode: "cors",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwtToken.get()}`
+      }
+    }).then(res => res.json())
+      .then((postRes) => {
+        console.log(postRes);
+        navigate("/goals");
+      })
+
+  }
+
   return (
     <>
       <ContentWrapper>
@@ -79,7 +93,7 @@ function EditGoal(props) {
           <BBInput
             type="text"
             label="Goal Title"
-            value={inputValue.Title }
+            value={inputValue.Title}
             name="Title"
             placeholder="eg. Waikiki vacation"
             onChange={(value) => handleChange("Title", value)}
@@ -128,6 +142,7 @@ function EditGoal(props) {
           </div>
         </InputCollection>
         <BbBtn content="Update" type="submit" onClick={handleSubmit} />
+        <BbBtn content="delete" type="button" onClick={handleDelete} />
       </ContentWrapper>
     </>
   );
