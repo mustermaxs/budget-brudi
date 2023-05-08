@@ -3,6 +3,29 @@ require_once getcwd() . "/api/BaseModel.php";
 
 class UsersModel extends BaseModel
 {
+    public function RegisterUser($firstname, $lastname, $username, $password)
+    {
+
+        try{
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+            $query = "INSERT INTO User (username, password, firstname, lastname) VALUES (?, ?, ?, ?)";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("ssss", $username, $hashedPassword, $firstname, $lastname);
+            $stmt->execute();
+
+            return ServiceResponse::send();
+        } catch(mysqli_sql_exception $e) {
+            return ServiceResponse::send($e);
+        }
+
+        
+        //$userId = $stmt->insert_id;
+
+        //return $userId;
+    }
+    
     public function getUserById(int $userId)
     {
         $query =
@@ -17,6 +40,7 @@ class UsersModel extends BaseModel
         $user = $result->fetch_array(MYSQLI_ASSOC);
 
         return $user;
+
     }
 
     public function getUserIdByAccountId(int $accountId)
@@ -38,42 +62,20 @@ class UsersModel extends BaseModel
         return $user["userId"];
     }
 
-    public function setFirstName($userId, $firstName)
+
+    public function updateUserData($userId, $firstName, $lastName, $eMail)
     {
-        $query =
-            "UPDATE users SET name = ?
-            WHERE userId = ?";
+        try{
+            $query = "UPDATE User SET firstname = ?, lastname = ?, email = ?
+            WHERE userID = ?";
 
             $stmt = $this->conn->prepare($query);
-            $stmt->bind_param("ds", $userId, $firstName);
+            $stmt->bind_param("sssd", $firstName, $lastName, $eMail, $userId);
             $stmt->execute();
 
-            return $user["userId"];
-    }
-
-    public function setLastName($userId, $lastName)
-    {
-        $query =
-            "UPDATE users SET lastname = ?
-            WHERE userId = ?";
-
-            $stmt = $this->conn->prepare($query);
-            $stmt->bind_param("ds", $userId, $lastName);
-            $stmt->execute();
-
-            return $user["userId"];
-    }
-
-    public function setEMail($userId, $eMail)
-    {
-        $query =
-            "UPDATE users SET email = ?
-            WHERE userId = ?";
-
-            $stmt = $this->conn->prepare($query);
-            $stmt->bind_param("ds", $userId, $eMail);
-            $stmt->execute();
-
-            return $user["userId"];
+            return ServiceResponse::send();
+        } catch(mysqli_sql_exception $e) {
+            return ServiceResponse::send($e);
+        }
     }
 }
