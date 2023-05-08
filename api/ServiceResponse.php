@@ -11,7 +11,9 @@ class ServiceResponse
     public static function fail(Exception $e)
     {
         self::$ok = false;
-        self::$msg = $e->getMessage();
+
+        if (DISPLAY_DB_ERRORS)
+            self::$msg = $e->getMessage();
         
         return (object) array("ok"=>self::$ok, "message"=>self::$msg);
     }
@@ -22,7 +24,6 @@ class ServiceResponse
             self::$msg = "";
 
         return (object) array("ok"=>self::$ok, "data"=>$data);
-
     }
 
     public static function __callStatic($name, $arguments)

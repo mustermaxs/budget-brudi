@@ -85,7 +85,7 @@ class TransactionsModel extends BaseModel
             $expenseId = $stmt->insert_id;
 
 
-            return ServiceResponse::send(array("id"=>$expenseId));
+            return ServiceResponse::send(array("id" => $expenseId));
         } catch (mysqli_sql_exception $e) {
             return ServiceResponse::send($e);
         }
@@ -118,23 +118,22 @@ class TransactionsModel extends BaseModel
 
     public function getIncomeByIncomeID($incomeId, $limit = 10)
     {
-try{        // brauchen Namen der Kategorien
-        $limit = $limit ?? 10;
+        try {        // brauchen Namen der Kategorien
+            $limit = $limit ?? 10;
 
-        $query = "SELECT * FROM Income inc
+            $query = "SELECT * FROM Income inc
         JOIN Category cat ON cat.categoryID=inc.F_categoryID
         WHERE IncomeID = ? LIMIT ?";
 
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("dd", $incomeId, $limit);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $data = $result->fetch_array(MYSQLI_ASSOC);
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("dd", $incomeId, $limit);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $data = $result->fetch_array(MYSQLI_ASSOC);
 
 
-        return ServiceResponse::send($data);}
-        catch(Exception $e)
-        {
+            return ServiceResponse::send($data);
+        } catch (Exception $e) {
             return ServiceResponse::send($e);
         }
     }
