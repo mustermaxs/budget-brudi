@@ -12,18 +12,18 @@ const BalanceChart = (props) => {
             labels: props.labels,
             datasets: [
                 {
+                    type: 'line',
                     label: "Balance",
                     data: props.data,
                     backgroundColor: "rgba(54, 162, 235, 0.2)",
                     borderColor: "rgba(54, 162, 235, 1)",
-                    borderWidth: 2,
                 },
                 {
+                    type: 'bar',
                     label: "Balance Goal",
                     data: props.goalData,
                     backgroundColor: "rgba(75, 192, 75, 0.2)",
                     borderColor: "rgba(75, 192, 75, 1)",
-                    borderWidth: 3,
                 },
             ],
         };
@@ -37,17 +37,17 @@ const BalanceChart = (props) => {
         };
 
         const chartInstance = new Chart(ctx, {
-            type: "line",
+            type: "mixed",
             data: data,
             options: options,
         });
 
         loadingAnim.hide();
-        
+
         return () => {
             chartInstance.destroy();
         };
-    }, []);
+    }, [props.data, props.goalData, props.labels]);
 
     return <canvas style={props.style} ref={chartRef}></canvas>;
 };
