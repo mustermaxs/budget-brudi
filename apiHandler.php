@@ -34,7 +34,7 @@ $router = new Router($baseURL, $apiDir);
  // false = public api route  
  $router->post("/api/login", false);
  $router->get("/api/users", true);
- $router->post("/api/users", true);
+ $router->post("/api/users", false);
  $router->put("/api/users", true);
 
 $router->get("/api/transactions/:type[a]", true);
