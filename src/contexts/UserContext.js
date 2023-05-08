@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import decode from "jwt-decode";
 
 const jwtToken = {
-  get: () => {return localStorage.getItem("token")},
+  get: () => { return localStorage.getItem("token") },
   set: (value) => localStorage.setItem("token", value),
   remove: () => localStorage.removeItem("token")
 };
@@ -64,7 +64,7 @@ const UserProvider = ({ children }) => {
   };
 
   const handleRegister = async (registerData) => {
-    const response = await fetch('http://localhost/budget-brudi/api/register/', {
+    const response = await fetch('http://localhost/budget-brudi/api/users/', {
       method: 'POST',
       mode: "cors",
       headers: { 'Content-Type': 'application/json' },
