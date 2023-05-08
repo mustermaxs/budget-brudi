@@ -6,36 +6,42 @@ class CategoriesModel extends BaseModel
 {
     public function getCategoryByCategoryId($categoryId)
     {
-        $query = 
-            "SELECT Category FROM Category
+        try {
+            $query =
+                "SELECT Category FROM Category
             WHERE categoryID = ?";
-        
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("d", $categoryId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $data = $result->fetch_array(MYSQLI_ASSOC);
 
-        return array("category" => $data["Category"]);
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("d", $categoryId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $data = $result->fetch_array(MYSQLI_ASSOC);
+
+            return ServiceResponse::send(array("category" => $data["Category"]));
+        } catch (Exception $e) {
+            return ServiceResponse::send($e);
+        }
     }
-    
+
     public function getAllCategories()
     {
-        $query =
-            "SELECT Category as title, categoryID as id FROM Category";
-            
-        $result = $this->conn->query($query);
-        
-        $data = array();
-        if ($result->num_rows > 0)
-        {
-            while ($row = $result->fetch_assoc())
-            {
-                array_push($data, $row);
-            }
-        }
+        try {
+            $query =
+                "SELECT Category as title, categoryID as id FROM Category";
 
-        return $data;
+            $result = $this->conn->query($query);
+
+            $data = array();
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    array_push($data, $row);
+                }
+            }
+
+            return ServiceResponse::send($data);
+        } catch (Exception $e) {
+            return ServiceResponse::send($e);
+        }
     }
 
     public function getCategoryIdByExpenseId($expenseId)
