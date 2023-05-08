@@ -48,7 +48,7 @@ function Profile(props) {
 
   const handleSubmit = (ev) => {
     fetch('http://localhost/budget-brudi/api/users', {
-      method: 'PATCH',
+      method: 'PUT',
       mode: "cors",
       headers: {
         'Content-Type': 'application/json',
