@@ -11,11 +11,10 @@ class UsersController extends BaseController
     }
 
 
-    public function get() 
+    public function get()
     {
         $user = $this->model->getUserById($this->request["userId"]);
         $this->successResponse("request successfull", $user);
-
     }
 
     public function post()
@@ -26,9 +25,9 @@ class UsersController extends BaseController
         $username = $jsonPostData->username;
         $password = $jsonPostData->password;
 
-        $registerSuccessful = $this->model->registerUser($firstname, $lastname, $username, $password);
+        $response = $this->model->registerUser($firstname, $lastname, $username, $password);
 
-        if ($response->ok){
+        if ($response->ok) {
             Response::successResponse("Register successful");
         } else {
             Response::errorResponse($response->message);
@@ -44,13 +43,10 @@ class UsersController extends BaseController
 
         $response = $this->model->updateUserData($userId, $firstName, $lastName, $eMail);
 
-        if ($response->ok){
+        if ($response->ok) {
             Response::successResponse("Profile updated successfully");
         } else {
             Response::errorResponse($response->message);
         }
-
     }
 }
-
-
