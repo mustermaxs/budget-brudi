@@ -7,10 +7,15 @@ import "../components/widgets/link.css";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { loadingAnim } from "../components/widgets/Spinner";
+import GoalsChart from "../components/GoalsChart";
+import "./Goals.css"
+
 
 function Goals() {
   const navigate = useNavigate();
   const [cards, setCards] = useState([]);
+  const [chartLabels, setChartLabels] = useState([]);
+  const [chartData, setChartData] = useState([]);
 
 
   useEffect(() => {
@@ -27,9 +32,15 @@ function Goals() {
         return res.json();
       })
       .then((goals) => {
-        loadingAnim.hide();
+
+        setChartLabels(goals.data.map(goal => goal.Title));
+        setChartData(goals.data.map(goal => parseFloat(goal.Amount)));
+
+        console.log(goals)
+
         console.log(goals.data);
         setCards(goals.data);
+        loadingAnim.hide();
       });
   }, []);
 
@@ -40,7 +51,14 @@ function Goals() {
 
   return (
     <>
+
+
       <ContentWrapper>
+        <div className="chartDiv">
+          <GoalsChart title="income" labels={chartLabels} data={chartData} />
+
+        </div>
+
         {cards.map(({ Title, Date, Amount, GoalID, Color }) => {
           return (
             <Card
