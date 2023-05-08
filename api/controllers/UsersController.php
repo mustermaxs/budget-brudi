@@ -10,20 +10,6 @@ class UsersController extends BaseController
         $this->model = new UsersModel();
     }
 
-    public function getUserIdByUserName(string $userName)
-    {
-        $userId = $this->model->getUserIdByUserName($userName);
-        if ($userId == null) {
-            $userId = $this->model->addUser($userName, "");
-        }
-        $response = array();
-        $response["userId"] = $userId;
-        $this->successResponse("request successfull", $response);
-    }
-
-
-
-
 
     public function get() 
     {
@@ -35,9 +21,35 @@ class UsersController extends BaseController
     public function post()
     {
         $jsonPostData = $this->getPostData();
-        $username = $jsonPostData->userName;
-        $email = $jsonPostData->email;
-        $this->model->updateUser($username, $email);
+        $firstname = $jsonPostData->firstname;
+        $lastname = $jsonPostData->lastname;
+        $username = $jsonPostData->username;
+        $password = $jsonPostData->password;
+
+        $registerSuccessful = $this->model->registerUser($firstname, $lastname, $username, $password);
+
+        if ($response->ok){
+            Response::successResponse("Register successful");
+        } else {
+            Response::errorResponse($response->massage);
+        }
+    }
+
+    public function put()
+    {
+        $userId = $this->request["userId"];
+        $firstName = $this->request["firstname"];
+        $lastName = $this->request["lastname"];
+        $eMail = $this->request["email"];
+
+        $response = $this->model->updateUserData($userId, $firstName, $lastName, $eMail);
+
+        if ($response->ok){
+            Response::successResponse("Profile updated successfully");
+        } else {
+            Response::errorResponse($response->massage);
+        }
+
     }
 }
 
