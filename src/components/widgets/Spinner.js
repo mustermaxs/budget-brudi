@@ -1,57 +1,62 @@
 import { React, useEffect, useRef, useState } from "react";
 import "./Spinner.css";
 
-function Spinner()
-{
-    const [showSpinner, setShowSpinner] = useState(false);
-    const nbrOfSubscribers = useRef(0);
+function Spinner() {
+  const [showSpinner, setShowSpinner] = useState(false);
+  const nbrOfSubscribers = useRef(0);
 
-    useEffect(() => {
-        document.addEventListener("loadingAnim", (ev) => {
-            if (ev.detail.showSpinner)
-            {
-                nbrOfSubscribers.current++;
-                !showSpinner && setShowSpinner(true);
-            }
-            else
-            {
-                --nbrOfSubscribers.current;
+  useEffect(() => {
+    document.addEventListener("loadingAnim", (ev) => {
+      if (ev.detail.showSpinner) {
+        nbrOfSubscribers.current++;
+        !showSpinner && setShowSpinner(true);
+      } else {
+        --nbrOfSubscribers.current;
 
-                if (nbrOfSubscribers > 0)
-                    return;
-                
-                setShowSpinner(false);
-            }
+        if (nbrOfSubscribers > 0) return;
 
-        });
-    })
+        setShowSpinner(false);
+      }
+      loadingAnim.isSpinnerShown = showSpinner;
+    });
+  });
 
-    return (
-        <>
-           {showSpinner && <div className="loader-container">
+  return (
+    <>
+      {showSpinner && (
+        <div className="loader-container">
           <div className="spinner"></div>
-        </div>}
-        </>
-    )
+        </div>
+      )}
+    </>
+  );
 }
 
-const loadingAnim = (function ()
-{
-    const _this = {};
-    const showEvent = new CustomEvent("loadingAnim", {detail:{showSpinner: true}});
-    const hideEvent = new CustomEvent("loadingAnim", {detail:{showSpinner: false}});
+const loadingAnim = (function () {
+  const _this = {};
+  var isSpinnerShown = false;
+  const showEvent = new CustomEvent("loadingAnim", {
+    detail: { showSpinner: true },
+  });
+  const hideEvent = new CustomEvent("loadingAnim", {
+    detail: { showSpinner: false },
+  });
 
-    _this.show = () => {
-        document.dispatchEvent(showEvent);
-        return;
-    }
+  _this.show = () => {
+    document.dispatchEvent(showEvent);
+    return;
+  };
 
-    _this.hide = () => {
-        document.dispatchEvent(hideEvent);
-        return;
-    }
+  _this.hide = () => {
+    document.dispatchEvent(hideEvent);
+    return;
+  };
 
-    return _this;
+  _this.isLoading = () => {
+    return isSpinnerShown;
+  };
+
+  return _this;
 })();
 
-export {Spinner, loadingAnim};
+export { Spinner, loadingAnim };
