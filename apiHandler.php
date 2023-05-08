@@ -1,5 +1,7 @@
 <?php
 
+define("DISPLAY_DB_ERRORS", true);
+
 require_once "./api/router.php";
 require_once getcwd(). "/api/Authenticator.php";
 require_once getcwd() . "/api/Response.php";

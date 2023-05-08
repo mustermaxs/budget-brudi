@@ -1,5 +1,4 @@
 <?php
-error_reporting(E_ALL);
 
 
 class Response
@@ -18,11 +17,15 @@ class Response
 
     public static function errorResponse(string $message, $data = null, $statusCode = 400)
     {
+        if (!DISPLAY_DB_ERRORS)
+            $data = null;
+            
         header('Content-Type: application/json');
         echo json_encode([
             'status' => 'error',
             'message' => $message,
-            'status' => $statusCode
+            'status' => $statusCode,
+            'data' => $data
         ]);
         exit();
     }

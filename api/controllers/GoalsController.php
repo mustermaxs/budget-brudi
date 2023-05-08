@@ -3,35 +3,30 @@
 require_once getcwd() . "/api/BaseController.php";
 require_once getcwd() . "/api/models/GoalsModel.php";
 
-class GoalsController extends BaseController 
+class GoalsController extends BaseController
 {
     protected function init()
     {
         $this->model = new GoalsModel();
     }
- 
+
     public function get()
     {
+        $res = null;
+
         if (isset($this->request["id"]))
-            $data = $this->model->getGoalById($this->request["id"]);
+            $res = $this->model->getGoalById($this->request["id"]);
+
+        else 
+            $res = $this->model->getGoalsByAccountID($this->request["accountId"]);
+
+        if (!$res->ok) 
+            Response::errorResponse($res->message);
         
-        else
-            $data = $this->model->getGoalsByAccountID($this->request["accountId"]);
 
-        if ($data === null)
-            Response::errorResponse("fetching goal/s failed");
-
-        Response::successResponse("goals fetched successfully", $data);
+        Response::successResponse("goals fetched successfully", $res->data);
     }
 
-    public function put()
-    {
-        // TODO update goal
-
-        // temporary response while method not implemented
-        Response::successResponse("temporary response, method not implement");
-    }
-   
     public function post()
     {
         $accountId = $this->request["accountId"];
@@ -40,15 +35,14 @@ class GoalsController extends BaseController
         $date = $this->request["date"];
         $color = $this->request["color"];
 
-        
-        $createGoalSuccessful = $this->model->createNewGoal ($accountId, $title, $amount, $date, $color);
 
-        if ($createGoalSuccessful){
-            
+        $response = $this->model->createNewGoal($accountId, $title, $amount, $date, $color);
+
+        if ($response->ok) {
+
             Response::successResponse("goal created successfully");
-
         } else {
-            $this->errorResponse("login failed");
+            $this->errorResponse($response->message);
         }
     }
 
@@ -59,15 +53,14 @@ class GoalsController extends BaseController
         $amount = $this->request["amount"];
         $date = $this->request["date"];
         $color = $this->request["color"];
+        $goalId = $this->request["id"];
 
-        $updateGoalsuccessful = $this->model->updateGoal($accountId, $title, $amount, $date, $color);
+        $response = $this->model->updateGoal($accountId, $goalId, $title, $amount, $date, $color);
 
-        if($updateGoalsuccessful)
-        {
+        if ($response->ok) {
             Response::successResponse("Goal updated successfully");
         } else {
-            $this->errorResponse("update failed");
+            Response::errorResponse($response->message);
         }
-
     }
 }

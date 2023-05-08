@@ -31,18 +31,21 @@ class TransactionsController extends BaseController
     public function get()
     {
         if (!isset($this->request["type"]))     // /api/transactions/  -> get all transactions
-            $data = $this->model->getAllTransactionsByAccountId($this->request["accountId"], $this->request["limit"]);
+            $response = $this->model->getAllTransactionsByAccountId($this->request["accountId"], $this->request["limit"]);
 
         else if ($this->request["type"] == "expenses")
-            $data = $this->getExpenses();
+            $response = $this->getExpenses();
 
         else if ($this->request["type"] == "income")
-            $data = $this->getIncomes();
+            $response = $this->getIncomes();
 
         else 
             Response::errorResponse("transaction type invalid");
 
-        Response::successResponse("data loaded successfully", $data);
+        if (!$response->ok)
+            Response::errorResponse($response->message);
+        
+        Response::successResponse("data loaded successfully", $response->data);
 
     }
 

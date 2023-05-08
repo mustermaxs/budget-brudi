@@ -30,14 +30,14 @@ class AccountsController extends BaseController
     public function get()
     {
         if (isset($this->request["method"]) && $this->request["method"] == "date")
-            $data = $this->getBalanceByDate();
+            $res = $this->getBalanceByDate();
 
         else
-            $data = $this->model->getAccountOverviewById($this->request["accountId"]);
+            $res = $this->model->getAccountOverviewById($this->request["accountId"]);
 
-        if ($data == null)
-            Response::errorResponse("loading account details failed");
+        if (!$res->ok)
+            Response::errorResponse($res->message);
 
-        Response::successResponse("successfully loaded account details", $data);
+        Response::successResponse("successfully loaded account details", $res->data);
     }
 }

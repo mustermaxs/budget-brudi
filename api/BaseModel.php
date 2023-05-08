@@ -1,6 +1,7 @@
 <?php
 
 require_once getcwd() . "/api/database.php";
+require_once getcwd() . "/api/ServiceResponse.php";
 
 class BaseModel
 {

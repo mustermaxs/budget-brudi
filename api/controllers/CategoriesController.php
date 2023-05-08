@@ -38,7 +38,7 @@ class CategoriesController extends BaseController
     public function get()
     {
         if (!isset($this->request["id"]))
-            $data = $this->model->getAllCategories();
+            $res = $this->model->getAllCategories();
 
         // else if ($this->request["type"] == "expense")
         //     $data = $this->getExpenseCategory();
@@ -53,11 +53,11 @@ class CategoriesController extends BaseController
         //     Response::errorResponse("Input invalid");
 
         else
-            $data = $this->model->getCategoryByCategoryId($this->request["id"]);
+            $res = $this->model->getCategoryByCategoryId($this->request["id"]);
         
-            if ($data == null)
-                Response::errorResponse("no categories found");
+            if (!$res->ok)
+                Response::errorResponse($res->message);
 
-        Response::successResponse("categories loaded successfully", $data);
+        Response::successResponse("categories loaded successfully", $res->data);
     }
 }
