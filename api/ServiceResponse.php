@@ -18,7 +18,7 @@ class ServiceResponse
         return (object) array("ok"=>self::$ok, "message"=>self::$msg);
     }
 
-    public static function success(array $data)
+    public static function success(array $data=null)
     {
         if (self::$ok)
             self::$msg = "";
