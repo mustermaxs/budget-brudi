@@ -9,6 +9,7 @@ import getRandomInt from "../utils/Random";
 import BbBtnRound from "../components/widgets/BbBtnRound";
 import { loadingAnim } from "../components/widgets/Spinner";
 import TransactionsCategoriesChart from "../components/TransactionsCategoriesChart";
+import moment from 'moment';
 import "./Transactions.css"
 
 
@@ -49,6 +50,48 @@ function Transactions() {
   };
 
 
+  const mockData = [
+    {
+      "IncomeID": 15,
+      "F_accountID": 2,
+      "F_categoryID": 1,
+      "Title": "Monthly Savings",
+      "date": moment().format("YYYY-MM-DD"),
+      "Amount": "300.00",
+      "categoryID": 1,
+      "Category": "Savings"
+    },
+    {
+      "IncomeID": 16,
+      "F_accountID": 2,
+      "F_categoryID": 2,
+      "Title": "Internet Bill",
+      "date": moment().format("YYYY-MM-DD"),
+      "Amount": "60.00",
+      "categoryID": 2,
+      "Category": "Bills"
+    },
+    {
+      "IncomeID": 17,
+      "F_accountID": 2,
+      "F_categoryID": 3,
+      "Title": "Grocery Shopping",
+      "date": moment().format("YYYY-MM-DD"),
+      "Amount": "120.00",
+      "categoryID": 3,
+      "Category": "Groceries"
+    },
+    {
+      "IncomeID": 18,
+      "F_accountID": 2,
+      "F_categoryID": 4,
+      "Title": "Lunch",
+      "date": moment().format("YYYY-MM-DD"),
+      "Amount": "10.00",
+      "categoryID": 4,
+      "Category": "Food"
+    }
+  ];
 
   useEffect(() => {
     loadingAnim.show();
@@ -64,7 +107,11 @@ function Transactions() {
     }).then(transactions => {
       loadingAnim.hide();
       setLoading(false);
-      setTransactions(transactions.data);
+      if (transactions.data.length === 0) {
+        setTransactions(mockData);
+      } else {
+        setTransactions(transactions.data);
+      }
     });
 
   }, []);
