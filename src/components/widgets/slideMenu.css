@@ -1,7 +1,9 @@
 :root {
     --link-area-width-mobile: 85%;
     --close-area-width-mobile: 15%;
-    --link-area-width-large: 20rem;
+    --link-area-width-large: 100%;
+    --link-area-width-medium: 50%;
+    --slideMenuWrapper-width-large: 15rem;
     --close-area-width-large: calc(100vw - var(--link-area-width-large));
 }
 
@@ -9,31 +11,48 @@
     display: flex;
     position: fixed;
     width: 100vw;
-    height: 100vh;
+    height: 100vh !important;
     top: 0px;
     z-index: 12;
     left: -100vw;
 
 }
-
-@media screen and (min-width: 480px) {
+/**static sideMenu on larger screens */
+@media screen and (min-width: 1000px) { 
     #linksArea{
         width: var(--link-area-width-large) !important;
     }
     #closeOnClickArea {
-        width: var(--close-area-width-large) !important;
+        display: none !important;
+    }
+
+    .slideMenuWrapper {
+        left: 0px !important;
+        width: var(--slideMenuWrapper-width-large) !important;
+    }
+}
+
+/**slide menu on medium sized screens but with smaller width */
+@media screen and (min-width: 600px) and (max-width: 999px) {
+    #linksArea {
+        width: var(--link-area-width-medium) !important;
+
+    }
+    #closeOnClickArea {
+        width: calc(100% - var(--link-area-width-medium)) !important;
     }
 }
 
 #linksArea {
     border-radius: 3px;
     width: 85%;
+    height: 100vh !important;
     background-color: white;
     box-shadow: 2px 0px 3px rgba(211, 211, 211, 0.712);
 }
 
 #closeOnClickArea {
-    width: 15%;
+    width: var(--close-area-width-mobile);
     background-color: transparent;
 }
 

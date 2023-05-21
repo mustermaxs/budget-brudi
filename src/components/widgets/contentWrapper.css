@@ -9,7 +9,8 @@
     height: fit-content;
 }
 
-@media screen and (min-width: 860px) {
+/**min-width should be same as in LinkCard.css & Card.css */
+@media screen and (min-width: 750px) {
     .contentWrapper {
         width: 30rem;
         margin: 0 auto;
