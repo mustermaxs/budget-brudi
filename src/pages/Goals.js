@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import { loadingAnim } from "../components/widgets/Spinner";
 import GoalsChart from "../components/GoalsChart";
 import "./Goals.css"
-
+import { useMsgModal } from "../contexts/ModalContext";
 
 function Goals() {
   const navigate = useNavigate();
@@ -17,6 +17,8 @@ function Goals() {
   const [chartLabels, setChartLabels] = useState([]);
   const [chartData, setChartData] = useState([]);
   const [chartDataColor, setChartDataColor] = useState([]);
+  const {msgModal} = useMsgModal();
+
 
 
   const mockData = [
@@ -76,12 +78,13 @@ function Goals() {
         setChartData(goals.data.map(goal => parseFloat(goal.Amount)));
         setChartDataColor(goals.data.map(goal => goal.Color));
 
-
+        
         console.log(goals)
 
         console.log(goals.data);
         setCards(goals.data);
         loadingAnim.hide();
+
       });
   }, []);
 
@@ -99,7 +102,6 @@ function Goals() {
           <GoalsChart title="income" labels={chartLabels} data={chartData} colors={chartDataColor} />
 
         </div>
-
         {cards.map(({ Title, Date, Amount, GoalID, Color }) => {
           return (
             <Card

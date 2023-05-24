@@ -10,13 +10,15 @@ import BalanceChart from "../components/BalanceChart";
 import { jwtToken } from "../contexts/UserContext";
 import { useEffect, useRef, useState } from "react";
 import { loadingAnim } from "../components/widgets/Spinner";
+import { useMsgModal } from "../contexts/ModalContext";
 
 function Analysis(props) {
   const [overview, setOverview] = useState({ balance: "?", expenses: "?", income: "?" });
   const [balances, setBalances] = useState([0, 0, 0, 0]);
   const [goals, setGoals] = useState({ data: [], total: 0.00 });
   const renderChart = useRef(true);
-
+  const {msgModal} = useMsgModal();
+  
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 
   const currentMonthIndex = () => {
@@ -70,7 +72,7 @@ function Analysis(props) {
         );
         setOverview(transformedOverview);
         loadingAnim.hide();
-      });
+      }, []);
 
     // TODO fetcht balance in gewissen Zeitraum
     var balancesByDate = [];
