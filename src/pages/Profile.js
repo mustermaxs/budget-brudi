@@ -26,7 +26,6 @@ function Profile(props) {
   });
 
   useEffect(() => {
-    loadingAnim.show();
     fetch('http://localhost/budget-brudi/api/users', {
       method: 'GET',
       mode: "cors",
@@ -37,7 +36,6 @@ function Profile(props) {
     }).then((res) => {
       return res.json();
     }).then(fetchedUser => {
-      loadingAnim.hide();
       console.log(fetchedUser);
       // setUser(fetchedUser.data);
       setValue({ ...fetchedUser.data });
