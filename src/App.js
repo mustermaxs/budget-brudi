@@ -19,11 +19,7 @@ const App = () => {
 
   return (
     <>
-      {loading ? (
-        <div className="loader-container">
-          <div className="spinner"></div>
-        </div>
-      ) : (
+       (
         <UserProvider>
           <BrowserRouter>
             <Routes>
@@ -52,7 +48,7 @@ const App = () => {
             </Routes>
           </BrowserRouter>
         </UserProvider>
-      )}
+      )
     </>
   );
 };
