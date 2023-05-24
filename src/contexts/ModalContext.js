@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, useRef } from "react";
+import { createContext, useContext, useState } from "react";
 import MsgModal from "../components/widgets/MsgModal";
 
 /**
@@ -34,8 +34,8 @@ import { useMsgModal } from "../contexts/ModalContext";
 
 const MsgModalContext = createContext({
   type: "error",
-  title: "Title",
-  message: "Message...",
+  title: "Oops...",
+  message: "Something went wrong! :(",
   isVisible: false,
 });
 
@@ -56,6 +56,7 @@ const MsgModalContextProvider = ({ children }) => {
     _this.setTitle = (newTitle) => setTitle(newTitle);
     _this.setMessage = (newMsg) => setMessage(newMsg);
     _this.setType = (newType) => setType(newType);
+    _this.getTitle = () => title;
 
     _this.set = (config) => {
       if ("isVisible" in config) setIsVisible(config["isVisible"]);

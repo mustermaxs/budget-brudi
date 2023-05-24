@@ -50,6 +50,7 @@
 
 #text {
     padding: 0rem 2rem 0.5rem 2rem;
+    white-space: break-spaces;
 }
 
 #text h4 {

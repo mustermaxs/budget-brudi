@@ -9,7 +9,7 @@ function MsgModal({
   type,
   setIsVisible,
 }) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const style = ["error", "normal"].includes(type) ? type : "error";
 
   useEffect(() => {
