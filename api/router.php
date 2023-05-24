@@ -124,6 +124,7 @@ class Router
 
     public function successResponse($message, $data = null, $statusCode = 200)
     {
+        http_response_code($statusCode);
         header('Content-Type: application/json');
         echo json_encode([
             'status' => 'success',
@@ -136,6 +137,7 @@ class Router
 
     public function errorResponse($message, $statusCode = 400)
     {
+        http_response_code($statusCode);
         header('Content-Type: application/json');
         echo json_encode([
             'status' => 'error',
