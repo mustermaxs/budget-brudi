@@ -2,7 +2,8 @@ import { useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import Menu from "../components/widgets/Menu";
 import { MsgModalContextProvider } from "../contexts/ModalContext";
-// import MsgModal from "../components/widgets/MsgModal";
+import FetchInterceptor from "../utils/FetchInterceptor";
+
 
 function Layout(props) {
   const location = useLocation();
@@ -10,6 +11,7 @@ function Layout(props) {
   return (
     <>
     <MsgModalContextProvider>
+      <FetchInterceptor />
       <Menu currentPath={location.pathname} />
       <Outlet />
       </MsgModalContextProvider>
