@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import Layout from "./pages/Layout";
@@ -8,18 +8,10 @@ import { UserProvider } from "./contexts/UserContext";
 import routes from "./routes";
 
 const App = () => {
-  const [loading, setLoading] = useState(true);
 
-  //simulate loading
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 400);
-  }, []);
 
   return (
     <>
-       (
         <UserProvider>
           <BrowserRouter>
             <Routes>
@@ -48,7 +40,6 @@ const App = () => {
             </Routes>
           </BrowserRouter>
         </UserProvider>
-      )
     </>
   );
 };
