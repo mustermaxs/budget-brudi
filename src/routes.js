@@ -3,6 +3,7 @@ import Registration from "./pages/Registration";
 import Profile from "./pages/Profile";
 import Balance from "./pages/Balance";
 import Transactions from "./pages/Transactions";
+import AddTransaction from "./pages/AddTransaction";
 import Goals from "./pages/Goals";
 import AddGoal from "./pages/AddGoal";
 import EditGoal from "./pages/EditGoal";
@@ -50,6 +51,14 @@ const routes = [
     component: Transactions,
     privateRoute: true,
     permissions: ["user", "admin"],
+  },
+  {
+    title: "Add Transaction",
+    path: "addtransaction",
+    component: AddTransaction,
+    privateRoute: true,
+    permissions: ["user", "admin"],
+    hideInMenu: true,
   },
   {
     title: "Goals",

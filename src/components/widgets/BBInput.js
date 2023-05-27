@@ -1,4 +1,5 @@
-import "./input.css";
+import React from 'react';
+import './input.css';
 
 // props.size => large/medium/small
 
@@ -29,6 +30,7 @@ function BBInput(props) {
       ></input>
     );
   };
+
   const inputTypeCurrency = () => {
     return (
       <div>
@@ -68,10 +70,31 @@ function BBInput(props) {
     );
   };
 
+  const inputTypeSelect = () => {
+    return (
+      <select
+        id={props.id}
+        name={props.name}
+        onChange={props.onChange}
+        value={props.value}
+        className={
+          "bb-input " + (props.size === undefined ? "large" : props.size)
+        }
+      >
+        {props.options.map((option, index) => (
+          <option value={option.value} key={index}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    );
+  };
+
   const inputElement = () => {
     if (props.type === "text") return inputTypeText();
     else if (props.type === "currency") return inputTypeCurrency();
     else if (props.type === "date") return inputTypeDate();
+    else if (props.type === "select") return inputTypeSelect();
     else return inputTypeText();
   };
 
