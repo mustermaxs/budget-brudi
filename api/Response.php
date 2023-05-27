@@ -5,6 +5,7 @@ class Response
 {
     public static function successResponse(string $message, $data = null, $statusCode = 200)
     {
+        http_response_code($statusCode);
         header('Content-Type: application/json');
         echo json_encode([
             'status' => 'success',
@@ -20,12 +21,13 @@ class Response
         if (!DISPLAY_DB_ERRORS)
             $data = null;
             
+        http_response_code($statusCode);
         header('Content-Type: application/json');
         echo json_encode([
             'status' => 'error',
             'message' => $message,
-            'status' => $statusCode,
-            'data' => $data
+            'data' => $data,
+            'status' => $statusCode
         ]);
         exit();
     }

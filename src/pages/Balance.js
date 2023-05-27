@@ -9,14 +9,14 @@ import "../components/widgets/bbTable.css";
 import BalanceChart from "../components/BalanceChart";
 import { jwtToken } from "../contexts/UserContext";
 import { useEffect, useRef, useState } from "react";
-import { loadingAnim } from "../components/widgets/Spinner";
+
 
 function Analysis(props) {
   const [overview, setOverview] = useState({ balance: "?", expenses: "?", income: "?" });
   const [balances, setBalances] = useState([0, 0, 0, 0]);
   const [goals, setGoals] = useState({ data: [], total: 0.00 });
   const renderChart = useRef(true);
-
+  
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 
   const currentMonthIndex = () => {
@@ -33,7 +33,6 @@ function Analysis(props) {
 
   // GET GOALS
   useEffect(() => {
-    loadingAnim.show();
     fetch('http://localhost/budget-brudi/api/goals', {
       method: "GET",
       mode: "cors",
@@ -45,7 +44,6 @@ function Analysis(props) {
       .then(goalsRes => {
         let sumOfGoals = goalsRes.data.reduce((acc, current) =>
           acc + parseFloat(current.Amount), 0);
-        loadingAnim.hide();
         setGoals({ data: goalsRes.data, total: sumOfGoals });
         console.log("goals: ", goals);
       });
@@ -53,7 +51,6 @@ function Analysis(props) {
 
   useEffect(() => {
     // fetcht balance, expenses, income
-    loadingAnim.show();
     fetch('http://localhost/budget-brudi/api/accounts', {
       method: "GET",
       mode: "cors",
@@ -69,14 +66,12 @@ function Analysis(props) {
           {}
         );
         setOverview(transformedOverview);
-        loadingAnim.hide();
-      });
+      }, []);
 
     // TODO fetcht balance in gewissen Zeitraum
     var balancesByDate = [];
 
     const balancesPromise = new Promise((resolve, reject) => {
-      loadingAnim.show();
       if (!renderChart.current)
         reject();
       const year = new Date().getFullYear();
@@ -103,7 +98,6 @@ function Analysis(props) {
       setBalances(data);
       renderChart.current = false;
       console.log("balances: ", data);
-      loadingAnim.hide();
     })
   }, []);
 

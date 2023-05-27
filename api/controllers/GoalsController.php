@@ -42,7 +42,7 @@ class GoalsController extends BaseController
 
             Response::successResponse("goal created successfully");
         } else {
-            $this->errorResponse($response->message);
+            Response::errorResponse($response->message);
         }
     }
 
