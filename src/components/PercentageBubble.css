@@ -1,0 +1,21 @@
+.percentageBubble {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.3em;
+    height: 2.3em;
+    padding: 13px;
+    background: #c9c9c9;
+    color: rgb(49, 49, 49);
+    border-radius: 16px;
+    font-size: 1.0em;
+    margin-right: 2.2em;
+}
+
+.percentageGoalRow {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-between; */
+    align-items: center;
+    font-size: 0.95em !important;
+}
