@@ -7,6 +7,8 @@
   overflow: hidden;
   margin-bottom: 10px;
   cursor: pointer;
+  border-bottom: 1px solid #80808047;
+  font-size: 1rem;
 }
 /** min-width should be same as in LinkCard.css & contentWrapper.css*/
 @media screen and (min-width: 750px) {
@@ -14,59 +16,26 @@
     width: 30rem;
   }
 
-  .card:nth-child(2)::before
-{
-  content: "";
-  display: block;
-  width: 32rem !important;
-  height: 1px;
-  background-color: #80808047;
-  position: absolute;
-  transform: translateY(-45px);
-  left: 0px;
+
 }
 
-  .card::after {
-    content: "";
-    display: block;
-    width: 32rem !important;
-    height: 1px;
-    background-color: #80808047;
-    position: absolute;
-    transform: translateY(45px);
-    left: 0px;
-  }
+.card.small {
+  width: 75%;
+  font-size: 1em;
 }
 
-.card:nth-child(2)::before
-{
-  content: "";
-  display: block;
-  width: 100vw;
-  height: 1px;
-  background-color: #80808047;
-  position: absolute;
-  transform: translateY(-45px);
-  left: 0px;
-}
+.card.small .price-container {
 
-  .card::after {
-    content: "";
-    display: block;
-    width: 100vw;
-    height: 1px;
-    background-color: #80808047;
-    position: absolute;
-    transform: translateY(45px);
-    left: 0px;
-  }
+}
   
   .icon-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 56px;
-    height: 56px;
+    width: 3em;
+    min-width: 3em;
+    height: 3em;
+    min-height: 3em;
     border-radius: 100%;
     box-shadow: 0px 0px 1.5px 0px #565656a3;
     border: 0.5px solid rgb(178 178 178 / 53%);
@@ -101,13 +70,17 @@
   }
   
   .title {
-    font-size: 16px;
+    font-size: 1.1em;
     font-weight: 500;
     margin: 0;
+    overflow: hidden;
+    width: 85%;
+    white-space: pre;
+    text-overflow: ellipsis;
   }
   
   .date {
-    font-size: 12px;
+    font-size: 0.75em;
     margin: 4px 0;
   }
   
@@ -137,7 +110,7 @@
   }
   
   .price {
-    font-size: 16px;
+    font-size: 0.95em;
     font-weight: 500;
     margin: 0;
   }

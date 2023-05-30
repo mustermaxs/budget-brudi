@@ -1,0 +1,6 @@
+.italicHelper {
+    font-weight:lighter;
+    color: gray;
+    font-style: italic;
+    margin-block-start: 0px;
+}

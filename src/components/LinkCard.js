@@ -10,7 +10,8 @@ function LinkCard({title, href, icon})
           "Transaction": "cash-flow",
           "Goals": "rocket",
           "Balance": "research",
-          "Default": "Blank"
+          "Default": "Blank",
+          "Savings": "Savings"
         };
     
         var iconPath = categoryMapping[icon] || categoryMapping.Default;

@@ -11,6 +11,11 @@
   height: 100%;
 } */
 
+:root, html {
+  font-size: 15px !important;
+}
+
+
 body {
   margin: 0;
   font-family: "Poppins";

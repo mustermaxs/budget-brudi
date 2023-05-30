@@ -14,7 +14,7 @@
       width: 30rem;
     }
   
-    .card:nth-child(2)::before
+    /* .card:nth-child(2)::before
   {
     content: "";
     display: block;
@@ -35,10 +35,10 @@
       position: absolute;
       transform: translateY(45px);
       left: 0px;
-    }
+    } */
   }
   
-  .card:nth-child(2)::before
+  /* .card:nth-child(2)::before
   {
     content: "";
     display: block;
@@ -59,9 +59,9 @@
       position: absolute;
       transform: translateY(45px);
       left: 0px;
-    }
+    } */
     
-    .icon-container {
+    /* .icon-container {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -73,12 +73,12 @@
       margin-left: 2px;
       /* background-image: url(../../assets/icons/icons_raw/house.png); */
       /* background-size: cover; */
-      background-size: 60%;
+      /* background-size: 60%;
       background-repeat: no-repeat;
-      background-position: center;
+      background-position: center; */
   
-    }
-    
+     
+/*     
     .icon {
       width: 40px;
       height: 40px;
@@ -99,7 +99,7 @@
       font-size: 16px;
       font-weight: 500;
       margin: 0;
-    }
+    } */
     
 .blankLink {
   color: black;
