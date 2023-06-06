@@ -50,10 +50,10 @@ class GoalsController extends BaseController
     public function put()
     {
         $accountId = $this->request["accountId"];
-        $title = $this->request["title"];
-        $amount = $this->request["amount"];
-        $date = $this->request["date"];
-        $color = $this->request["color"];
+        $title = $this->request["Title"];
+        $amount = $this->request["Amount"];
+        $date = $this->request["Date"];
+        $color = $this->request["Color"];
         $goalId = $this->request["id"];
 
         $response = $this->service->updateGoal($accountId, $goalId, $title, $amount, $date, $color);
