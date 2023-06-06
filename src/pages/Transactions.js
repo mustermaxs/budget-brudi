@@ -105,6 +105,7 @@ function Transactions() {
     }).then((res) => {
       return res.json();
     }).then(transactions => {
+      console.log(transactions.data)
       loadingAnim.hide();
       setLoading(false);
       if (transactions.data.length === 0) {
@@ -156,7 +157,7 @@ function Transactions() {
           <TransactionsCategoriesChart title={displayMode} labels={chartLabels} data={chartData} />
         </div>
         <Filter category={category} categories={categories} onChange={handleFilterChange} />
-        {filteredData.map(({ Category, Title, date, Amount }) => {
+        {filteredData.map(({ Category, Title, date, Amount, IncomeID, ExpenseID }) => {
           return (
             <Card
               type="category"
@@ -165,7 +166,9 @@ function Transactions() {
               date={date}
               price={Amount}
               key={getRandomInt(0, 10000)}
-              onClick={() => { }}
+              onClick={() => { navigate(`/transaction?type=${(IncomeID && "income") || (ExpenseID && "expense")}&id=${IncomeID || ExpenseID}`) }}
+              datatype={(IncomeID && "income") || (ExpenseID && "expense")}
+              id={ExpenseID}
             />
           );
         })}

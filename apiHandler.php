@@ -3,7 +3,7 @@
 define("DISPLAY_DB_ERRORS", true);
 
 require_once "./api/router.php";
-require_once getcwd(). "/api/Authenticator.php";
+require_once getcwd() . "/api/Authenticator.php";
 require_once getcwd() . "/api/Response.php";
 
 header("Access-Control-Allow-Origin: *");
@@ -13,7 +13,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200);
     exit();
-  }
+}
 
 $url = $_SERVER["REQUEST_URI"];
 $method = $_SERVER["REQUEST_METHOD"];
@@ -30,17 +30,18 @@ $router = new Router($baseURL, $apiDir);
  * (sonst könnte jeder sensible userdaten getten)
  */
 
- // true = private api route -> authentication is needed
- // false = public api route  
- $router->post("/api/login", false);
- $router->get("/api/users", true);
- $router->post("/api/users", false);
- $router->put("/api/users", true);
+// true = private api route -> authentication is needed
+// false = public api route  
+$router->post("/api/login", false);
+$router->get("/api/users", true);
+$router->post("/api/users", false);
+$router->put("/api/users", true);
 
 $router->get("/api/transactions/:type[a]", true);
 $router->get("/api/transactions/:type[a]/:id[i]", true);
 $router->post("/api/transactions", true);
 $router->get("/api/transactions", true);
+$router->put("/api/transactions/:type[a]/:id[i]", true);
 
 $router->get("/api/goals", true);
 $router->get("/api/goals/:id[i]", true);
