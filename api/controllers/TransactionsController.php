@@ -33,7 +33,7 @@ class TransactionsController extends BaseController
         if (!isset($this->request["type"]))     // /api/transactions/  -> get all transactions
             $response = $this->service->getAllTransactionsByAccountId($this->request["accountId"], $this->request["limit"]);
 
-        else if ($this->request["type"] == "expenses")
+        else if ($this->request["type"] == "expense")
             $response = $this->getExpenses();
 
         else if ($this->request["type"] == "income")
