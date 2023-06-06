@@ -150,4 +150,42 @@ class TransactionsService extends BaseService
 
         return $incomeId;
     }
+
+    /*### Update Funktionen ###*/
+
+    /*## Income Update ##*/
+
+    public function updateIncome($incomeId, $categoryId, $title, $incomeDate, $incomeAmount)
+    {
+        try {
+            $query = "UPDATE Income SET F_categoryID = ?, Title = ?, date = ?, Amount = ?
+            WHERE incomeID = ?";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("dssdd", $categoryId, $title, $incomeDate, $incomeAmount, $incomeId);
+            $stmt->execute();
+
+            return ServiceResponse::send();
+        } catch (mysqli_sql_exception $e) {
+            return ServiceResponse::send($e);
+        }
+    }
+
+    /*## Epense Update ##*/
+
+    public function updateExpense($expenseId, $categoryId, $title, $incomeDate, $expenseAmount)
+    {
+        try {
+            $query = "UPDATE Expense SET F_categoryID = ?, Title = ?, date = ?, Amount = ?
+            WHERE expenseID = ?";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("dssdd", $categoryId, $title, $incomeDate, $incomeAmount, $expenseId);
+            $stmt->execute();
+
+            return ServiceResponse::success();
+        } catch (mysqli_sql_exception $e) {
+            return ServiceResponse::send($e);
+        }
+    }
 }
