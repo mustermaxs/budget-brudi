@@ -4,6 +4,7 @@ import Profile from "./pages/Profile";
 import Balance from "./pages/Balance";
 import Transactions from "./pages/Transactions";
 import AddTransaction from "./pages/AddTransaction";
+import EditTransaction from "./pages/EditTransaction";
 import Goals from "./pages/Goals";
 import AddGoal from "./pages/AddGoal";
 import EditGoal from "./pages/EditGoal";
@@ -62,6 +63,14 @@ const routes = [
     hideInMenu: true,
   },
   {
+    title: "Edit Transaction",
+    path: "transaction",
+    component: EditTransaction,
+    privateRoute: true,
+    permissions: ["user", "admin"],
+    hideInMenu: true,
+  },
+  {
     title: "Goals",
     path: "goals",
     component: Goals,
@@ -83,13 +92,6 @@ const routes = [
     privateRoute: true,
     permissions: ["user", "admin"],
     hideInMenu: true,
-  },
-  {
-    title: "Savings Settings",
-    path: "savings",
-    component: SavingsSettings,
-    privateRoute: true,
-    permissions: ["user", "admin"],
   },
 ];
 
