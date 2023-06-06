@@ -8,6 +8,7 @@ import Goals from "./pages/Goals";
 import AddGoal from "./pages/AddGoal";
 import EditGoal from "./pages/EditGoal";
 import Home from "./pages/Home";
+import SavingsSettings from "./pages/Savings";
 
 const routes = [
   {
@@ -82,6 +83,13 @@ const routes = [
     privateRoute: true,
     permissions: ["user", "admin"],
     hideInMenu: true,
+  },
+  {
+    title: "Savings Settings",
+    path: "savings",
+    component: SavingsSettings,
+    privateRoute: true,
+    permissions: ["user", "admin"],
   },
 ];
 

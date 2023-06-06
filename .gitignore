@@ -23,6 +23,8 @@ composer.*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+meeting_notes/DB_SavingSettings
+
 
 package-lock.json
 package.json

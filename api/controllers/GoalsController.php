@@ -17,12 +17,13 @@ class GoalsController extends BaseController
         if (isset($this->request["id"]))
             $res = $this->service->getGoalById($this->request["id"]);
 
-        else 
-            $res = $this->service->getGoalsByAccountID($this->request["accountId"]);
+        else {
+            $res = $this->model->getGoalsByAccountID($this->request["accountId"], @$this->request["limit"]);
+        }
 
-        if (!$res->ok) 
+        if (!$res->ok)
             Response::errorResponse($res->message);
-        
+
 
         Response::successResponse("goals fetched successfully", $res->data);
     }

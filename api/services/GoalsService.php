@@ -15,7 +15,7 @@ class GoalsService extends BaseService
             $stmt->execute();
             $goalId = $stmt->insert_id; //returns the autoincrement ID Nr
 
-            return ServiceResponse::send(array("goalId"=>$goalId));
+            return ServiceResponse::send(array("goalId" => $goalId));
         } catch (mysqli_sql_exception $e) {
             return ServiceResponse::send($e);
         }
@@ -38,20 +38,22 @@ class GoalsService extends BaseService
 
             return ServiceResponse::send($data);
         } catch (mysqli_sql_exception $e) {
-           return ServiceResponse::send($e);
+            return ServiceResponse::send($e);
         }
     }
 
-
-    public function getGoalsByAccountID($accountID)
+    public function getGoalsByAccountID($accountID, $limit = 5)
     {
         try {
             $query = "SELECT * FROM Goal 
-        WHERE F_accountID = ?";
+        WHERE F_accountID = ?
+        ORDER BY Date
+        LIMIT ?;";
 
+            $limit = $limit ?? 10;
 
             $stmt = $this->conn->prepare($query);
-            $stmt->bind_param("d", $accountID);
+            $stmt->bind_param("dd", $accountID, $limit);
             $stmt->execute();
             $result = $stmt->get_result();
             $rows = [];
@@ -75,8 +77,7 @@ class GoalsService extends BaseService
             $stmt = $this->conn->prepare($query);
             $result = $stmt->execute([$title, $amount, $date, $color, $accountId, $goalId]);
 
-            return ServiceResponse::send(array("result"=>$result));
-
+            return ServiceResponse::send(array("result" => $result));
         } catch (mysqli_sql_exception $e) {
             return ServiceResponse::send($e);
         }
@@ -92,10 +93,8 @@ class GoalsService extends BaseService
             $stmt->execute();
 
             return ServiceResponse::success();
-
         } catch (mysqli_sql_exception $e) {
             return ServiceResponse::send($e);
         }
     }
-    
 }

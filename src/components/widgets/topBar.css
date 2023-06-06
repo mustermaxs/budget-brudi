@@ -13,6 +13,7 @@
 .topBarTitle {
     margin-left: 1rem;
     font-weight: 500;
+    font-size: 1.1em;
 }
 
 @media screen and (min-width: 1000px) {
