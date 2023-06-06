@@ -1,20 +1,20 @@
 <?php
 require_once getcwd() . "/api/BaseController.php";
-require_once getcwd() . "/api/models/LoginModel.php";
+require_once getcwd() . "/api/services/LoginService.php";
 
 class LoginController extends BaseController
 {
     protected function init()
     {
-        $this->model = new LoginModel();
+        $this->service = new LoginService();
     }
 
     public function post()
     {
-        // hash password in LoginModel
+        // hash password in LoginService
         // $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        $loginRequest = $this->model->loginUser($this->request["username"], $this->request["password"]);
+        $loginRequest = $this->service->loginUser($this->request["username"], $this->request["password"]);
 
         if ($loginRequest["successful"]){
             

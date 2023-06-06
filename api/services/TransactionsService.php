@@ -1,8 +1,8 @@
 <?php
-require_once getcwd() . "/api/BaseModel.php";
+require_once getcwd() . "/api/BaseService.php";
 
 /*##### EXPENSE FUNCTIONS #####*/
-class TransactionsModel extends BaseModel
+class TransactionsService extends BaseService
 {
     // brauchen Namen der Kategorien
     public function getExpenseByAccountId($accountId, $limit = 10)

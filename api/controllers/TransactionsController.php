@@ -1,37 +1,37 @@
 <?php
 
 require_once getcwd() . "/api/BaseController.php";
-require_once getcwd() . "/api/models/TransactionsModel.php";
+require_once getcwd() . "/api/services/TransactionsService.php";
 
 class TransactionsController extends BaseController
 {
     protected function init()
     {
-        $this->model = new TransactionsModel();
+        $this->service = new TransactionsService();
     }
 
     private function getExpenses()
     {
         if (isset($this->request["id"]))
-            return $this->model->getExpenseByExpenseId($this->request["id"], $this->request["limit"] ?? null);
+            return $this->service->getExpenseByExpenseId($this->request["id"], $this->request["limit"] ?? null);
         
         else
-            return $this->model->getExpenseByAccountId($this->request["accountId"]);       
+            return $this->service->getExpenseByAccountId($this->request["accountId"]);       
     }
 
     private function getIncomes()
     {
         if (isset($this->request["id"]))
-            return $this->model->getIncomeByIncomeID($this->request["id"], $this->request["limit"] ?? null);
+            return $this->service->getIncomeByIncomeID($this->request["id"], $this->request["limit"] ?? null);
         
         else
-            return $this->model->getIncomeByAccountId($this->request["accountId"]);       
+            return $this->service->getIncomeByAccountId($this->request["accountId"]);       
     }
 
     public function get()
     {
         if (!isset($this->request["type"]))     // /api/transactions/  -> get all transactions
-            $response = $this->model->getAllTransactionsByAccountId($this->request["accountId"], $this->request["limit"]);
+            $response = $this->service->getAllTransactionsByAccountId($this->request["accountId"], $this->request["limit"]);
 
         else if ($this->request["type"] == "expenses")
             $response = $this->getExpenses();
@@ -61,10 +61,10 @@ class TransactionsController extends BaseController
             $insertedId = null;
 
             if ($this->request["type"] == "income")
-                $insertedId = $this->model->createIncome($this->request["accountId"], $this->request["categoryID"], $this->request["title"], $this->request["date"], $this->request["amount"]);
+                $insertedId = $this->service->createIncome($this->request["accountId"], $this->request["categoryID"], $this->request["title"], $this->request["date"], $this->request["amount"]);
 
             else if ($this->request["type"] == "expense")
-                $insertedId = $this->model->createNewExpense($this->request["accountId"], $this->request["categoryID"], $this->request["title"], $this->request["date"], $this->request["amount"]);
+                $insertedId = $this->service->createNewExpense($this->request["accountId"], $this->request["categoryID"], $this->request["title"], $this->request["date"], $this->request["amount"]);
             
             if ($insertedId >= 1)
                 Response::successResponse("created new transaction");

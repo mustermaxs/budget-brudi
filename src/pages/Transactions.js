@@ -3,7 +3,7 @@ import ContentWrapper from "../components/widgets/ContentWrapper";
 import Card from "../components/widgets/Card";
 import Filter from "../components/widgets/Filter";
 import BbBtn from "../components/widgets/BbBtn";
-import AddTransactionModal from "../components/widgets/AddTransactionModal";
+import { useNavigate } from "react-router-dom";
 import { jwtToken } from "../contexts/UserContext";
 import getRandomInt from "../utils/Random";
 import BbBtnRound from "../components/widgets/BbBtnRound";
@@ -17,11 +17,11 @@ import "./Transactions.css"
 function Transactions() {
   const [transactions, setTransactions] = useState([]);
   const [category, setCategory] = useState();
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [chartLabels, setChartLabels] = useState([]);
   const [chartData, setChartData] = useState([]);
   const [displayMode, setDisplayMode] = useState("income");
+  const navigate = useNavigate();
 
 
   const aggregateCategoryData = (transactions, displayMode) => {
@@ -110,6 +110,7 @@ function Transactions() {
       if (transactions.data.length === 0) {
         setTransactions(mockData);
       } else {
+
         setTransactions(transactions.data);
       }
     });
@@ -122,37 +123,6 @@ function Transactions() {
     setChartData(chartData);
   }, [transactions, displayMode]);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const postNewTransaction = async (newTransaction) => {
-    // TODO validate input
-    loadingAnim.show();
-    fetch("http://localhost/budget-brudi/api/transactions", {
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify({
-        type: newTransaction.type, amount: newTransaction.Amount, date: newTransaction.date, title: newTransaction.Title, categoryID: newTransaction.categoryID
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${jwtToken.get()}`
-      }
-    }).then(res => res.json()).then(response => {
-      loadingAnim.hide();
-    });
-  }
-
-  const addTransaction = (transaction) => {
-    setTransactions((prev) => [...prev, transaction]);
-    postNewTransaction(transaction);
-    setIsModalOpen(false);
-  };
 
   const handleFilterChange = (event) => {
     setCategory(event.target.value);
@@ -160,7 +130,7 @@ function Transactions() {
 
   const categories = Array.from(new Set([...transactions.map((i) => i.Category)]));
 
-  const filteredData = category ? transactions.filter((item) => item.Category === category) : transactions;
+  const filteredData = category ? transactions.filter((item) => item.Category === category).sort((a, b) => moment(b.date).valueOf() - moment(a.date).valueOf()) : transactions.sort((a, b) => moment(b.date).valueOf() - moment(a.date).valueOf());
 
 
   const handleDisplayModeChange = (mode) => {
@@ -204,15 +174,12 @@ function Transactions() {
           <div className="spinner"></div>
         </div>}
 
-        <BbBtnRound position="bottom" type="button" content="+" onClick={openModal} />
+        <BbBtnRound position="bottom" type="button" content="+" onClick={() => {
+          navigate("/addtransaction");
+        }} />
 
       </ContentWrapper>
 
-      <AddTransactionModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        onSubmit={addTransaction}
-      />
     </>
   );
 }

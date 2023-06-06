@@ -1,8 +1,8 @@
 <?php
 
-require_once getcwd() . "/api/BaseModel.php";
+require_once getcwd() . "/api/BaseService.php";
 
-class CategoriesModel extends BaseModel
+class CategoriesService extends BaseService
 {
     public function getCategoryByCategoryId($categoryId)
     {

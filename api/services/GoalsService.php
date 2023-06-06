@@ -1,8 +1,8 @@
 <?php
 
-require_once getcwd() . "/api/BaseModel.php";
+require_once getcwd() . "/api/BaseService.php";
 
-class GoalsModel extends BaseModel
+class GoalsService extends BaseService
 {
     public function createNewGoal($accountId, $goaltitle, $amount, $date, $color) // should it be really $goalTitle? and not the ID?
     {

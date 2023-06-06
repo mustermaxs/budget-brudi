@@ -1,13 +1,13 @@
 <?php
 
 require_once getcwd() . "/api/BaseController.php";
-require_once getcwd() . "/api/models/GoalsModel.php";
+require_once getcwd() . "/api/services/GoalsService.php";
 
 class GoalsController extends BaseController
 {
     protected function init()
     {
-        $this->model = new GoalsModel();
+        $this->service = new GoalsService();
     }
 
     public function get()
@@ -15,7 +15,7 @@ class GoalsController extends BaseController
         $res = null;
 
         if (isset($this->request["id"]))
-            $res = $this->model->getGoalById($this->request["id"]);
+            $res = $this->service->getGoalById($this->request["id"]);
 
         else {
             $res = $this->model->getGoalsByAccountID($this->request["accountId"], @$this->request["limit"]);
@@ -37,7 +37,7 @@ class GoalsController extends BaseController
         $color = $this->request["color"];
 
 
-        $response = $this->model->createNewGoal($accountId, $title, $amount, $date, $color);
+        $response = $this->service->createNewGoal($accountId, $title, $amount, $date, $color);
 
         if ($response->ok) {
 
@@ -56,7 +56,7 @@ class GoalsController extends BaseController
         $color = $this->request["color"];
         $goalId = $this->request["id"];
 
-        $response = $this->model->updateGoal($accountId, $goalId, $title, $amount, $date, $color);
+        $response = $this->service->updateGoal($accountId, $goalId, $title, $amount, $date, $color);
 
         if ($response->ok) {
             Response::successResponse("Goal updated successfully");
@@ -68,7 +68,7 @@ class GoalsController extends BaseController
     public function delete()
     {
         $goalId = $this->request["id"];
-        $response = $this->model->deleteGoal($goalId);
+        $response = $this->service->deleteGoal($goalId);
 
         if ($response->ok) {
             Response::successResponse("Goal deleted successfully");
