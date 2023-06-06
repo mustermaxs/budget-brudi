@@ -18,7 +18,7 @@ class GoalsController extends BaseController
             $res = $this->service->getGoalById($this->request["id"]);
 
         else {
-            $res = $this->model->getGoalsByAccountID($this->request["accountId"], @$this->request["limit"]);
+            $res = $this->service->getGoalsByAccountID($this->request["accountId"], @$this->request["limit"]);
         }
 
         if (!$res->ok)
