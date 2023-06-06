@@ -18,27 +18,40 @@ import { loadingAnim } from "../components/widgets/Spinner";
 function EditGoal(props) {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [goal, setGoal] = useState({ Title: "", Date: "", Color: "", Amount: "" });
-  const [inputValue, handleChange, setValue] = useValue({ ...goal })
-  const requestedGoalId = useRef(searchParams.get("id"))
+  const [goal, setGoal] = useState({
+    Title: "",
+    Date: "",
+    Color: "",
+    Amount: "",
+    Percentage: "",
+  }); // TODO percentage
+  const [inputValue, handleChange, setValue] = useValue({ ...goal });
+  const requestedGoalId = useRef(searchParams.get("id"));
 
   //TODO refactoren
   useEffect(() => {
     loadingAnim.show();
 
-    if (requestedGoalId.current === undefined || requestedGoalId.current == null) {
+    if (
+      requestedGoalId.current === undefined ||
+      requestedGoalId.current == null
+    ) {
       navigate("/goals");
       return;
     }
 
-    fetch(`http://localhost/budget-brudi/api/goals/${requestedGoalId.current}`, {
-      method: 'GET',
-      mode: "cors",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${jwtToken.get()}`
+    fetch(
+      `http://localhost/budget-brudi/api/goals/${requestedGoalId.current}`,
+      {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken.get()}`,
+        },
       }
-    }).then((res) => res.json())
+    )
+      .then((res) => res.json())
       .then((fetchedGoal) => {
         loadingAnim.hide();
         console.log(fetchedGoal.data);
@@ -52,39 +65,50 @@ function EditGoal(props) {
   }, []);
 
   const handleSubmit = (ev) => {
-    if (requestedGoalId.current === undefined || requestedGoalId.current == null) {
+    if (
+      requestedGoalId.current === undefined ||
+      requestedGoalId.current == null
+    ) {
       navigate("/goals");
       return;
     }
-    fetch(`http://localhost/budget-brudi/api/goals/${requestedGoalId.current}`, {
-      method: 'PUT',
-      mode: "cors",
-      body: JSON.stringify(inputValue),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${jwtToken.get()}`
+    fetch(
+      `http://localhost/budget-brudi/api/goals/${requestedGoalId.current}`,
+      {
+        method: "PUT",
+        mode: "cors",
+        body: JSON.stringify(inputValue),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken.get()}`,
+        },
       }
-    }).then(res => res.json()).then((postRes) => {
-      console.log(postRes);
-    })
+    )
+      .then((res) => res.json())
+      .then((postRes) => {
+        console.log(postRes);
+      });
     // TODO error modal & error handling
   };
 
   const handleDelete = () => {
-    fetch(`http://localhost/budget-brudi/api/goals/${requestedGoalId.current}`, {
-      method: 'DELETE',
-      mode: "cors",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${jwtToken.get()}`
+    fetch(
+      `http://localhost/budget-brudi/api/goals/${requestedGoalId.current}`,
+      {
+        method: "DELETE",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken.get()}`,
+        },
       }
-    }).then(res => res.json())
+    )
+      .then((res) => res.json())
       .then((postRes) => {
         console.log(postRes);
         navigate("/goals");
-      })
-
-  }
+      });
+  };
 
   return (
     <>
@@ -141,6 +165,15 @@ function EditGoal(props) {
             </div>
           </div>
         </InputCollection>
+        <Spacer />
+        {/* TODO percentage */}
+        {goal.Percentage !== "" ? (
+          <div>
+            <span>Dedicated percentage</span>
+            <div className="badge">{inputValue.Percentage}%</div>
+          </div>
+        ) : null}
+        <Spacer />
         <BbBtn content="Update" type="submit" onClick={handleSubmit} />
         <BbBtn content="delete" type="button" onClick={handleDelete} />
       </ContentWrapper>

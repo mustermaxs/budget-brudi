@@ -39,3 +39,14 @@
     margin-left: 2px;
     font-size: 1.3rem;
 }
+
+.badge {
+    width: fit-content;
+    background: transparent;
+    color: black;
+    border-radius: 16px;
+    padding: 1px 16px;
+    box-shadow: #3d3d3dcd 0px 1px 3px 0px;
+    border: 0.1px solid #80808062;
+    margin-top: 7px;
+}
