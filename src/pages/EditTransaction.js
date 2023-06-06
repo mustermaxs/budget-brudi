@@ -70,6 +70,7 @@ function EditTransaction() {
                 console.log(transaction.data);
                 setTitle(transaction.data.Title)
                 setCategory(transaction.data.Category)
+                setCategoryID(transaction.data.categoryID)
                 setAmount(transaction.data.Amount)
                 setDate(transaction.data.date)
                 setType(transactionType)
@@ -82,7 +83,7 @@ function EditTransaction() {
             method: "PUT",
             mode: "cors",
             body: JSON.stringify({
-                type, amount: amount, date: date, title: title, categoryID: categoryID
+                amount, date, title, categoryID: categoryID
             }),
             headers: {
                 "Content-Type": "application/json",
