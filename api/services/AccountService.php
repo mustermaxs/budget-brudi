@@ -1,8 +1,8 @@
 <?php
 
-require_once getcwd() . "/api/BaseModel.php";
+require_once getcwd() . "/api/BaseService.php";
 
-class AccountModel extends BaseModel
+class AccountService extends BaseService
 {
     public function getAccountOverviewById($accountId)
     {

@@ -1,19 +1,19 @@
 <?php
 
 require_once getcwd() . "/api/BaseController.php";
-require_once getcwd() . "/api/models/UsersModel.php";
+require_once getcwd() . "/api/services/UsersService.php";
 
 class UsersController extends BaseController
 {
     protected function init()
     {
-        $this->model = new UsersModel();
+        $this->service = new UsersService();
     }
 
 
     public function get()
     {
-        $user = $this->model->getUserById($this->request["userId"]);
+        $user = $this->service->getUserById($this->request["userId"]);
         $this->successResponse("request successfull", $user);
     }
 
@@ -25,7 +25,7 @@ class UsersController extends BaseController
         $username = $jsonPostData->username;
         $password = $jsonPostData->password;
 
-        $response = $this->model->registerUser($firstname, $lastname, $username, $password);
+        $response = $this->service->registerUser($firstname, $lastname, $username, $password);
 
         if ($response->ok) {
             Response::successResponse("Register successful");
@@ -41,7 +41,7 @@ class UsersController extends BaseController
         $lastName = $this->request["lastname"];
         $eMail = $this->request["email"];
 
-        $response = $this->model->updateUserData($userId, $firstName, $lastName, $eMail);
+        $response = $this->service->updateUserData($userId, $firstName, $lastName, $eMail);
 
         if ($response->ok) {
             Response::successResponse("Profile updated successfully");

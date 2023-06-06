@@ -1,7 +1,7 @@
 <?php
-require_once getcwd() . "/api/BaseModel.php";
+require_once getcwd() . "/api/BaseService.php";
 
-class UsersModel extends BaseModel
+class UsersService extends BaseService
 {
     public function RegisterUser($firstname, $lastname, $username, $password)
     {

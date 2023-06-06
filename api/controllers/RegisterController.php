@@ -1,12 +1,12 @@
 <?php
 require_once getcwd() . "/api/BaseController.php";
-require_once getcwd() . "/api/models/RegisterModel.php";
+require_once getcwd() . "/api/services/RegisterService.php";
 
 class RegisterController extends BaseController
 {
     protected function init()
     {
-        $this->model = new RegisterModel();
+        $this->service = new RegisterService();
     }
 
     public function post()
@@ -17,7 +17,7 @@ class RegisterController extends BaseController
         $username = $jsonPostData->username;
         $password = $jsonPostData->password;
 
-        $registerSuccessful = $this->model->registerUser($firstname, $lastname, $username, $password);
+        $registerSuccessful = $this->service->registerUser($firstname, $lastname, $username, $password);
 
         if ($registerSuccessful){
             

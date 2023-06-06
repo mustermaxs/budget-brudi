@@ -1,13 +1,13 @@
 <?php
 
 require_once getcwd() . "/api/BaseController.php";
-require_once getcwd() . "/api/models/AccountModel.php";
+require_once getcwd() . "/api/services/AccountService.php";
 
 class AccountsController extends BaseController
 {
     protected function init()
     {
-        $this->model = new AccountModel();
+        $this->service = new AccountService();
     }
 
     private function getBalanceByDate()
@@ -21,7 +21,7 @@ class AccountsController extends BaseController
             $month = $this->request["month"];
             $accountId = $this->request["accountId"];
 
-            return $this->model->getBalanceByMonthYearAccountId($month, $year, $accountId);
+            return $this->service->getBalanceByMonthYearAccountId($month, $year, $accountId);
         }
         else
             return null;
@@ -33,7 +33,7 @@ class AccountsController extends BaseController
             $res = $this->getBalanceByDate();
 
         else
-            $res = $this->model->getAccountOverviewById($this->request["accountId"]);
+            $res = $this->service->getAccountOverviewById($this->request["accountId"]);
 
         if (!$res->ok)
             Response::errorResponse($res->message);

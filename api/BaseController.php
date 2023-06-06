@@ -4,7 +4,7 @@ require_once getcwd(). "/api/Response.php";
 abstract class BaseController {
 
     protected array $request = array();
-    protected $model = NULL;
+    protected $service = NULL;
 
     public function __construct(array $request){ 
 // is responsible for initializing an object of the class
