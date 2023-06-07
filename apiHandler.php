@@ -55,6 +55,6 @@ $router->get("/api/categories", false);
 $router->get("/api/categories/:id[i]", false);
 
 $router->get("/api/accounts/:id[i]", true);
-$router->get("/api/accounts/:method[a]", true); // e.g. by date
+$router->get("/api/accounts/:id[i]/:method[a]", true); // e.g. by date
 
 $router->dispatch($url, $method);
