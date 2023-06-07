@@ -30,7 +30,7 @@ class Authenticator
             'username' => $username,
             'role' => "admin",
             'userId' => $userId,
-            'accountId'=>$accountId,
+            'accountId' => $accountId,
             'mood' => "(╯°□°)╯︵ ┻━┻"
         ];
 
@@ -38,7 +38,7 @@ class Authenticator
         return JWT::encode($request_data, $this->secretKey, 'HS512');
     }
 
-    public function getUserDetails() : array
+    public function getUserDetails(): array
     {
         return $this->userDetails;
     }
@@ -48,10 +48,12 @@ class Authenticator
     {
         $jwt = null;
 
-        if (!array_key_exists("REDIRECT_HTTP_AUTHORIZATION", $_SERVER) ||
-        !preg_match('/Bearer\s(\S+)/', $_SERVER['REDIRECT_HTTP_AUTHORIZATION'], $matches))
-           return null;
-        
+        if (
+            !array_key_exists("REDIRECT_HTTP_AUTHORIZATION", $_SERVER) ||
+            !preg_match('/Bearer\s(\S+)/', $_SERVER['REDIRECT_HTTP_AUTHORIZATION'], $matches)
+        )
+            return null;
+
         $jwt = $matches[1];
 
         return $jwt;
@@ -60,13 +62,18 @@ class Authenticator
     public function authenticate()
     {
         $jwt = $this->getTokenFromHeader();
-        
+
         if (!$jwt) {
             header('HTTP/1.0 400 Bad Request');
             echo 'Token not found in request';
         }
 
-        $token = JWT::decode($jwt, new Key($this->secretKey, 'HS512'));
+        try {
+            $token = JWT::decode($jwt, new Key($this->secretKey, 'HS512'));
+        } catch (Exception $e) {
+            return false;
+        }
+
         $now = new DateTimeImmutable();
 
         if (
