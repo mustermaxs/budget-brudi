@@ -14,32 +14,33 @@ class ServiceResponse
 
         if (DISPLAY_DB_ERRORS)
             self::$msg = $e->getMessage();
-        
-        return (object) array("ok"=>self::$ok, "message"=>self::$msg);
+
+        return (object) array("ok" => self::$ok, "message" => self::$msg);
     }
 
-    public static function success(array $data=null)
+    public static function success(array $data = null)
     {
         if (self::$ok)
             self::$msg = "";
 
-        return (object) array("ok"=>self::$ok, "data"=>$data);
+        return (object) array("ok" => self::$ok, "data" => $data);
     }
 
     public static function __callStatic($name, $arguments)
     {
         if ($name !== "send")
-            throw new Exception("Method ".$name." doesn't exist");
-        
+            throw new Exception("Method " . $name . " doesn't exist");
+
         if (count($arguments) > 1)
             throw new ArgumentCountError("Too many arguments provided");
-
-        if ($arguments[0] instanceof Exception)
-        {
-            return self::fail($arguments[0]);
-        }
-        else {
-            return self::success($arguments[0]);
+        if (count($arguments) != NULL) {
+            if ($arguments[0] instanceof Exception) {
+                return self::fail($arguments[0]);
+            } else {
+                return self::success($arguments[0]);
+            }
+        } else {
+            return self::success();
         }
     }
 }

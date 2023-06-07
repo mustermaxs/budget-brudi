@@ -4,7 +4,7 @@ import getRandomInt from "../../utils/Random";
 import getIconPath from "../../assets/Icons";
 // import images from "../../assets/icons/food.png";
 
-const Card = ({ title, price, tags, icon, date, type, onClick, color, id, size }) => {
+const Card = ({ title, price, tags, icon, date, type, onClick, color, id, size, datatype }) => {
   const [tagState, setTagState] = useState(tags);
 
   //! ich habe versucht es in getIconPath() auszulagern,
@@ -30,7 +30,7 @@ const Card = ({ title, price, tags, icon, date, type, onClick, color, id, size }
 
     var iconPath = categoryMapping[icon] || categoryMapping.Default;
 
-    
+
     if (type === "category") {
       return {
         backgroundImage: `url(${require(`../../assets/icons/icons_raw/${iconPath}.png`)})`,
@@ -48,7 +48,9 @@ const Card = ({ title, price, tags, icon, date, type, onClick, color, id, size }
     <>
       <div
         className={`card ${size && size}`}
-        onClick={() => {handleClick(id);}}
+        onClick={() => { handleClick(id); }}
+        id={id}
+        data-type={datatype}
       >
         <div className="icon-container" style={iconStyle}>
         </div>

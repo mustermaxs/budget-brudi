@@ -71,7 +71,7 @@ class GoalsService extends BaseService
     public function updateGoal($accountId, $goalId, $title, $amount, $date, $color)
     {
         try {
-            $query = "UPDATE Goals SET title=?, amount=?, date=?, color=?
+            $query = "UPDATE Goal SET title=?, amount=?, date=?, color=?
             WHERE F_accountID=? AND goalID=?";
 
             $stmt = $this->conn->prepare($query);
