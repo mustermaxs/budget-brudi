@@ -198,7 +198,7 @@ function SavingsSettings(props) {
               <span>
                 &#8709; amount saved / month:{" "}
                 {input.percentage > 0
-                  ? (4567.9 / input.percentage).toFixed(2)
+                  ? (4567.9 * (input.percentage / 100)).toFixed(2)
                   : 0}{" "}
                 €
               </span>
