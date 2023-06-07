@@ -173,14 +173,14 @@ class TransactionsService extends BaseService
 
     /*## Epense Update ##*/
 
-    public function updateExpense($expenseId, $categoryId, $title, $incomeDate, $expenseAmount)
+    public function updateExpense($id, $categoryId, $title, $date, $amount)
     {
         try {
             $query = "UPDATE Expense SET F_categoryID = ?, Title = ?, date = ?, Amount = ?
             WHERE expenseID = ?";
 
             $stmt = $this->conn->prepare($query);
-            $stmt->bind_param("dssdd", $categoryId, $title, $incomeDate, $incomeAmount, $expenseId);
+            $stmt->bind_param("dssdd", $categoryId, $title, $date, $amount, $id);
             $stmt->execute();
 
             return ServiceResponse::success();
