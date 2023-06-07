@@ -26,6 +26,11 @@ function SavingsSettings(props) {
   const [cards, setCards] = useState([]);
   const [selectedGoals, setSelectedGoals] = useState([]);
   const [percentages, setPercentages] = useState([]);
+  const [settings, setSettings] = useState({
+    percentage: null,
+    mode: null,
+    nbrOfGoals: null
+  });
   const nbrOfGoalsFetched = useRef(1);
 
 /**
@@ -47,7 +52,10 @@ function SavingsSettings(props) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwtToken.get()}`,
         loadingAnim: "false",
-      },  })
+      },  });
+      // setSettings({...settings, percentage: 50, mode: "incremental", nbrOfGoals: 4})
+      console.log(settings)
+
     });
 
   useEffect(() => {
@@ -241,7 +249,7 @@ function SavingsSettings(props) {
                 <Switch
                   name="mode"
                   value={false}
-                  defaultValue={false}
+                  defaultValue={settings.mode}
                   onClick={(ev) => handleChange(ev.target)}
                 />
                 <span>Incremental</span>
