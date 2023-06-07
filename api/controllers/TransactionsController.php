@@ -94,6 +94,6 @@ class TransactionsController extends BaseController
                 Response::successResponse("transaction Updated");
         }
 
-        Response::errorResponse("Updating transaction failed");
+        Response::errorResponse("Updating transaction failed", $response);
     }
 }
