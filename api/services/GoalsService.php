@@ -73,8 +73,10 @@ class GoalsService extends BaseService
             WHERE F_accountID=? AND goalID=?";
 
             $stmt = $this->conn->prepare($query);
-            $result = $stmt->execute([$title, $amount, $date, $color, $accountId, $goalId]);
-
+            $stmt->bind_param("sdssdd", $title, $amount, $date, $color, $accountId, $goalId);
+            $stmt->execute();
+            $result = $stmt->affected_rows; // get the number of affected rows
+    
             return ServiceResponse::send(array("result"=>$result));
 
         } catch (mysqli_sql_exception $e) {
