@@ -7,11 +7,12 @@ import Input from "../components/widgets/Input";
 import BbBtn from "../components/widgets/BbBtn";
 import "../components/widgets/bbTable.css";
 import BalanceChart from "../components/BalanceChart";
-import { jwtToken } from "../contexts/UserContext";
-import { useEffect, useRef, useState } from "react";
+import { UserContext, jwtToken } from "../contexts/UserContext";
+import { useContext, useEffect, useRef, useState } from "react";
 
 
 function Analysis(props) {
+  const {user} = useContext(UserContext);
   const [overview, setOverview] = useState({ balance: "?", expenses: "?", income: "?" });
   const [balances, setBalances] = useState([0, 0, 0, 0]);
   const [goals, setGoals] = useState({ data: [], total: 0.00 });
@@ -51,7 +52,7 @@ function Analysis(props) {
 
   useEffect(() => {
     // fetcht balance, expenses, income
-    fetch('http://localhost/budget-brudi/api/accounts', {
+    fetch(`http://localhost/budget-brudi/api/accounts/${user.userId}`, {
       method: "GET",
       mode: "cors",
       headers: {
@@ -77,7 +78,7 @@ function Analysis(props) {
       const year = new Date().getFullYear();
 
       for (let month = 0; month <= currentMonthIndex(); month++) {
-        fetch(`http://localhost/budget-brudi/api/accounts/date?month=${month}&year=${year}`, {
+        fetch(`http://localhost/budget-brudi/api/accounts/${user.userId}/date?month=${month}&year=${year}`, {
           method: "GET",
           mode: "cors",
           headers: {
