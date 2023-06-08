@@ -4,8 +4,33 @@ require_once getcwd() . "/api/BaseService.php";
 
 class GoalsService extends BaseService
 {
+    public function getGoalCountByAccountID($accountID)
+    {
+        try {
+            $query = "SELECT COUNT(*) as count FROM Goal WHERE F_accountID = ?";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("d", $accountID);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $data = $result->fetch_assoc();
+
+            return $data['count'];
+
+        } catch (mysqli_sql_exception $e) {
+            return -1;
+        }
+    }
+
     public function createNewGoal($accountId, $goaltitle, $amount, $date, $color) // should it be really $goalTitle? and not the ID?
     {
+        $currentCount = $this->getGoalCountByAccountID($accountId);
+        if ($currentCount >= 5) {
+            throw new Exception("Goal limit reached. You cannot have more than 5 goals.");
+            return ServiceResponse::error("Goal limit reached. You cannot have more than 5 goals.", 403); // 403 Forbidden
+        }
+
+
         try {
             $query = "INSERT INTO Goal (F_accountID, title, amount, date, color)
         VALUES (?, ?, ?, ?, ?)";
@@ -16,9 +41,13 @@ class GoalsService extends BaseService
             $goalId = $stmt->insert_id; //returns the autoincrement ID Nr
 
             return ServiceResponse::send(array("goalId" => $goalId));
+
         } catch (mysqli_sql_exception $e) {
             return ServiceResponse::send($e);
-        }
+        
+        } catch (Exception $e) {
+        return ServiceResponse::send($e);
+    }
     }
 
 
