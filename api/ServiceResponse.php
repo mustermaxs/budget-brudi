@@ -8,7 +8,7 @@ class ServiceResponse
     public static array $data = array();
     public static string $msg = "An error occured";
 
-    public static function fail(Exception $e)
+    private static function failedWithException(Exception $e)
     {
         self::$ok = false;
 
@@ -18,7 +18,15 @@ class ServiceResponse
         return (object) array("ok" => self::$ok, "message" => self::$msg);
     }
 
-    public static function success(array $data = null)
+    private static function failedWithCustomMsg(string $msg)
+    {
+        self::$ok = false;
+
+        return (object) array("ok" => self::$ok, "message" => $msg);
+    }
+
+
+    private static function sendSuccess(array $data = null)
     {
         if (self::$ok)
             self::$msg = "";
@@ -26,21 +34,32 @@ class ServiceResponse
         return (object) array("ok" => self::$ok, "data" => $data);
     }
 
+    private static function handleFail($name, $arguments)
+    {
+        if ($arguments[0] instanceof Exception)
+            return self::failedWithException($arguments[0]);
+
+        elseif (is_string($arguments[0]))
+            return self::failedWithCustomMsg($arguments[0]);
+    }
+
     public static function __callStatic($name, $arguments)
     {
-        if ($name !== "send")
-            throw new Exception("Method " . $name . " doesn't exist");
-
         if (count($arguments) > 1)
             throw new ArgumentCountError("Too many arguments provided");
+
         if (count($arguments) != NULL) {
+            if ($name == "success") return self::sendSuccess($arguments[0]);
+            elseif ($name == "fail") return self::handleFail($name, $arguments);
+            else return self::failedWithCustomMsg("called ServiceResponse method doesn'exist '".$name."'");
+
             if ($arguments[0] instanceof Exception) {
-                return self::fail($arguments[0]);
+                return self::failedWithException($arguments[0]);
             } else {
-                return self::success($arguments[0]);
+                return self::sendSuccess($arguments[0]);
             }
         } else {
-            return self::success();
+            return self::sendSuccess();
         }
     }
 }
