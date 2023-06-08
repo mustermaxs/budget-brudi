@@ -71,13 +71,14 @@ class GoalsService extends BaseService
     public function updateGoal($accountId, $goalId, $title, $amount, $date, $color)
     {
         try {
-            $query = "UPDATE Goal SET title=?, amount=?, date=?, color=?
-            WHERE F_accountID=? AND goalID=?";
+            $query = "UPDATE Goal SET title = ?, amount = ?, date = ?, color = ?
+            WHERE F_accountID = ? AND goalID = ?";
 
             $stmt = $this->conn->prepare($query);
             $result = $stmt->execute([$title, $amount, $date, $color, $accountId, $goalId]);
 
             return ServiceResponse::send(array("result" => $result));
+            
         } catch (mysqli_sql_exception $e) {
             return ServiceResponse::send($e);
         }
@@ -93,6 +94,7 @@ class GoalsService extends BaseService
             $stmt->execute();
 
             return ServiceResponse::success();
+            
         } catch (mysqli_sql_exception $e) {
             return ServiceResponse::send($e);
         }
