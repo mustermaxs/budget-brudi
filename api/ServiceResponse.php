@@ -17,6 +17,16 @@ class ServiceResponse
 
         return (object) array("ok" => self::$ok, "message" => self::$msg);
     }
+    
+    
+    // Just trying out the error message for having too many goals
+    // public static function error($message, $code = 400) {
+    //     http_response_code($code);
+    //     echo json_encode(["ok" => false, "you have too many goals" => $message]);
+    //     exit();
+    // }
+
+
 
     public static function success(array $data = null)
     {

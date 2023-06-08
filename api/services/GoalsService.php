@@ -24,16 +24,16 @@ class GoalsService extends BaseService
 
     public function createNewGoal($accountId, $goaltitle, $amount, $date, $color) // should it be really $goalTitle? and not the ID?
     {
-        $currentCount = $this->getGoalCountByAccountID($accountId);
-        if ($currentCount >= 5) {
-            throw new Exception("Goal limit reached. You cannot have more than 5 goals.");
-            return ServiceResponse::error("Goal limit reached. You cannot have more than 5 goals.", 403); // 403 Forbidden
-        }
+        // $currentCount = $this->getGoalCountByAccountID($accountId);
+        // if ($currentCount >= 5) {
+        //     throw new Exception("Goal limit reached. You cannot have more than 5 goals.");
+        //     return ServiceResponse::error("Goal limit reached. You cannot have more than 5 goals.", 403); // 403 Forbidden
+        // }
 
 
         try {
             $query = "INSERT INTO Goal (F_accountID, title, amount, date, color)
-        VALUES (?, ?, ?, ?, ?)";
+            VALUES (?, ?, ?, ?, ?)";
 
             $stmt = $this->conn->prepare($query);
             $stmt->bind_param("dsdss", $accountId, $goaltitle, $amount, $date, $color);
@@ -45,9 +45,9 @@ class GoalsService extends BaseService
         } catch (mysqli_sql_exception $e) {
             return ServiceResponse::send($e);
         
-        } catch (Exception $e) {
-        return ServiceResponse::send($e);
-    }
+        // } catch (Exception $e) {
+        // return ServiceResponse::send($e);
+        }
     }
 
 
