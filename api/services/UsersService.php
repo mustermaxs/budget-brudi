@@ -6,7 +6,7 @@ class UsersService extends BaseService
     public function RegisterUser($firstname, $lastname, $username, $password)
     {
 
-        try{
+        try {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
             $query = "INSERT INTO User (username, password, firstname, lastname) VALUES (?, ?, ?, ?)";
@@ -15,36 +15,40 @@ class UsersService extends BaseService
             $stmt->bind_param("ssss", $username, $hashedPassword, $firstname, $lastname);
             $stmt->execute();
 
-            return ServiceResponse::send();
-        } catch(mysqli_sql_exception $e) {
-            return ServiceResponse::send($e);
+            return ServiceResponse::success();
+        } catch (mysqli_sql_exception $e) {
+            return ServiceResponse::fail($e);
         }
 
-        
+
         //$userId = $stmt->insert_id;
 
         //return $userId;
     }
-    
+
     public function getUserById(int $userId)
     {
-        $query =
-            "SELECT userID, username, firstname, lastname, email
+        try {
+            $query =
+                "SELECT userID, username, firstname, lastname, email
             FROM User
             WHERE userID = ?;";
 
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("d", $userId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $user = $result->fetch_array(MYSQLI_ASSOC);
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("d", $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $user = $result->fetch_array(MYSQLI_ASSOC);
 
-        return $user;
-
+            return ServiceResponse::success($user);
+        } catch (Exception $e) {
+            return ServiceResponse::fail($e);
+        }
     }
 
     public function getUserIdByAccountId(int $accountId)
-    {}
+    {
+    }
 
     public function getUserIdByUserName(string $userName)
     {
@@ -65,7 +69,7 @@ class UsersService extends BaseService
 
     public function updateUserData($userId, $firstName, $lastName, $eMail)
     {
-        try{
+        try {
             $query = "UPDATE User SET firstname = ?, lastname = ?, email = ?
             WHERE userID = ?";
 
@@ -73,9 +77,9 @@ class UsersService extends BaseService
             $stmt->bind_param("sssd", $firstName, $lastName, $eMail, $userId);
             $stmt->execute();
 
-            return ServiceResponse::send();
-        } catch(mysqli_sql_exception $e) {
-            return ServiceResponse::send($e);
+            return ServiceResponse::success();
+        } catch (mysqli_sql_exception $e) {
+            return ServiceResponse::fail($e);
         }
     }
 }

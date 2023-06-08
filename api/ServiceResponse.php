@@ -51,6 +51,7 @@ class ServiceResponse
         if (count($arguments) != NULL) {
             if ($name == "success") return self::sendSuccess($arguments[0]);
             elseif ($name == "fail") return self::handleFail($name, $arguments);
+            elseif ($name == "send");
             else return self::failedWithCustomMsg("called ServiceResponse method doesn'exist '".$name."'");
 
             if ($arguments[0] instanceof Exception) {

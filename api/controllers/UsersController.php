@@ -14,8 +14,12 @@ class UsersController extends BaseController
     public function get()
     {
         $this->prohibitForeignUserAccess();
-        $user = $this->service->getUserById($this->request["userId"]);
-        $this->successResponse("successfully fetched user data", $user);
+        $response = $this->service->getUserById($this->request["userId"]);
+        
+        if ($response->ok)
+            Response::successResponse("successfully fetched user data", $response->data, 200);
+        else
+            Response::errorResponse("fetching user data failed", $response);
     }
 
     // register new user
@@ -32,7 +36,7 @@ class UsersController extends BaseController
         if ($response->ok) {
             Response::successResponse("registration successful");
         } else {
-            Response::errorResponse($response->message);
+            Response::errorResponse("failed to create new user", $response);
         }
     }
 
@@ -50,7 +54,7 @@ class UsersController extends BaseController
         if ($response->ok) {
             Response::successResponse("profile updated successfully");
         } else {
-            Response::errorResponse($response->message);
+            Response::errorResponse("failed to update user", $response);
         }
     }
 }
