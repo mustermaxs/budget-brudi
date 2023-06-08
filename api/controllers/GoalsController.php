@@ -36,6 +36,12 @@ class GoalsController extends BaseController
         $date = $this->request["date"];
         $color = $this->request["color"];
 
+        // check if the goal limit is reached before creating a new goal
+        $currentCount = $this->service->getGoalCountByAccountID($accountId);
+        if ($currentCount >= 5) {
+            Response::errorResponse("Goal limit reached. Goals are limited to 5 goals");
+            return;
+        }
 
         $response = $this->service->createNewGoal($accountId, $title, $amount, $date, $color);
 
