@@ -53,8 +53,43 @@ class GoalsController extends BaseController
         }
     }
 
+    
+    //Updating shares of the Goals -- IF PATCH works
+    /*
+    public function patch() 
+    {
+        $goals = $this->request["goals"]; // Assuming "goals" is an array of goal objects that includes goal ID and the new share value
+
+        $response = $this->service->updateShares($goals);
+
+        if ($response->ok) {
+            Response::successResponse("Goal shares updated successfully");
+        } else {
+            Response::errorResponse($response->message);
+        }
+    }
+    */
+
+
+
+
     public function put()
     {
+        //for shares % to be updated for several goals
+        if (isset($this->request["goals"])) {
+            $goals = $this->request["goals"];
+            $response = $this->service->updateMultipleShares($goals);
+    
+            if ($response->ok) {
+                Response::successResponse("Goal shares updated successfully");
+            } else {
+                Response::errorResponse($response->message);
+            }
+    
+            return;
+        }
+    
+
         $accountId = $this->request["accountId"];
         $title = $this->request["Title"];
         $amount = $this->request["Amount"];
