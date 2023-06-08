@@ -8,13 +8,14 @@ import { theme, BBSwitch } from "./CustomSliderStyle";
 import BBInput from "../components/widgets/BBInput";
 import "../components/Text.css";
 import { Switch } from "@mui/material";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import Card from "../components/widgets/Card";
-import { jwtToken } from "../contexts/UserContext";
+import { UserContext, jwtToken } from "../contexts/UserContext";
 import PercentageBubble from "../components/PercentageBubble";
 import { useNavigate } from "react-router-dom";
 
 function SavingsSettings(props) {
+  const {user} = useContext(UserContext);
   const navigate = useNavigate();
   const maxNbrOfGoals = 5;
   const minNbrOfGoals = 1;
@@ -29,8 +30,9 @@ function SavingsSettings(props) {
   const [settings, setSettings] = useState({
     percentage: null,
     mode: null,
-    nbrOfGoals: null
-  });
+    nbrOfGoals: null,
+    shares: []
+  }); /* shares => [{goalID, percentage}] */
   const nbrOfGoalsFetched = useRef(1);
 
 /**
@@ -45,18 +47,19 @@ function SavingsSettings(props) {
 */
 
   useEffect(() => {
-    fetch("http://localhost/budget-brudi/api/transactions/income", {
-      method: "GET",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${jwtToken.get()}`,
-        loadingAnim: "false",
-      },  });
-      // setSettings({...settings, percentage: 50, mode: "incremental", nbrOfGoals: 4})
-      console.log(settings)
+     
+      fetch(`http://localhost/budget-brudi/api/accounts/${user.userId}`, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken.get()}`,
+          loadingAnim: "true",
+        },  });
 
-    });
+        // TODO setSettings here
+
+    }, []);
 
   useEffect(() => {
     fetch("http://localhost/budget-brudi/api/goals?limit=5", {
@@ -65,7 +68,7 @@ function SavingsSettings(props) {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwtToken.get()}`,
-        loadingAnim: "false",
+        loadingAnim: "true",
       },
     })
       .then((res) => {
@@ -84,6 +87,12 @@ function SavingsSettings(props) {
       });
   }, []);
 
+  const createShareObj = () => {
+    return selectedGoals.map(({GoalID}, index) => {
+      return {GoalID: GoalID, share: percentages[index]}
+    });
+  };
+
   // handles percentage bubbles and renders select number of goals
   useEffect(() => {
     let nbrSelectedGoals = nbrOfGoalsFetched.current;
@@ -96,8 +105,11 @@ function SavingsSettings(props) {
     else setPercentages(getIncrPercentageValues(nbrSelectedGoals));
 
     setSelectedGoals(cards.slice(0, nbrSelectedGoals));
+    setSettings({...settings, shares: createShareObj()})
+    console.log("shareobj:", settings.shares)
   }, [input.nbrOfGoals, input.mode]);
 
+  /* for number of goals to include range slider */
   const marks = [
     {
       value: 1,
@@ -121,6 +133,7 @@ function SavingsSettings(props) {
     },
   ];
 
+  /* used for "Saving Proportions" range slider */
   const marksPercentage = [
     {
       value: 0,
@@ -132,6 +145,7 @@ function SavingsSettings(props) {
     },
   ];
 
+  /* get shares/percentages for incremental saving mode */
   function getIncrPercentageValues(nbrOfGoals) {
     let percentageBubbleValues = {
       5: [50, 25, 12.5, 6.25, 6.25],
@@ -145,18 +159,21 @@ function SavingsSettings(props) {
         ? nbrOfGoals
         : nbrOfGoalsFetched.current;
     return percentageBubbleValues[setIndex];
-  }
+  };
 
+/* get shares/percentages for equal saving mode */
   function getEqualPercentages(nbrSelectedGoals) {
     let percentage = (100 / nbrSelectedGoals).toFixed(2);
 
     return Array(nbrSelectedGoals).fill(percentage);
-  }
+  };
 
+  /* redirect to editgoal page when clicked on goal card */
   const redirectToGoal = (id) => {
     navigate(`/editgoal?id=${id}`);
   };
 
+  /* too lazy to look into what this was supposed to do. completely forgot by now. it works, that's all */
   const handleChange = (eventTarget) => {
     //
     let name = eventTarget.name;
@@ -170,6 +187,7 @@ function SavingsSettings(props) {
       ...prev,
       [name]: value,
     }));
+    setSettings({...settings, mode: value});
 
     console.log(input);
   };
@@ -224,7 +242,7 @@ function SavingsSettings(props) {
             <Box sx={{ width: 260, margin: "0 auto" }}>
               <Slider
                 aria-label="Number of goals"
-                defaultValue={1}
+                defaultValue={settings.nbrOfGoals}
                 step={null}
                 min={minNbrOfGoals}
                 max={maxNbrOfGoals}
@@ -257,9 +275,10 @@ function SavingsSettings(props) {
             </ThemeProvider>
           </div>
         </InputCollection>
-        <InputCollection>
+        <div style={{minHeight: "30rem"}}>
           {selectedGoals.map(
-            ({ Title, Date, Amount, GoalID, Color }, index) => {
+            ({ Title, Date, Amount, GoalID, Color, share }, index) => {
+              
               return (
                 <>
                   <div className="percentageGoalRow">
@@ -281,7 +300,7 @@ function SavingsSettings(props) {
               );
             }
           )}
-        </InputCollection>
+        </div>
       </ContentWrapper>
     </>
   );
