@@ -32,3 +32,4 @@ package.json
 # DB Config
 api/dbConfig.php
 .VSCodeCounter
+api/remoteDBconfig.php

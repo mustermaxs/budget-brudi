@@ -1,6 +1,7 @@
 <?php
 
 define("DISPLAY_DB_ERRORS", true);
+define("USE_LOCAL_DB", false);
 
 require_once "./api/router.php";
 require_once getcwd() . "/api/Authenticator.php";
@@ -14,6 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200);
     exit();
 }
+
+// TODO sollte Router machen
 
 $url = $_SERVER["REQUEST_URI"];
 $method = $_SERVER["REQUEST_METHOD"];
