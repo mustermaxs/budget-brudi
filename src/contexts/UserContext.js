@@ -7,7 +7,7 @@ const jwtToken = {
   remove: () => localStorage.removeItem("token")
 };
 
-const defaultUser = { isLoggedIn: false, role: "guest" };
+const defaultUser = { isLoggedIn: false, role: "guest", username: "", firstname: "", lastname: "", userId: "" };
 
 const UserContext = createContext(defaultUser);
 
@@ -18,7 +18,7 @@ const UserProvider = ({ children }) => {
     const token = jwtToken.get();
 
     if (token) {
-      const { username, firstname, lastname, role } = decode(token);
+      const { username, firstname, lastname, role, userId } = decode(token);
 
       setUser({
         isLoggedIn: true,
@@ -26,6 +26,7 @@ const UserProvider = ({ children }) => {
         firstname,
         lastname,
         role,
+        userId
       });
     }
   }, []);
@@ -45,7 +46,7 @@ const UserProvider = ({ children }) => {
       const { token } = data.data;
 
       if (token) {
-        const { username, firstname, lastname, role } = decode(token);
+        const { username, firstname, lastname, role, userId } = decode(token);
 
         setUser({
           isLoggedIn: true,
@@ -53,6 +54,7 @@ const UserProvider = ({ children }) => {
           firstname,
           lastname,
           role,
+          userId
         });
         jwtToken.set(token);
         return true;

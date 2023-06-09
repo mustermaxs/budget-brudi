@@ -22,7 +22,7 @@ class GoalsController extends BaseController
         }
 
         if (!$res->ok)
-            Response::errorResponse($res->message);
+            Response::errorResponse($res);
 
 
         Response::successResponse("goals fetched successfully", $res->data);

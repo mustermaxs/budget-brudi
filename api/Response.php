@@ -7,6 +7,8 @@ class Response
     {
         http_response_code($statusCode);
         header('Content-Type: application/json');
+        header('HTTP/1.1 '.$statusCode);
+        
         echo json_encode([
             'status' => 'success',
             'message' => $message,
@@ -23,6 +25,8 @@ class Response
             
         http_response_code($statusCode);
         header('Content-Type: application/json');
+        header('HTTP/1.1 '.$statusCode);
+        
         echo json_encode([
             'status' => 'error',
             'message' => $message,

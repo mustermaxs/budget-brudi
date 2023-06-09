@@ -1,6 +1,7 @@
 <?php
 
 define("DISPLAY_DB_ERRORS", true);
+define("USE_LOCAL_DB", false);
 
 require_once "./api/router.php";
 require_once getcwd() . "/api/Authenticator.php";
@@ -14,6 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200);
     exit();
 }
+
+// TODO sollte Router machen
 
 $url = $_SERVER["REQUEST_URI"];
 $method = $_SERVER["REQUEST_METHOD"];
@@ -33,9 +36,9 @@ $router = new Router($baseURL, $apiDir);
 // true = private api route -> authentication is needed
 // false = public api route  
 $router->post("/api/login", false);
-$router->get("/api/users", true);
+$router->get("/api/users/:id[i]", true);
 $router->post("/api/users", false);
-$router->put("/api/users", true);
+$router->put("/api/users/:id[i]", true);
 
 $router->get("/api/transactions/:type[a]", true);
 $router->get("/api/transactions/:type[a]/:id[i]", true);
@@ -54,7 +57,7 @@ $router->post("/api/register", false);
 $router->get("/api/categories", false);
 $router->get("/api/categories/:id[i]", false);
 
-$router->get("/api/accounts", true);
-$router->get("/api/accounts/:method[a]", true); // e.g. by date
+$router->get("/api/accounts/:id[i]", true);
+$router->get("/api/accounts/:id[i]/:method[a]", true); // e.g. by date
 
 $router->dispatch($url, $method);

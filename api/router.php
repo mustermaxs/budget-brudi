@@ -1,4 +1,5 @@
 <?php
+require_once getcwd() . "/api/Response.php";
 
 /**
  * request parameters stored in $request, get with Router::request()
@@ -155,11 +156,11 @@ class Router
         $auth = new Authenticator();
 
         if (!file_exists($controllerPath))
-            $this->errorResponse("route doesn't exist", 400);
+            Response::errorResponse("Route doesn't exist", null, 404);
 
         if ($this->requestDetails["authenticate"]) {
             if (!$auth->authenticate())
-                $this->errorResponse("authentication failed");
+                Response::errorResponse("Unauthorized or token expired", null, 401);
             $this->requestDetails = array_merge($this->requestDetails, $auth->getUserDetails());
         }
 
@@ -200,7 +201,7 @@ class Router
 
         if (!$this->resolveRoute($this->routes[$httpMethod], $this->url)) {
             $this->routeexists = false;
-            $this->errorResponse("Requested route doesn't exist", 400);
+            Response::errorResponse("Route doesn't exist", null, 404);
         }
         $this->routeexists = true;
 

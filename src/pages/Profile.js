@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import { loadingAnim } from "../components/widgets/Spinner";
 
 function Profile(props) {
+  const {user} = useContext(UserContext);
   // const { handleLogin } = useContext(UserContext);
   // const navigate = useNavigate();
   // TODO fetch personal data
@@ -26,7 +27,7 @@ function Profile(props) {
   });
 
   useEffect(() => {
-    fetch('http://localhost/budget-brudi/api/users', {
+    fetch(`http://localhost/budget-brudi/api/users/${user.userId}`, {
       method: 'GET',
       mode: "cors",
       headers: {
@@ -45,7 +46,7 @@ function Profile(props) {
 
 
   const handleSubmit = (ev) => {
-    fetch('http://localhost/budget-brudi/api/users', {
+    fetch(`http://localhost/budget-brudi/api/users/${user.userId}`, {
       method: 'PUT',
       mode: "cors",
       headers: {

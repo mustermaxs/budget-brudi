@@ -43,7 +43,7 @@ class TransactionsController extends BaseController
             Response::errorResponse("transaction type invalid");
 
         if (!$response->ok)
-            Response::errorResponse($response->message);
+            Response::errorResponse("fetching transactions failed", $response);
 
         Response::successResponse("data loaded successfully", $response->data);
     }
@@ -94,6 +94,6 @@ class TransactionsController extends BaseController
                 Response::successResponse("transaction Updated");
         }
 
-        Response::errorResponse("Updating transaction failed");
+        Response::errorResponse("Updating transaction failed", $response);
     }
 }

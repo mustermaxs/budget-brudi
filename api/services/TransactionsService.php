@@ -96,24 +96,28 @@ class TransactionsService extends BaseService
 
     public function getIncomeByAccountId($accountId, $limit = 10)
     {
-        // brauchen Namen der Kategorien
-        $limit = $limit ?? 10;
+        try {
+            // brauchen Namen der Kategorien
+            $limit = $limit ?? 10;
 
-        $query = "SELECT * FROM Income inc
+            $query = "SELECT * FROM Income inc
         JOIN Category cat ON cat.categoryID=inc.F_categoryID
          WHERE F_accountID = ? LIMIT ?";
 
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("dd", $accountId, $limit);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $rows = [];
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("dd", $accountId, $limit);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $rows = [];
 
-        while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
+            while ($row = $result->fetch_assoc()) {
+                $rows[] = $row;
+            }
+
+            return ServiceResponse::send($rows);
+        } catch (Exception $e) {
+            return ServiceResponse::send($e);
         }
-
-        return ServiceResponse::send($rows);
     }
 
     public function getIncomeByIncomeID($incomeId, $limit = 10)
@@ -173,14 +177,14 @@ class TransactionsService extends BaseService
 
     /*## Epense Update ##*/
 
-    public function updateExpense($expenseId, $categoryId, $title, $incomeDate, $expenseAmount)
+    public function updateExpense($id, $categoryId, $title, $date, $amount)
     {
         try {
             $query = "UPDATE Expense SET F_categoryID = ?, Title = ?, date = ?, Amount = ?
             WHERE expenseID = ?";
 
             $stmt = $this->conn->prepare($query);
-            $stmt->bind_param("dssdd", $categoryId, $title, $incomeDate, $incomeAmount, $expenseId);
+            $stmt->bind_param("dssdd", $categoryId, $title, $date, $amount, $id);
             $stmt->execute();
 
             return ServiceResponse::success();
