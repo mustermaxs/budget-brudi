@@ -167,10 +167,11 @@ function EditGoal(props) {
         </InputCollection>
         <Spacer />
         {/* TODO percentage */}
-        {goal.Percentage !== "" ? (
+        {inputValue.Percentage ? (
           <div>
-            <span>Dedicated percentage</span>
-            <div className="badge">{inputValue.Percentage}%</div>
+            You're saving {inputValue.Percentage}% of your income for this goal.
+            {/* <span>Dedicated percentage</span> */}
+            {/* <div className="badge">{inputValue.Percentage}%</div> */}
           </div>
         ) : null}
         <Spacer />
