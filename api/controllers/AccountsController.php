@@ -12,6 +12,8 @@ class AccountsController extends BaseController
 
     private function getBalanceByDate()
     {
+        $res = null;
+
         if (
             isset($this->request["month"])
             &&
@@ -21,14 +23,20 @@ class AccountsController extends BaseController
             $month = $this->request["month"];
             $accountId = $this->request["accountId"];
 
-            return $this->service->getBalanceByMonthYearAccountId($month, $year, $accountId);
+            $res = $this->service->getBalanceByMonthYearAccountId($month, $year, $accountId);
         }
-        else
-            return null;
+
+        if ($res != null && $res->ok)
+            Response::successResponse("fetched account balance successfully", $res->data);
+
+        Response::errorResponse("fetching account balance failed", $res->message);
     }
 
     public function get()
     {
+
+        $this->prohibitForeignUserAccess();
+
         if (isset($this->request["method"]) && $this->request["method"] == "date")
             $res = $this->getBalanceByDate();
 

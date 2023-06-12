@@ -4,11 +4,36 @@ require_once getcwd() . "/api/BaseService.php";
 
 class GoalsService extends BaseService
 {
-    public function createNewGoal($accountId, $goaltitle, $amount, $date, $color) // should it be really $goalTitle? and not the ID?
+    public function getGoalCountByAccountID($accountID)
     {
         try {
+            $query = "SELECT COUNT(*) as count FROM Goal WHERE F_accountID = ?";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("d", $accountID);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $data = $result->fetch_assoc();
+
+            return $data['count'];
+
+        } catch (mysqli_sql_exception $e) {
+            return -1;
+        }
+    }
+
+    public function createNewGoal($accountId, $goaltitle, $amount, $date, $color) // should it be really $goalTitle? and not the ID?
+    {
+        // $currentCount = $this->getGoalCountByAccountID($accountId);
+        // if ($currentCount >= 5) {
+        //     throw new Exception("Goal limit reached. You cannot have more than 5 goals.");
+        //     return ServiceResponse::error("Goal limit reached. You cannot have more than 5 goals.", 403); // 403 Forbidden
+        // }
+
+
+        try {
             $query = "INSERT INTO Goal (F_accountID, title, amount, date, color)
-        VALUES (?, ?, ?, ?, ?)";
+            VALUES (?, ?, ?, ?, ?)";
 
             $stmt = $this->conn->prepare($query);
             $stmt->bind_param("dsdss", $accountId, $goaltitle, $amount, $date, $color);
@@ -16,8 +41,12 @@ class GoalsService extends BaseService
             $goalId = $stmt->insert_id; //returns the autoincrement ID Nr
 
             return ServiceResponse::send(array("goalId" => $goalId));
+
         } catch (mysqli_sql_exception $e) {
             return ServiceResponse::send($e);
+        
+        // } catch (Exception $e) {
+        // return ServiceResponse::send($e);
         }
     }
 
@@ -71,13 +100,14 @@ class GoalsService extends BaseService
     public function updateGoal($accountId, $goalId, $title, $amount, $date, $color)
     {
         try {
-            $query = "UPDATE Goal SET title=?, amount=?, date=?, color=?
-            WHERE F_accountID=? AND goalID=?";
+            $query = "UPDATE Goal SET title = ?, amount = ?, date = ?, color = ?
+            WHERE F_accountID = ? AND goalID = ?";
 
             $stmt = $this->conn->prepare($query);
             $result = $stmt->execute([$title, $amount, $date, $color, $accountId, $goalId]);
 
             return ServiceResponse::send(array("result" => $result));
+            
         } catch (mysqli_sql_exception $e) {
             return ServiceResponse::send($e);
         }
@@ -93,6 +123,7 @@ class GoalsService extends BaseService
             $stmt->execute();
 
             return ServiceResponse::success();
+            
         } catch (mysqli_sql_exception $e) {
             return ServiceResponse::send($e);
         }

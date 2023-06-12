@@ -13,10 +13,16 @@ class UsersController extends BaseController
 
     public function get()
     {
-        $user = $this->service->getUserById($this->request["userId"]);
-        $this->successResponse("request successfull", $user);
+        $this->prohibitForeignUserAccess();
+        $response = $this->service->getUserById($this->request["userId"]);
+        
+        if ($response->ok)
+            Response::successResponse("successfully fetched user data", $response->data, 200);
+        else
+            Response::errorResponse("fetching user data failed", $response);
     }
 
+    // register new user
     public function post()
     {
         $jsonPostData = $this->getPostData();
@@ -28,14 +34,16 @@ class UsersController extends BaseController
         $response = $this->service->registerUser($firstname, $lastname, $username, $password);
 
         if ($response->ok) {
-            Response::successResponse("Register successful");
+            Response::successResponse("registration successful");
         } else {
-            Response::errorResponse($response->message);
+            Response::errorResponse("failed to create new user", $response);
         }
     }
 
     public function put()
     {
+        $this->prohibitForeignUserAccess();
+
         $userId = $this->request["userId"];
         $firstName = $this->request["firstname"];
         $lastName = $this->request["lastname"];
@@ -44,9 +52,9 @@ class UsersController extends BaseController
         $response = $this->service->updateUserData($userId, $firstName, $lastName, $eMail);
 
         if ($response->ok) {
-            Response::successResponse("Profile updated successfully");
+            Response::successResponse("profile updated successfully");
         } else {
-            Response::errorResponse($response->message);
+            Response::errorResponse("failed to update user", $response);
         }
     }
 }

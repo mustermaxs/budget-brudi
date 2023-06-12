@@ -50,4 +50,15 @@ abstract class BaseController {
         return $jsonPostData;
     }
 
+    // prevents clients from accessing data of other users they're not supposed
+    // to access
+    protected function prohibitForeignUserAccess() : void
+    {
+        if (!isset($this->request["id"]))
+            Response::errorResponse("Missing request parameter 'userId': /api/accounts/:userId");
+
+        if ($this->request["id"] != $this->request["userId"])
+            Response::errorResponse("Attempt to access foreign user data", null, 403);
+    }
+
 }
