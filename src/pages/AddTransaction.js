@@ -53,6 +53,7 @@ function AddTransaction() {
         }).then(categories => {
             console.log(categories.data);
             setCategories([...categories.data])
+            setCategoryID(categories.data[0].id) // set default value
             loaded.current = true;
         });
     }, [])
