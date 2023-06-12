@@ -144,15 +144,24 @@ class TransactionsService extends BaseService
 
     public function createIncome($accountId, $categoryId, $title, $incomeDate, $incomeAmount)
     {
-        $query = "INSERT INTO Expense (F_accountID, F_categoryID, Title, date, Amount)
+        try {
+        $query = "INSERT INTO Income (F_accountID, F_categoryID, Title, date, Amount)
         VALUES (?, ?, ?, ?, ?)";
+
+        if ($incomeAmount < 0)
+            throw new Exception("income amount must be greater than '0'");
 
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param("ddssd", $accountId, $categoryId, $title, $incomeDate, $incomeAmount);
         $stmt->execute();
         $incomeId = $stmt->insert_id;
 
-        return $incomeId;
+        return ServiceResponse::success(array("incomeID" => $incomeId));
+        }
+        catch (Exception $e)
+        {
+            return ServiceResponse::fail($e);
+        }
     }
 
     /*### Update Funktionen ###*/
