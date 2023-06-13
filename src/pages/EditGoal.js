@@ -23,7 +23,7 @@ function EditGoal(props) {
     Date: "",
     Color: "",
     Amount: "",
-    Percentage: "",
+    share: "",
   }); // TODO percentage
   const [inputValue, handleChange, setValue] = useValue({ ...goal });
   const requestedGoalId = useRef(searchParams.get("id"));
@@ -167,13 +167,16 @@ function EditGoal(props) {
         </InputCollection>
         <Spacer />
         {/* TODO percentage */}
-        {inputValue.Percentage ? (
+        {inputValue.share > 0 ? (
           <div>
-            You're saving {inputValue.Percentage}% of your income for this goal.
+            You're saving <span style={{color: "green"}}>{inputValue.share}%</span> of your income for this goal.
             {/* <span>Dedicated percentage</span> */}
             {/* <div className="badge">{inputValue.Percentage}%</div> */}
           </div>
-        ) : null}
+        ) : 
+        <div>
+          You're currently not saving up for this goal.
+          </div>}
         <Spacer />
         <BbBtn content="Update" type="submit" onClick={handleSubmit} />
         <BbBtn content="delete" type="button" onClick={handleDelete} />
