@@ -7,11 +7,12 @@ import Input from "../components/widgets/Input";
 import BbBtn from "../components/widgets/BbBtn";
 import "../components/widgets/bbTable.css";
 import BalanceChart from "../components/BalanceChart";
-import { jwtToken } from "../contexts/UserContext";
-import { useEffect, useRef, useState } from "react";
+import { UserContext, jwtToken } from "../contexts/UserContext";
+import { useContext, useEffect, useRef, useState } from "react";
 
 
 function Analysis(props) {
+  const { user } = useContext(UserContext);
   const [overview, setOverview] = useState({ balance: "?", expenses: "?", income: "?" });
   const [balances, setBalances] = useState([0, 0, 0, 0]);
   const [goals, setGoals] = useState({ data: [], total: 0.00 });
@@ -33,49 +34,40 @@ function Analysis(props) {
 
   // GET GOALS
   useEffect(() => {
-    const fetchGoals = async () => {
-      const response = await fetch('http://localhost/budget-brudi/api/goals', {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${jwtToken.get()}`,
-        }
+    fetch('http://localhost/budget-brudi/api/goals', {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${jwtToken.get()}`,
+      }
+    }).then(res => res.json())
+      .then(goalsRes => {
+        let sumOfGoals = goalsRes.data.reduce((acc, current) =>
+          acc + parseFloat(current.Amount), 0);
+        setGoals({ data: goalsRes.data, total: sumOfGoals });
+        console.log("goals: ", goals);
       });
-
-      const goalsRes = await response.json();
-      const sumOfGoals = goalsRes.data.reduce((acc, current) =>
-        acc + parseFloat(current.Amount), 0);
-      setGoals({ data: goalsRes.data, total: sumOfGoals });
-      console.log("goals: ", goals);
-
-    }
-
-    fetchGoals();
   }, []);
 
   useEffect(() => {
     // fetcht balance, expenses, income
-    const fetchAccountInfo = async () => {
-      const response = await fetch('http://localhost/budget-brudi/api/accounts', {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${jwtToken.get()}`,
-        }
-      });
-
-      const overview = await response.json();
-      // Transform strings to numbers and round to two decimal places
-      const transformedOverview = Object.entries(overview.data).reduce(
-        (acc, [key, value]) => ({ ...acc, [key]: Number(value).toFixed(2) }),
-        {}
-      );
-      setOverview(transformedOverview);
-    }
-
-    fetchAccountInfo();
+    fetch(`http://localhost/budget-brudi/api/accounts/${user.userId}`, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${jwtToken.get()}`,
+      }
+    }).then(res => { return res.json() })
+      .then(overview => {
+        // Transform strings to numbers and round to two decimal places
+        const transformedOverview = Object.entries(overview.data).reduce(
+          (acc, [key, value]) => ({ ...acc, [key]: Number(value).toFixed(2) }),
+          {}
+        );
+        setOverview(transformedOverview);
+      }, []);
 
     // TODO fetcht balance in gewissen Zeitraum
     var balancesByDate = [];
@@ -86,7 +78,7 @@ function Analysis(props) {
       const year = new Date().getFullYear();
 
       for (let month = 0; month <= currentMonthIndex(); month++) {
-        fetch(`http://localhost/budget-brudi/api/accounts/date?month=${month}&year=${year}`, {
+        fetch(`http://localhost/budget-brudi/api/accounts/${user.userId}/date?month=${month}&year=${year}`, {
           method: "GET",
           mode: "cors",
           headers: {
