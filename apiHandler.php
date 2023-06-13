@@ -1,7 +1,7 @@
 <?php
 
 define("DISPLAY_DB_ERRORS", true);
-define("USE_LOCAL_DB", false);
+define("USE_LOCAL_DB", true);
 
 require_once "./api/router.php";
 require_once getcwd() . "/api/Authenticator.php";
