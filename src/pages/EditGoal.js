@@ -14,8 +14,11 @@ import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { jwtToken } from "../contexts/UserContext";
 import { loadingAnim } from "../components/widgets/Spinner";
+import MsgModal from "../components/widgets/MsgModal";
+import { useMsgModal } from "../contexts/ModalContext";
 
 function EditGoal(props) {
+  const { msgModal } = useMsgModal();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [goal, setGoal] = useState({
@@ -84,7 +87,16 @@ function EditGoal(props) {
         },
       }
     )
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok)
+          return res.json();
+        else
+          MsgModal.set({
+            type: "error",
+            title: "Error",
+            message: "Updating this goal failed",
+          }).show();
+      })
       .then((postRes) => {
         console.log(postRes);
       });
