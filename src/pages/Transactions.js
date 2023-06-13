@@ -95,7 +95,7 @@ function Transactions() {
 
   useEffect(() => {
     loadingAnim.show();
-    fetch('http://localhost/budget-brudi/api/transactions?limit=20', {
+    fetch('http://localhost/budget-brudi/api/transactions?limit=100', {
       method: 'GET',
       mode: "cors",
       headers: {
