@@ -89,7 +89,15 @@ function EditGoal(props) {
     )
       .then((res) => {
         if (res.ok)
+        {
+          msgModal.set({
+            type: "normal",
+            title: "Super",
+            message: "Updated goal",
+          }).show();
+          
           return res.json();
+          }
         else
           MsgModal.set({
             type: "error",

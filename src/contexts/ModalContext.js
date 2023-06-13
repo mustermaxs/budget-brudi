@@ -63,6 +63,8 @@ const MsgModalContextProvider = ({ children }) => {
       if ("title" in config) setTitle(config["title"]);
       if ("message" in config) setMessage(config["message"]);
       if ("type" in config) setType(config["type"]);
+
+      return _this;
     };
 
     return _this;
