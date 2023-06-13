@@ -13,8 +13,12 @@ import Card from "../components/widgets/Card";
 import { UserContext, jwtToken } from "../contexts/UserContext";
 import PercentageBubble from "../components/PercentageBubble";
 import { useNavigate } from "react-router-dom";
+import BbBtn from "../components/widgets/BbBtn";
+import MsgModal from "../components/widgets/MsgModal";
+import { useMsgModal } from "../contexts/ModalContext";
 
 function SavingsSettings(props) {
+  const { msgModal } = useMsgModal();
   const {user} = useContext(UserContext);
   const navigate = useNavigate();
   const maxNbrOfGoals = 5;
@@ -192,7 +196,28 @@ function SavingsSettings(props) {
     console.log(input);
   };
 
-
+  const handleSubmit = () => {
+    fetch(`http://localhost/budget-brudi/api/settings/`, {
+      method: 'PUT',
+      mode: "cors",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwtToken.get()}`
+      },
+      body: JSON.stringify(settings)
+    }).then((res) => {
+      if (!res.ok)
+        console.error("updating settings failed");
+      else{
+        console.info("updated settings");
+        msgModal.set({
+          type: "normal",
+          title: "Super",
+          message: "Updated settings"
+        }).show();
+      }
+    })
+  }
 
   return (
     <>
@@ -275,7 +300,7 @@ function SavingsSettings(props) {
             </ThemeProvider>
           </div>
         </InputCollection>
-        <div style={{minHeight: "30rem"}}>
+        <div style={{minHeight: "20rem"}}>
           {selectedGoals.map(
             ({ Title, Date, Amount, GoalID, Color, share }, index) => {
               
@@ -301,6 +326,7 @@ function SavingsSettings(props) {
             }
           )}
         </div>
+      <BbBtn type="button" onClick={handleSubmit} content="Save" />
       </ContentWrapper>
     </>
   );
