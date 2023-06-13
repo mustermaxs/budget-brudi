@@ -87,6 +87,7 @@ function EditGoal(props) {
       .then((res) => res.json())
       .then((postRes) => {
         console.log(postRes);
+        navigate("/goals");
       });
     // TODO error modal & error handling
   };
