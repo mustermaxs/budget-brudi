@@ -32,3 +32,4 @@ package.json
 # DB Config
 .VSCodeCounter
 api/remoteDBconfig.php
+my_notes.txt
