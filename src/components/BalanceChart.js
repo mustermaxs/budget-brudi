@@ -8,15 +8,27 @@ const BalanceChart = (props) => {
     useEffect(() => {
         loadingAnim.show();
         const ctx = chartRef.current.getContext("2d");
+
+        let balancesRadius = Array(props.balances.length).fill(3);
+        balancesRadius[balancesRadius.length - 1] = 0; // Hide last data point to avoid overlapping of last balance node and first forecast node
+
         const data = {
             labels: props.labels,
             datasets: [
                 {
                     type: 'line',
                     label: "Balance",
-                    data: props.data,
+                    data: props.balances,
                     backgroundColor: "rgba(54, 162, 235, 0.2)",
                     borderColor: "rgba(54, 162, 235, 1)",
+                },
+                {
+                    type: 'line',
+                    label: "Forecast",
+                    data: props.forecast,
+                    pointRadius: balancesRadius,
+                    backgroundColor: "rgba(173, 216, 230, 0.2)",
+                    borderColor: "rgba(173, 216, 230, 1)",
                 },
                 {
                     type: 'bar',
@@ -47,7 +59,7 @@ const BalanceChart = (props) => {
         return () => {
             chartInstance.destroy();
         };
-    }, [props.data, props.goalData, props.labels]);
+    }, [props.balances, props.forecast, props.goalData, props.labels]);
 
     return <canvas style={props.style} ref={chartRef}></canvas>;
 };

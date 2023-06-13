@@ -15,6 +15,7 @@ function Analysis(props) {
   const { user } = useContext(UserContext);
   const [overview, setOverview] = useState({ balance: "?", expenses: "?", income: "?" });
   const [balances, setBalances] = useState([0, 0, 0, 0]);
+  const [forecastData, setForecastData] = useState([]);
   const [goals, setGoals] = useState({ data: [], total: 0.00 });
   const renderChart = useRef(true);
 
@@ -93,14 +94,27 @@ function Analysis(props) {
               resolve(balancesByDate);
           })
       }
-    }).then(data => {
+    }).then(balanceData => {
       if (!renderChart.current)
         return;
-      setBalances(data);
+      setBalances(balanceData);
+
+      // dummy forecast data
+      const forecastOne = parseInt(balanceData[balanceData.length - 1]) + balanceData[balanceData.length - 1] / 2;
+      const forecastTwo = forecastOne + forecastOne / 2;
+      const forecastThree = forecastTwo + forecastTwo / 3;
+
+      setForecastData([...Array(currentMonthIndex()).fill(null), balanceData[balanceData.length - 1], forecastOne, forecastTwo, forecastThree])
+
       renderChart.current = false;
-      console.log("balances: ", data);
+      console.log("balances: ", balanceData);
     })
   }, []);
+
+
+  useEffect(() => {
+    console.log("forecastData:", forecastData)
+  }, [forecastData])
 
   const style = {
     marginTop: "2rem",
@@ -113,12 +127,15 @@ function Analysis(props) {
   const goalData = [1200, 1000, 1000, 1300, 1700, 1200];
 
 
+  // Add next three months to labels
+  const labelsWithForecast = [...labels, ...months.slice(currentMonthIndex() + 1, currentMonthIndex() + 4)];
+
   return (
     <>
       <ContentWrapper>
         {/* <div style={tempStyle}>Graph</div> */}
         {/* <h2 style={{ margin: "auto" }}>Balance</h2> */}
-        {!renderChart.current && <BalanceChart style={style} labels={labels} data={balances} goalData={goalData} />}
+        {!renderChart.current && <BalanceChart style={style} labels={labelsWithForecast} balances={balances} forecast={forecastData} goalData={goalData} />}
         <InputCollection label="Summary">
           <table className="bb-table">
             <tbody>
