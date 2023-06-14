@@ -27,6 +27,7 @@ function SavingsSettings(props) {
     percentage: 50,
     nbrOfGoals: 1,
     mode: "equally",
+    balance: 0.00
   });
   const [cards, setCards] = useState([]);
   const [selectedGoals, setSelectedGoals] = useState([]);
@@ -59,7 +60,9 @@ function SavingsSettings(props) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${jwtToken.get()}`,
           loadingAnim: "true",
-        },  });
+        },  }).then(res => res.json()).then((res) => {
+          setInput({...input, balance: res.data.balance})
+        });
 
         // TODO setSettings here
 
@@ -243,13 +246,13 @@ function SavingsSettings(props) {
           </ThemeProvider>
           <p>
             <div style={{ textAlign: "center" }}>
-              <span>&#8709; income / month: 4567.90 €</span>
+              <span>&#8709; income / month: {input.balance} €</span>
             </div>
             <div style={{ textAlign: "center" }}>
               <span>
                 &#8709; amount saved / month:{" "}
                 {input.percentage > 0
-                  ? (4567.9 * (input.percentage / 100)).toFixed(2)
+                  ? (input.balance * (input.percentage / 100)).toFixed(2)
                   : 0}{" "}
                 €
               </span>
