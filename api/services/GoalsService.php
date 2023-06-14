@@ -76,6 +76,7 @@ class GoalsService extends BaseService
         try {
             $query = "SELECT * FROM Goal 
         WHERE F_accountID = ?
+        AND savedAmount < Amount
         ORDER BY Date
         LIMIT ?;";
 
