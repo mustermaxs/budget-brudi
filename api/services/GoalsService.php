@@ -115,7 +115,7 @@ class GoalsService extends BaseService
 
     
   //Update Goal with share % 
-  public function updateShare($goals)
+  public function updateShare($goalId, $share)
   {
       try {
           // All the updates are made within begin_transaction --> 
