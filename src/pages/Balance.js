@@ -33,6 +33,25 @@ function Analysis(props) {
     console.log(dates);
   }
 
+  function calculateGoalSums(goals) {
+    const goalSums = Array(12).fill(0);
+
+    goals.forEach((goal) => {
+      const now = new Date();
+      const thisYear = now.getFullYear();
+
+      const date = new Date(goal.Date);
+      const year = date.getFullYear();
+      const month = date.getMonth();
+
+      if (year === thisYear) {
+        goalSums[month] += Number(goal.Amount);
+      }
+    });
+
+    return goalSums;
+  }
+
   // GET GOALS
   useEffect(() => {
     fetch('http://localhost/budget-brudi/api/goals', {
@@ -46,7 +65,7 @@ function Analysis(props) {
       .then(goalsRes => {
         let sumOfGoals = goalsRes.data.reduce((acc, current) =>
           acc + parseFloat(current.Amount), 0);
-        setGoals({ data: goalsRes.data, total: sumOfGoals });
+        setGoals({ data: calculateGoalSums(goalsRes.data), total: sumOfGoals });
         console.log("goals: ", goals);
       });
   }, []);
@@ -123,9 +142,6 @@ function Analysis(props) {
 
   // graph mock data
   const labels = months.slice(0, currentMonthIndex() + 1);
-  // TODO goal data v. server einfügen mit korrektem Zeitraum
-  const goalData = [1200, 1000, 1000, 1300, 1700, 1200];
-
 
   // Add next three months to labels
   const labelsWithForecast = [...labels, ...months.slice(currentMonthIndex() + 1, currentMonthIndex() + 4)];
@@ -135,7 +151,7 @@ function Analysis(props) {
       <ContentWrapper>
         {/* <div style={tempStyle}>Graph</div> */}
         {/* <h2 style={{ margin: "auto" }}>Balance</h2> */}
-        {!renderChart.current && <BalanceChart style={style} labels={labelsWithForecast} balances={balances} forecast={forecastData} goalData={goalData} />}
+        {!renderChart.current && <BalanceChart style={style} labels={labelsWithForecast} balances={balances} forecast={forecastData} goalData={goals.data} />}
         <InputCollection label="Summary">
           <table className="bb-table">
             <tbody>
