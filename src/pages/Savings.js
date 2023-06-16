@@ -21,11 +21,11 @@ function SavingsSettings(props) {
   const { msgModal } = useMsgModal();
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
-  const maxNbrOfGoals = 5;
-  const minNbrOfGoals = 1;
+  const maxnbrOfIncludedGoals = 5;
+  const minnbrOfIncludedGoals = 1;
   const [input, setInput] = useState({
-    percentage: null,
-    nbrOfGoals: null,
+    incomePercentage: null,
+    nbrOfIncludedGoals: null,
     mode: null,
     balance: null,
   });
@@ -33,15 +33,15 @@ function SavingsSettings(props) {
   const [selectedGoals, setSelectedGoals] = useState([]);
   const [percentages, setPercentages] = useState([]);
   const [settings, setSettings] = useState({
-    percentage: null,
+    incomePercentage: null,
     mode: null,
-    nbrOfGoals: null,
+    nbrOfIncludedGoals: null,
     shares: [],
   }); /* shares => [{goalID, percentage}] */
   // will be updated to number of available goals (max. 5)
   // so that no more than the number of available goals can be considered
   // for calculations
-  const nbrOfGoalsFetched = useRef(1);
+  const nbrOfIncludedGoalsFetched = useRef(1);
 
   useEffect(() => {
     fetch(`http://localhost/budget-brudi/api/accounts/${user.userId}`, {
@@ -62,7 +62,7 @@ function SavingsSettings(props) {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost/budget-brudi/api/settings", {
+    fetch("http://localhost/budget-brudi/api/savings", {
       method: "GET",
       mode: "cors",
       headers: {
@@ -76,14 +76,14 @@ function SavingsSettings(props) {
         console.log("settings:", res.data);
         setInput((prevInput) => ({
           ...prevInput,
-          percentage: res.data.percentage,
-          nbrOfGoals: res.data.nbrOfGoals,
+          incomePercentage: res.data.incomePercentage,
+          nbrOfIncludedGoals: res.data.nbrOfIncludedGoals,
           mode: res.data.mode,
         }));
         // setSettings({
         //   ...input,
         //   percentage: res.data.percentage,
-        //   nbrOfGoals: res.data.nbrOfGoals,
+        //   nbrOfIncludedGoals: res.data.nbrOfIncludedGoals,
         //   mode: res.data.mode,
         // });
       });
@@ -107,7 +107,7 @@ function SavingsSettings(props) {
         console.log(goals);
         console.log(goals.data);
 
-        nbrOfGoalsFetched.current = goals.data.length;
+        nbrOfIncludedGoalsFetched.current = goals.data.length;
         setCards(goals.data);
       })
       .catch((error) => {
@@ -123,10 +123,10 @@ function SavingsSettings(props) {
 
   // handles percentage bubbles and renders select number of goals
   useEffect(() => {
-    let nbrSelectedGoals = nbrOfGoalsFetched.current;
+    let nbrSelectedGoals = nbrOfIncludedGoalsFetched.current;
 
-    if (input.nbrOfGoals <= nbrOfGoalsFetched.current)
-      nbrSelectedGoals = input.nbrOfGoals;
+    if (input.nbrOfIncludedGoals <= nbrOfIncludedGoalsFetched.current)
+      nbrSelectedGoals = input.nbrOfIncludedGoals;
 
     if (input.mode === "equally")
       setPercentages(getEqualPercentages(nbrSelectedGoals));
@@ -143,8 +143,8 @@ function SavingsSettings(props) {
 
     setSettings((prevSettings) => ({
       ...prevSettings,
-      percentage: input.percentage,
-      nbrOfGoals: input.nbrOfGoals,
+      incomePercentage: input.incomePercentage,
+      nbrOfIncludedGoals: input.nbrOfIncludedGoals,
       shares: updatedShares,
       mode: input.mode,
     }));
@@ -152,7 +152,7 @@ function SavingsSettings(props) {
     console.log("settings obj:", settings);
     console.log("input obj:", input);
 
-  }, [input.nbrOfGoals, input.mode, input.percentage]);
+  }, [input.nbrOfIncludedGoals, input.mode, input.incomePercentage]);
 
   /* for number of goals to include range slider */
   const marks = [
@@ -191,7 +191,7 @@ function SavingsSettings(props) {
   ];
 
   /* get shares/percentages for incremental saving mode */
-  function getIncrPercentageValues(nbrOfGoals) {
+  function getIncrPercentageValues(nbrOfIncludedGoals) {
     let percentageBubbleValues = {
       5: [50, 25, 12.5, 6.25, 6.25],
       4: [50, 35, 12.5, 12.5],
@@ -200,9 +200,9 @@ function SavingsSettings(props) {
       1: [100],
     };
     let setIndex =
-      nbrOfGoals <= nbrOfGoalsFetched.current
-        ? nbrOfGoals
-        : nbrOfGoalsFetched.current;
+      nbrOfIncludedGoals <= nbrOfIncludedGoalsFetched.current
+        ? nbrOfIncludedGoals
+        : nbrOfIncludedGoalsFetched.current;
     return percentageBubbleValues[setIndex];
   }
 
@@ -236,7 +236,7 @@ function SavingsSettings(props) {
   };
 
   const handleSubmit = () => {
-    fetch(`http://localhost/budget-brudi/api/settings/`, {
+    fetch(`http://localhost/budget-brudi/api/savings/`, {
       method: "PUT",
       mode: "cors",
       headers: {
@@ -270,7 +270,7 @@ function SavingsSettings(props) {
             <Box sx={{ width: 260, margin: "0 auto" }}>
               <Slider
                 aria-label="Percentage of income dedicated for saving"
-                value={input.percentage}
+                value={input.incomePercentage}
                 step={1}
                 min={0}
                 max={100}
@@ -288,8 +288,8 @@ function SavingsSettings(props) {
             <div style={{ textAlign: "center" }}>
               <span>
                 &#8709; amount saved / month:{" "}
-                {input.percentage > 0
-                  ? (input.balance * (input.percentage / 100)).toFixed(2)
+                {input.incomePercentage > 0
+                  ? (input.balance * (input.incomePercentage / 100)).toFixed(2)
                   : 0}{" "}
                 €
               </span>
@@ -307,11 +307,11 @@ function SavingsSettings(props) {
             <Box sx={{ width: 260, margin: "0 auto" }}>
               <Slider
                 aria-label="Number of goals"
-                value={input.nbrOfGoals}
+                value={input.nbrOfIncludedGoals}
                 step={1}
-                min={minNbrOfGoals}
-                max={maxNbrOfGoals}
-                name="nbrOfGoals"
+                min={minnbrOfIncludedGoals}
+                max={maxnbrOfIncludedGoals}
+                name="nbrOfIncludedGoals"
                 onChange={(ev) => handleChange(ev.target)}
                 valueLabelDisplay="auto"
                 marks={marks}

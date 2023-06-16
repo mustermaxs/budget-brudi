@@ -33,7 +33,7 @@ ADD COLUMN nbrOfGoals INT;                // to how many goals the amount will b
     public function getSavingsSettings($accountId)
     {
         try {
-            $query = "SELECT * FROM savingssettings 
+            $query = "SELECT * FROM SavingsSettings 
         WHERE F_accountID = ?";
 
 
