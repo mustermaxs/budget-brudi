@@ -94,7 +94,18 @@ function AddTransaction() {
         Authorization: `Bearer ${jwtToken.get()}`,
       },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok)
+        {
+          msgModal.set({
+            type: "normal",
+            title: "Super",
+            message: "Uploaded new transaction"
+          }).show();
+
+          return res.json();
+        }
+      })
       .then((response) => {
         navigate("/transactions");
       });
