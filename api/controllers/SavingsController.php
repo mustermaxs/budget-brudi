@@ -16,17 +16,17 @@ class SavingsController extends BaseController
     public function put()
     {
         $accountId = $this->request["accountId"];
-        $percentage = $this->request["percentage"];
+        $incomePercentage = $this->request["incomePercentage"];
         $mode = $this->request["mode"];
-        $nbrOfGoals = $this->request["nbrOfGoals"];
+        $nbrOfIncludedGoals = $this->request["nbrOfIncludedGoals"];
         $shares = $this->request["shares"];
     
         // update account saving settings
-        $response = $this->service->updateSavingSettings($accountId, $percentage, $mode, $nbrOfGoals, $shares);
+        $response = $this->service->updateSavingSettings($accountId, $incomePercentage, $mode, $nbrOfIncludedGoals, $shares);
         //update share amount for all selected goals
         $response = $this->goalsService->updateMultipleShares($shares);
         if ($response->ok) {
-            Response::successResponse("Settings updated successfully");
+            Response::successResponse("Settings updated successfully", $response);
         } else {
             Response::errorResponse("updating settings failed", $response);
         }
