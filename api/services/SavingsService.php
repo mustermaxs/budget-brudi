@@ -12,7 +12,7 @@ class SavingsService extends BaseService
             $this->conn->begin_transaction();
 
             // Update Account settings
-            $query = "UPDATE savingssettings SET incomePercentage = ?, mode = ?, nbrOfincludedGoals = ? WHERE AccountId = ?";
+            $query = "UPDATE SavingsSettings SET incomePercentage = ?, mode = ?, nbrOfincludedGoals = ? WHERE F_accountID = ?";
             $stmt = $this->conn->prepare($query);
             $stmt->bind_param("dsii", $incomePercentage, $mode, $nbrOfGoals, $accountId);
             $stmt->execute();

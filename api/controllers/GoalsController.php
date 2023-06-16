@@ -63,7 +63,7 @@ class GoalsController extends BaseController
             if ($response->ok) {
                 Response::successResponse("Goal shares updated successfully");
             } else {
-                Response::errorResponse($response->message);
+                Response::errorResponse("updating goals failed", $response);
             }
     
             return;
