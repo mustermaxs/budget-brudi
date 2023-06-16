@@ -166,7 +166,7 @@ function Transactions() {
               price={Amount}
               // key={getRandomInt(0, 10000)}
               key={`${(IncomeID && "1" + IncomeID) || (ExpenseID && "2" + ExpenseID)}`}
-              onClick={() => { navigate(`/ transaction ? type = ${(IncomeID && "income") || (ExpenseID && "expense")}& id= ${IncomeID || ExpenseID} `) }}
+              onClick={() => { navigate(`/transaction?type=${(IncomeID && "income") || (ExpenseID && "expense")}&id=${IncomeID || ExpenseID} `) }}
               datatype={(IncomeID && "income") || (ExpenseID && "expense")}
               id={ExpenseID}
             />
