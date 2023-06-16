@@ -11,9 +11,11 @@ import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { loadingAnim } from "../components/widgets/Spinner";
+import { MsgModalContext, useMsgModal } from "../contexts/ModalContext";
 
 function Profile(props) {
-  const {user} = useContext(UserContext);
+  const { msgModal } = useMsgModal();
+  const { user } = useContext(UserContext);
   // const { handleLogin } = useContext(UserContext);
   // const navigate = useNavigate();
   // TODO fetch personal data
@@ -28,37 +30,46 @@ function Profile(props) {
 
   useEffect(() => {
     fetch(`http://localhost/budget-brudi/api/users/${user.userId}`, {
-      method: 'GET',
+      method: "GET",
       mode: "cors",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${jwtToken.get()}`
-      }
-    }).then((res) => {
-      return res.json();
-    }).then(fetchedUser => {
-      console.log(fetchedUser);
-      // setUser(fetchedUser.data);
-      setValue({ ...fetchedUser.data });
-
-    });
-  }, [])
-
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken.get()}`,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((fetchedUser) => {
+        console.log(fetchedUser);
+        // setUser(fetchedUser.data);
+        setValue({ ...fetchedUser.data });
+      });
+  }, []);
 
   const handleSubmit = (ev) => {
     fetch(`http://localhost/budget-brudi/api/users/${user.userId}`, {
-      method: 'PUT',
+      method: "PUT",
       mode: "cors",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${jwtToken.get()}`
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken.get()}`,
       },
       body: JSON.stringify(inputValue),
-    }).then((res) => {
-      return res.json();
-    }).then(res => {
-      console.log(res);
-    });
+    })
+      .then((res) => {
+        if (res.ok) {
+          msgModal.set({
+            type: "normal",
+            title: "Super",
+            message: "Updated profile successfully"
+          }).show();
+          return res.json();
+        }
+      })
+      .then((res) => {
+        console.log(res);
+      });
   };
 
   return (

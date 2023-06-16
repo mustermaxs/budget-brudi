@@ -6,8 +6,10 @@ import BBInput from "../components/widgets/BBInput";
 import BbBtn from "../components/widgets/BbBtn";
 import { jwtToken } from "../contexts/UserContext";
 import "../components/widgets/colorlabelpicker.css";
+import { useMsgModal } from "../contexts/ModalContext";
 
 function EditTransaction() {
+    const {msgModal} = useMsgModal();
     const [searchParams] = useSearchParams();
     const transactionType = searchParams.get("type");
     const navigate = useNavigate();
@@ -89,7 +91,17 @@ function EditTransaction() {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${jwtToken.get()}`
             }
-        }).then(res => res.json()).then(response => {
+        }).then(res => {
+            if (res.ok)
+            {
+                msgModal.set({
+                    type: "normal",
+                    title: "Super",
+                    message: "Updated transaction"
+                  }).show();
+                res.json();
+            }
+        }).then(response => {
             navigate("/transactions")
         });
     }

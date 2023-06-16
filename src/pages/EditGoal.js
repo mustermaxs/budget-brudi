@@ -14,8 +14,10 @@ import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { jwtToken } from "../contexts/UserContext";
 import { loadingAnim } from "../components/widgets/Spinner";
+import { useMsgModal } from "../contexts/ModalContext";
 
 function EditGoal(props) {
+  const {msgModal} = useMsgModal();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [goal, setGoal] = useState({
@@ -84,7 +86,24 @@ function EditGoal(props) {
         },
       }
     )
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok)
+        {
+          msgModal.set({
+            type: "normal",
+            title: "Super",
+            message: "Updated budget goal"
+          }).show();
+          return res.json();
+        }
+        else {
+          msgModal.set({
+            type: "error",
+            title: "Error",
+            message: "Updating goal failed"
+          }).show();
+        }
+      })
       .then((postRes) => {
         console.log(postRes);
         navigate("/goals");
@@ -104,7 +123,17 @@ function EditGoal(props) {
         },
       }
     )
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok)
+        {
+          msgModal.set({
+            type: "normal",
+            title: "Super",
+            message: "Deleted budget goal"
+          }).show();
+          return res.json();
+        }  
+      })
       .then((postRes) => {
         console.log(postRes);
         navigate("/goals");
