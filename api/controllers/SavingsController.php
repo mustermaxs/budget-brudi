@@ -6,12 +6,14 @@ require_once getcwd() . "/api/services/GoalsService.php";
 class SavingsController extends BaseController
 {
     private GoalsService $goalsService;
-    
+
+
     protected function init()
     {
         $this->service = new SavingsService();
         $this->goalsService = new GoalsService();
     }
+
 
     public function put()
     {
@@ -20,9 +22,11 @@ class SavingsController extends BaseController
         $mode = $this->request["mode"];
         $nbrOfIncludedGoals = $this->request["nbrOfIncludedGoals"];
         $shares = $this->request["shares"];
-    
+
+
         // update account saving settings
         $response = $this->service->updateSavingSettings($accountId, $incomePercentage, $mode, $nbrOfIncludedGoals, $shares);
+      
         //update share amount for all selected goals
         $response = $this->goalsService->updateMultipleShares($shares);
         if ($response->ok) {
@@ -37,11 +41,10 @@ class SavingsController extends BaseController
         $accountId = $this->request["accountId"];
 
         $res = $this->service->getSavingsSettings($accountId);
-    
+
         if (!$res->ok)
-        Response::errorResponse("fetching settings failed", $res);
+            Response::errorResponse("fetching settings failed", $res);
 
         Response::successResponse("savings settings loaded successfully", $res->data);
     }
-    
 }

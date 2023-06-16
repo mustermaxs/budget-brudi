@@ -49,40 +49,12 @@ ADD COLUMN nbrOfGoals INT;                // to how many goals the amount will b
         }
     }
 
-    public function getSavingPercentage($accountId)
-    {
-        try {
-            $query = "SELECT incomePercentage FROM SavingsSettings
-            WHERE F_accountID = ?";
-
-
-            $stmt = $this->conn->prepare($query);
-            $stmt->bind_param("d", $accountId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            // $data = $result->fetch_array(MYSQLI_ASSOC);
-
-            return ServiceResponse::success($data);
-        } catch (mysqli_sql_exception $e) {
-            return ServiceResponse::fail($e);
-        }
-    }
-
-    public function getSavedAmount($incomeId, $accountId)
-    {
-        $income = getIncomebyIncomeId($incomeId);
-        $percentage = $this->getSavingPercentage($accountId);
-
-        $savedAmount = $income * ($percentage / 100);
-
-        return $savedAmount;
-    }
 
     public function getShares($accountId)
     {
 
         try {
-            $query = "SELECT * FROM goal WHERE F_accountID = ?";
+            $query = "CALL getShares(?)";
 
             $stmt = $this->conn->prepare($query);
             $stmt->bind_param("d", $accountId);
@@ -96,25 +68,24 @@ ADD COLUMN nbrOfGoals INT;                // to how many goals the amount will b
         }
     }
 
-    public function shareAmount($incomeId, $accountId)
+    public function shareAmount($accountId, $savedAmount)
     {
-        $savedAmount = $this->getSavedAmount($incomeId, $accountId);
-        $shares[] = $this->getShares($accountId);
 
+        $shares[] = $this->getShares($accountId)->data;
         $this->conn->begin_transaction();
 
         try {
             foreach ($shares as $share) {
                 $savedAmountGoal = $savedAmount * ($share["share"] / 100);
 
-
                 $query = "UPDATE Goal SET savedAmount = savedAmount + ?
-                WHERE F_accountID = ? AND GoalID = ?";
+                WHERE GoalID = ?";
 
                 $stmt = $this->conn->prepare($query);
-                $stmt->bind_param("ddd", $savedAmountGoal, $incomeId, $accountId);
+                $stmt->bind_param("dd", $savedAmountGoal, $share["GoalID"]);
                 $stmt->execute();
             }
+
             $this->conn->commit();
             return ServiceResponse::success();
         } catch (mysqli_sql_exception $e) {
@@ -123,14 +94,3 @@ ADD COLUMN nbrOfGoals INT;                // to how many goals the amount will b
         }
     }
 }
-
-
-/**
- * SELECT * FROM GoalShares WHERE F_accountID = ?
- * [
- *      goal,
- *      goal,
- *      goal,
- *         ...
- * ]
- */
