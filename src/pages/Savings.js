@@ -112,9 +112,26 @@ function SavingsSettings(props) {
     else setPercentages(getIncrPercentageValues(nbrSelectedGoals));
 
     setSelectedGoals(cards.slice(0, nbrSelectedGoals));
-    setSettings({...settings, shares: createShareObj()})
-    console.log("shareobj:", settings.shares)
-  }, [input.nbrOfGoals, input.mode]);
+    // setSettings({
+    //   ...settings,
+    //   ...input,
+    //   shares: createShareObj(),
+    //   mode: input.mode,
+    // });
+    let updatedShares = createShareObj();
+
+    setSettings((prevSettings) => ({
+      ...prevSettings,
+      percentage: input.percentage,
+      nbrOfGoals: input.nbrOfGoals,
+      shares: updatedShares,
+      mode: input.mode,
+    }));
+    console.log("shareobj:", settings.shares);
+    console.log("settings obj:", settings);
+    console.log("input obj:", input);
+
+  }, [input.nbrOfGoals, input.mode, input.percentage]);
 
   /* for number of goals to include range slider */
   const marks = [
