@@ -274,7 +274,7 @@ function SavingsSettings(props) {
                 step={1}
                 min={0}
                 max={100}
-                name="percentage"
+                name="incomePercentage"
                 valueLabelDisplay="auto"
                 onChange={(ev) => handleChange(ev.target)}
                 marks={marksPercentage}
