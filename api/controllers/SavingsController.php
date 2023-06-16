@@ -28,7 +28,7 @@ class SavingsController extends BaseController
         if ($response->ok) {
             Response::successResponse("Settings updated successfully");
         } else {
-            Response::errorResponse("Error updating shares", $response->message);
+            Response::errorResponse("updating settings failed", $response);
         }
     }
 
@@ -39,7 +39,7 @@ class SavingsController extends BaseController
         $res = $this->service->getSavingsSettings($accountId);
     
         if (!$res->ok)
-            Response::errorResponse($res->message);
+        Response::errorResponse("fetching settings failed", $res);
 
         Response::successResponse("categories loaded successfully", $res->data);
     }
