@@ -19,15 +19,15 @@ import { useMsgModal } from "../contexts/ModalContext";
 
 function SavingsSettings(props) {
   const { msgModal } = useMsgModal();
-  const {user} = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const maxNbrOfGoals = 5;
   const minNbrOfGoals = 1;
   const [input, setInput] = useState({
-    percentage: 50,
-    nbrOfGoals: 1,
-    mode: "equally",
-    balance: 0.00
+    percentage: null,
+    nbrOfGoals: null,
+    mode: null,
+    balance: null,
   });
   const [cards, setCards] = useState([]);
   const [selectedGoals, setSelectedGoals] = useState([]);
@@ -36,37 +36,58 @@ function SavingsSettings(props) {
     percentage: null,
     mode: null,
     nbrOfGoals: null,
-    shares: []
+    shares: [],
   }); /* shares => [{goalID, percentage}] */
+  // will be updated to number of available goals (max. 5)
+  // so that no more than the number of available goals can be considered
+  // for calculations
   const nbrOfGoalsFetched = useRef(1);
 
-/**
-  TODO API
-  get settings
-    + percentage
-    + nbr of goals
-    + mode
-    + avg. income
-  
-    upload settings
-*/
+  useEffect(() => {
+    fetch(`http://localhost/budget-brudi/api/accounts/${user.userId}`, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken.get()}`,
+        loadingAnim: "true",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setInput({ ...input, balance: res.data.balance });
+      });
+
+    // TODO setSettings here
+  }, []);
 
   useEffect(() => {
-     
-      fetch(`http://localhost/budget-brudi/api/accounts/${user.userId}`, {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwtToken.get()}`,
-          loadingAnim: "true",
-        },  }).then(res => res.json()).then((res) => {
-          setInput({...input, balance: res.data.balance})
-        });
-
-        // TODO setSettings here
-
-    }, []);
+    fetch("http://localhost/budget-brudi/api/settings", {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken.get()}`,
+        loadingAnim: "true",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("settings:", res.data);
+        setInput((prevInput) => ({
+          ...prevInput,
+          percentage: res.data.percentage,
+          nbrOfGoals: res.data.nbrOfGoals,
+          mode: res.data.mode,
+        }));
+        // setSettings({
+        //   ...input,
+        //   percentage: res.data.percentage,
+        //   nbrOfGoals: res.data.nbrOfGoals,
+        //   mode: res.data.mode,
+        // });
+      });
+  }, []);
 
   useEffect(() => {
     fetch("http://localhost/budget-brudi/api/goals?limit=5", {
@@ -95,8 +116,8 @@ function SavingsSettings(props) {
   }, []);
 
   const createShareObj = () => {
-    return selectedGoals.map(({GoalID}, index) => {
-      return {GoalID: GoalID, share: percentages[index]}
+    return selectedGoals.map(({ GoalID }, index) => {
+      return { GoalID: GoalID, share: percentages[index] };
     });
   };
 
@@ -183,14 +204,14 @@ function SavingsSettings(props) {
         ? nbrOfGoals
         : nbrOfGoalsFetched.current;
     return percentageBubbleValues[setIndex];
-  };
+  }
 
-/* get shares/percentages for equal saving mode */
+  /* get shares/percentages for equal saving mode */
   function getEqualPercentages(nbrSelectedGoals) {
     let percentage = (100 / nbrSelectedGoals).toFixed(2);
 
     return Array(nbrSelectedGoals).fill(percentage);
-  };
+  }
 
   /* redirect to editgoal page when clicked on goal card */
   const redirectToGoal = (id) => {
@@ -211,33 +232,32 @@ function SavingsSettings(props) {
       ...prev,
       [name]: value,
     }));
-    setSettings({...settings, mode: value});
-
     console.log(input);
   };
 
   const handleSubmit = () => {
     fetch(`http://localhost/budget-brudi/api/settings/`, {
-      method: 'PUT',
+      method: "PUT",
       mode: "cors",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${jwtToken.get()}`
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken.get()}`,
       },
-      body: JSON.stringify(settings)
+      body: JSON.stringify(settings),
     }).then((res) => {
-      if (!res.ok)
-        console.error("updating settings failed");
-      else{
+      if (!res.ok) console.error("updating settings failed");
+      else {
         console.info("updated settings");
-        msgModal.set({
-          type: "normal",
-          title: "Super",
-          message: "Updated settings"
-        }).show();
+        msgModal
+          .set({
+            type: "normal",
+            title: "Super",
+            message: "Updated settings",
+          })
+          .show();
       }
-    })
-  }
+    });
+  };
 
   return (
     <>
@@ -250,7 +270,7 @@ function SavingsSettings(props) {
             <Box sx={{ width: 260, margin: "0 auto" }}>
               <Slider
                 aria-label="Percentage of income dedicated for saving"
-                defaultValue={50}
+                value={input.percentage}
                 step={1}
                 min={0}
                 max={100}
@@ -263,7 +283,7 @@ function SavingsSettings(props) {
           </ThemeProvider>
           <p>
             <div style={{ textAlign: "center" }}>
-              <span>&#8709; income / month: {input.balance} €</span>
+              <span>&#8709; income / month: {input.balance ?? ""} €</span>
             </div>
             <div style={{ textAlign: "center" }}>
               <span>
@@ -287,8 +307,8 @@ function SavingsSettings(props) {
             <Box sx={{ width: 260, margin: "0 auto" }}>
               <Slider
                 aria-label="Number of goals"
-                defaultValue={settings.nbrOfGoals}
-                step={null}
+                value={input.nbrOfGoals}
+                step={1}
                 min={minNbrOfGoals}
                 max={maxNbrOfGoals}
                 name="nbrOfGoals"
@@ -311,8 +331,8 @@ function SavingsSettings(props) {
                 <span>Equally</span>
                 <Switch
                   name="mode"
-                  value={false}
-                  defaultValue={settings.mode}
+                  value={input.mode}
+                  checked={input.mode === "incremental"}
                   onClick={(ev) => handleChange(ev.target)}
                 />
                 <span>Incremental</span>
@@ -320,10 +340,9 @@ function SavingsSettings(props) {
             </ThemeProvider>
           </div>
         </InputCollection>
-        <div style={{minHeight: "20rem"}}>
+        <div style={{ minHeight: "20rem" }}>
           {selectedGoals.map(
             ({ Title, Date, Amount, GoalID, Color, share }, index) => {
-              
               return (
                 <>
                   <div className="percentageGoalRow">
@@ -346,7 +365,7 @@ function SavingsSettings(props) {
             }
           )}
         </div>
-      <BbBtn type="button" onClick={handleSubmit} content="Save" />
+        <BbBtn type="button" onClick={handleSubmit} content="Save" />
       </ContentWrapper>
     </>
   );
