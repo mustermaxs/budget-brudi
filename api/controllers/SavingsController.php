@@ -41,7 +41,7 @@ class SavingsController extends BaseController
         if (!$res->ok)
         Response::errorResponse("fetching settings failed", $res);
 
-        Response::successResponse("categories loaded successfully", $res->data);
+        Response::successResponse("savings settings loaded successfully", $res->data);
     }
     
 }
