@@ -113,6 +113,44 @@ class GoalsService extends BaseService
         }
     }
 
+    
+  //Update Goal with share % 
+  public function updateShare($goalID, $share)
+  {
+      try {
+          // All the updates are made within begin_transaction --> 
+          //if an error occurs there will be a rollback and the update will be undone. 
+          //if no error occurs: changes are saved 
+          $this->conn->begin_transaction();
+
+          $query = "UPDATE Goal SET share = ? WHERE GoalID = ?";
+
+          $stmt = $this->conn->prepare($query);
+
+          $stmt->bind_param("dd", $share, $goalID);
+          $stmt->execute();
+
+          $this->conn->commit();
+
+          return ServiceResponse::success();
+
+      } catch (mysqli_sql_exception $e) {
+          $this->conn->rollback();
+          return ServiceResponse::send($e);
+      }
+  }
+  
+  public function updateMultipleShares($goals) {
+      foreach ($goals as $goal) {
+          $response = $this->updateShare($goal['GoalID'], $goal['share']);
+          if (!$response->ok) {
+              return $response;  // return immediately if any update fails
+          }
+      }
+  
+      return ServiceResponse::success();
+  }
+
     public function deleteGoal($goalId)
     {
         try {

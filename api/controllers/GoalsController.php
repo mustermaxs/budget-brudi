@@ -55,6 +55,20 @@ class GoalsController extends BaseController
 
     public function put()
     {
+        //for shares % to be updated for several goals
+        if (isset($this->request["goals"])) {
+            $goals = $this->request["goals"];
+            $response = $this->service->updateMultipleShares($goals);
+    
+            if ($response->ok) {
+                Response::successResponse("Goal shares updated successfully");
+            } else {
+                Response::errorResponse("updating goals failed", $response);
+            }
+    
+            return;
+        }
+
         $accountId = $this->request["accountId"];
         $title = $this->request["Title"];
         $amount = $this->request["Amount"];

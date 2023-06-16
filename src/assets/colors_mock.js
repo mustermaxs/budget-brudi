@@ -1,17 +1,17 @@
 // colors for goal labels
 
-const colors = [
-  "#EAC435",
-  "#345995",
-  "#07A0C3",
-  "#FB4D3D",
-  "#CA1551",
-  "#535353",
-  "#DD5E98",
-  "#C1AE7C",
-  "#C81D25",
-];
-export default colors;
+// const colors = [
+//   "#EAC435",
+//   "#345995",
+//   "#07A0C3",
+//   "#FB4D3D",
+//   "#CA1551",
+//   "#535353",
+//   "#DD5E98",
+//   "#C1AE7C",
+//   "#C81D25",
+// ];
+// export default colors;
 
 
 //  Suggested Color themes ==============
@@ -52,15 +52,15 @@ export default colors;
 
 // Pastel
 
-// const colors = [
-//   "#FF9999",  //  Pastel Red:
-//   " #FFC266", //  Pastel Orange:
-//   " #FFFF99", //  Pastel Yellow:
-//   " #99FF99", //  Pastel Green:
-//   " #99FFFF", //  Pastel Cyan:
-//   " #9999FF", //  Pastel Blue:
-//   " #B266FF", //  Pastel Indigo:
-//   " #CC99FF", //  Pastel Purple:
-//   " #FF99FF" //  Pastel Magenta:
-//   ];
-//   export default colors;
+const colors = [
+  "#FF9999",  //  Pastel Red:
+  " #FFC266", //  Pastel Orange:
+  " #FFFF99", //  Pastel Yellow:
+  " #99FF99", //  Pastel Green:
+  " #99FFFF", //  Pastel Cyan:
+  " #9999FF", //  Pastel Blue:
+  " #B266FF", //  Pastel Indigo:
+  " #CC99FF", //  Pastel Purple:
+  " #FF99FF" //  Pastel Magenta:
+  ];
+  export default colors;

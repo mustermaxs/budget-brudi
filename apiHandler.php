@@ -60,4 +60,7 @@ $router->get("/api/categories/:id[i]", false);
 $router->get("/api/accounts/:id[i]", true);
 $router->get("/api/accounts/:id[i]/:method[a]", true); // e.g. by date
 
+
+$router->put("/api/savings", true);
+
 $router->dispatch($url, $method);
