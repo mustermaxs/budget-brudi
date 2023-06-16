@@ -115,7 +115,7 @@ class GoalsService extends BaseService
 
     
   //Update Goal with share % 
-  public function updateShare($goalId, $share)
+  public function updateShare($goalID, $share)
   {
       try {
           // All the updates are made within begin_transaction --> 
@@ -127,7 +127,7 @@ class GoalsService extends BaseService
 
           $stmt = $this->conn->prepare($query);
 
-          $stmt->bind_param("dd", $share, $goalId);
+          $stmt->bind_param("dd", $share, $goalID);
           $stmt->execute();
 
           $this->conn->commit();
@@ -142,7 +142,7 @@ class GoalsService extends BaseService
   
   public function updateMultipleShares($goals) {
       foreach ($goals as $goal) {
-          $response = $this->updateShare($goal['goalId'], $goal['share']);
+          $response = $this->updateShare($goal['GoalID'], $goal['share']);
           if (!$response->ok) {
               return $response;  // return immediately if any update fails
           }
