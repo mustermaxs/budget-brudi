@@ -7,7 +7,11 @@ class GoalsService extends BaseService
     public function getGoalCountByAccountID($accountID)
     {
         try {
-            $query = "SELECT COUNT(*) as count FROM Goal WHERE F_accountID = ?";
+            $query = "
+            SELECT COUNT(*) as count FROM Goal
+            WHERE F_accountID = ?
+            AND Date >= CURDATE()
+            AND savedAmount < Amount;";
 
             $stmt = $this->conn->prepare($query);
             $stmt->bind_param("d", $accountID);
@@ -76,7 +80,33 @@ class GoalsService extends BaseService
         try {
             $query = "SELECT * FROM Goal 
         WHERE F_accountID = ?
+        ORDER BY Date
+        LIMIT ?;";
+
+            $limit = $limit ?? 10;
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("dd", $accountID, $limit);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $rows = [];
+
+            while ($row = $result->fetch_assoc()) {
+                $rows[] = $row;
+            }
+
+            return ServiceResponse::send($rows);
+        } catch (mysqli_sql_exception $e) {
+            return ServiceResponse::send($e);
+        }
+    }
+    public function getUpcomingGoals($accountID, $limit = 5)
+    {
+        try {
+            $query = "SELECT * FROM Goal 
+        WHERE F_accountID = ?
         AND savedAmount < Amount
+        AND CURDATE() <= Date
         ORDER BY Date
         LIMIT ?;";
 
