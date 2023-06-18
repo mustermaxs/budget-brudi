@@ -8,7 +8,7 @@ import { theme, BBSwitch } from "./CustomSliderStyle";
 import BBInput from "../components/widgets/BBInput";
 import "../components/Text.css";
 import { Switch } from "@mui/material";
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useRef, useContext, useMemo } from "react";
 import Card from "../components/widgets/Card";
 import { UserContext, jwtToken } from "../contexts/UserContext";
 import PercentageBubble from "../components/PercentageBubble";
@@ -30,6 +30,7 @@ function SavingsSettings(props) {
     balance: null,
   });
   const [cards, setCards] = useState([]);
+  const [fetchedGoals, setFetchedGoals] = useState([]);
   const [selectedGoals, setSelectedGoals] = useState([]);
   const [percentages, setPercentages] = useState([]);
   const [settings, setSettings] = useState({
@@ -46,6 +47,8 @@ function SavingsSettings(props) {
   useEffect(() => {
     // TODO setSettings here
   }, []);
+  
+
 
   useEffect(() => {
     fetch(`http://localhost/budget-brudi/api/accounts/${user.userId}`, {
@@ -72,7 +75,7 @@ function SavingsSettings(props) {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("settings:", res.data);
+        // console.log("settings:", res.data);
         setInput((prevInput) => ({
           ...prevInput,
           incomePercentage: res.data.incomePercentage,
@@ -95,9 +98,6 @@ function SavingsSettings(props) {
         return Promise.reject(res);
       })
       .then((goals) => {
-        console.log(goals);
-        console.log(goals.data);
-
         nbrOfIncludedGoalsFetched.current = goals.data.length;
         setCards(goals.data);
       })
@@ -107,7 +107,6 @@ function SavingsSettings(props) {
   }, []);
 
   const createShareObj = (_selectedGoals, _percentages) => {
-    console.log("createSha...", _selectedGoals);
     return _selectedGoals.map(({ GoalID }, index) => {
       return { GoalID: GoalID, share: _percentages[index] };
     });
@@ -120,16 +119,11 @@ function SavingsSettings(props) {
     if (input.nbrOfIncludedGoals <= nbrOfIncludedGoalsFetched.current)
       nbrSelectedGoals = input.nbrOfIncludedGoals;
 
-    console.log("nr of select goals:", nbrSelectedGoals);
-
     var _percentages;
 
     if (input.mode === "equally")
       _percentages = getEqualPercentages(nbrSelectedGoals);
     else _percentages = getIncrPercentageValues(nbrSelectedGoals);
-
-    console.log("input state:", input);
-    console.log("percentages:", _percentages);
 
     let _selectedGoals = cards.slice(0, nbrSelectedGoals);
     setSelectedGoals(_selectedGoals);
@@ -144,9 +138,13 @@ function SavingsSettings(props) {
       shares: updatedShares,
       mode: input.mode,
     });
-  }, [input.nbrOfIncludedGoals, input.mode, input.incomePercentage]);
+  }, [input.nbrOfIncludedGoals, input.mode, cards]);
 
-  useEffect(() => {}, [percentages]);
+  useEffect(() => {
+    setSettings({
+      ...settings, incomePercentage: input.incomePercentage
+    });
+  }, [input.incomePercentage]);
 
   /* for number of goals to include range slider */
   const marks = [
@@ -212,6 +210,36 @@ function SavingsSettings(props) {
     navigate(`/editgoal?id=${id}`);
   };
 
+  const memCards = useMemo(() => {
+    return selectedGoals.map(
+      ({ Title, Date, Amount, GoalID, Color, share }, index) => {
+        return (
+          <>
+            <div className="percentageGoalRow">
+              <PercentageBubble
+                value={percentages[index]}
+                key={index}
+              />
+
+              <Card
+                size="small"
+                type="goals"
+                title={Title}
+                date={Date}
+                price={Amount}
+                color={Color}
+                key={GoalID}
+                id={GoalID}
+                onClick={redirectToGoal}
+              />
+            </div>
+          </>
+        );
+      }
+    )
+}, [selectedGoals]);
+
+
   /* too lazy to look into what this was supposed to do. completely forgot by now. it works, that's all */
   const handleChange = (eventTarget) => {
     //
@@ -226,7 +254,6 @@ function SavingsSettings(props) {
       ...prev,
       [name]: value,
     }));
-    console.log(input);
   };
 
   const handleSubmit = () => {
@@ -335,33 +362,7 @@ function SavingsSettings(props) {
           </div>
         </InputCollection>
         <div style={{ minHeight: "20rem" }}>
-          {selectedGoals &&
-            selectedGoals.map(
-              ({ Title, Date, Amount, GoalID, Color, share }, index) => {
-                return (
-                  <>
-                    <div className="percentageGoalRow">
-                      <PercentageBubble
-                        value={percentages[index]}
-                        key={index}
-                      />
-
-                      <Card
-                        size="small"
-                        type="goals"
-                        title={Title}
-                        date={Date}
-                        price={Amount}
-                        color={Color}
-                        key={GoalID}
-                        id={GoalID}
-                        onClick={redirectToGoal}
-                      />
-                    </div>
-                  </>
-                );
-              }
-            )}
+            {memCards}
         </div>
         <BbBtn type="button" onClick={handleSubmit} content="Save" />
       </ContentWrapper>
