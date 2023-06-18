@@ -43,6 +43,8 @@ function AddGoal(props) {
           title: "Super",
           message: "Added new budget goal"
         }).show();
+        
+        navigate("/savings");
 
         return res.json();
       }
@@ -53,11 +55,10 @@ function AddGoal(props) {
           title: "Overachiever",
           message: "You reached the limit of 5 goals"
         }).show();
+
+        navigate("/goals");
       }
-    }).then(goals => {
-      console.log(goals);
-      navigate("/goals");
-    });
+    })
   };
 
   return (

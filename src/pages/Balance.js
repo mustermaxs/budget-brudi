@@ -9,6 +9,7 @@ import "../components/widgets/bbTable.css";
 import BalanceChart from "../components/BalanceChart";
 import { UserContext, jwtToken } from "../contexts/UserContext";
 import { useContext, useEffect, useRef, useState } from "react";
+import { loadingAnim } from "../components/widgets/Spinner";
 
 
 function Analysis(props) {
@@ -54,6 +55,7 @@ function Analysis(props) {
 
   // GET GOALS
   useEffect(() => {
+    loadingAnim.show();
     fetch('http://localhost/budget-brudi/api/goals', {
       method: "GET",
       mode: "cors",
@@ -67,11 +69,14 @@ function Analysis(props) {
           acc + parseFloat(current.Amount), 0);
         setGoals({ data: calculateGoalSums(goalsRes.data), total: sumOfGoals });
         console.log("goals: ", goals);
+        loadingAnim.hide();
       });
   }, []);
 
   useEffect(() => {
     // fetcht balance, expenses, income
+    loadingAnim.show();
+
     fetch(`http://localhost/budget-brudi/api/accounts/${user.userId}`, {
       method: "GET",
       mode: "cors",
@@ -87,6 +92,8 @@ function Analysis(props) {
           {}
         );
         setOverview(transformedOverview);
+        loadingAnim.hide();
+
       }, []);
 
     // TODO fetcht balance in gewissen Zeitraum
