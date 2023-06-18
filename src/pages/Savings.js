@@ -228,7 +228,7 @@ function SavingsSettings(props) {
             <div className="percentageGoalRow">
               <PercentageBubble
                 value={percentages[index]}
-                key={index}
+                key={`percent-${index}`}
               />
 
               <Card
@@ -238,7 +238,7 @@ function SavingsSettings(props) {
                 date={Date}
                 price={Amount}
                 color={Color}
-                key={GoalID}
+                key={`goal-${GoalID}`}
                 id={GoalID}
                 onClick={redirectToGoal}
               />
@@ -314,14 +314,14 @@ function SavingsSettings(props) {
           </ThemeProvider>
           <p>
             <div style={{ textAlign: "center" }}>
-              <span>&#8709; income / month: {input.balance ?? ""} €</span>
+              <span>&#8709; income / month: {input.balance ?? "0.00"} €</span>
             </div>
             <div style={{ textAlign: "center" }}>
               <span>
                 &#8709; amount saved / month:{" "}
-                {input.incomePercentage > 0
+                {input.incomePercentage > 0 && input.balance > 0
                   ? (input.balance * (input.incomePercentage / 100)).toFixed(2)
-                  : 0}{" "}
+                  : "0.00"}{" "}
                 €
               </span>
             </div>
