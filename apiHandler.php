@@ -1,7 +1,7 @@
 <?php
 
 define("DISPLAY_DB_ERRORS", true);
-define("USE_LOCAL_DB", false);
+define("USE_LOCAL_DB", true);
 
 require_once "./api/router.php";
 require_once getcwd() . "/api/Authenticator.php";
@@ -49,6 +49,7 @@ $router->put("/api/transactions/:type[a]/:id[i]", true);
 $router->get("/api/goals", true);
 $router->get("/api/goals/:id[i]", true);
 $router->put("/api/goals/:id[i]", true);
+$router->put("/api/goals", true); //Test Route
 $router->post("/api/goals", true);
 $router->delete("/api/goals/:id[i]", true);
 
@@ -59,5 +60,9 @@ $router->get("/api/categories/:id[i]", false);
 
 $router->get("/api/accounts/:id[i]", true);
 $router->get("/api/accounts/:id[i]/:method[a]", true); // e.g. by date
+
+
+$router->get("/api/savings", true);
+$router->put("/api/savings", true);
 
 $router->dispatch($url, $method);

@@ -11,8 +11,11 @@ import colors from "../assets/colors_mock";
 import useValue from "../hooks/useValue";
 import { useNavigate } from "react-router-dom";
 import BbBtn from "../components/widgets/BbBtn";
+import { useMsgModal } from "../contexts/ModalContext";
+
 
 function AddGoal(props) {
+  const {msgModal} = useMsgModal();
   const navigate = useNavigate();
   const [inputValue, handleChange] = useValue({
     title: "",
@@ -33,11 +36,29 @@ function AddGoal(props) {
       },
       body: JSON.stringify(inputValue),
     }).then((res) => {
-      return res.json();
-    }).then(goals => {
-      console.log(goals);
-      navigate("/goals");
-    });
+      if (res.ok)
+      {
+        msgModal.set({
+          type: "normal",
+          title: "Super",
+          message: "Added new budget goal"
+        }).show();
+        
+        navigate("/savings");
+
+        return res.json();
+      }
+
+      else {
+        msgModal.set({
+          type: "error",
+          title: "Overachiever",
+          message: "You reached the limit of 5 goals"
+        }).show();
+
+        navigate("/goals");
+      }
+    })
   };
 
   return (

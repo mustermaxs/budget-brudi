@@ -93,6 +93,13 @@ const routes = [
     permissions: ["user", "admin"],
     hideInMenu: true,
   },
+  {
+    title: "Savings Settings",
+    path: "savings",
+    component: SavingsSettings,
+    privateRoute: true,
+    permissions: ["user", "admin"],
+  },
 ];
 
 export default routes;

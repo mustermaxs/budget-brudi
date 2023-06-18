@@ -4,7 +4,7 @@ import getRandomInt from "../../utils/Random";
 import getIconPath from "../../assets/Icons";
 // import images from "../../assets/icons/food.png";
 
-const Card = ({ title, price, tags, icon, date, type, onClick, color, id, size, datatype }) => {
+const Card = ({ title, price, tags, icon, date, type, onClick, color, id, size, datatype, savedAmount }) => {
   const [tagState, setTagState] = useState(tags);
 
   //! ich habe versucht es in getIconPath() auszulagern,
@@ -68,9 +68,15 @@ const Card = ({ title, price, tags, icon, date, type, onClick, color, id, size, 
           )}
         </div>
         <div className="price-container">
+          <div>
+          {savedAmount && <p className="price">
+            {savedAmount} €
+          </p>}
           <p title={price} className={`price ${price > 0 ? "green" : "red"}`}>
-            {price < 0 && "-"} € {price < 0 ? price.toString().slice(1) : price}
+            {price < 0 && "-"} {price < 0 ? price.toString().slice(1) : price} €
+            {/* <progress value="50" max="100" min="0">50%</progress> */}
           </p>
+          </div>
         </div>
       </div>
     </>

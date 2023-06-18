@@ -95,7 +95,7 @@ function Transactions() {
 
   useEffect(() => {
     loadingAnim.show();
-    fetch('http://localhost/budget-brudi/api/transactions?limit=20', {
+    fetch('http://localhost/budget-brudi/api/transactions?limit=100', {
       method: 'GET',
       mode: "cors",
       headers: {
@@ -111,7 +111,6 @@ function Transactions() {
       if (transactions.data.length === 0) {
         setTransactions(mockData);
       } else {
-
         setTransactions(transactions.data);
       }
     });
@@ -165,8 +164,9 @@ function Transactions() {
               title={Title}
               date={date}
               price={Amount}
-              key={getRandomInt(0, 10000)}
-              onClick={() => { navigate(`/transaction?type=${(IncomeID && "income") || (ExpenseID && "expense")}&id=${IncomeID || ExpenseID}`) }}
+              // key={getRandomInt(0, 10000)}
+              key={`${(IncomeID && "1" + IncomeID) || (ExpenseID && "2" + ExpenseID)}`}
+              onClick={() => { navigate(`/transaction?type=${(IncomeID && "income") || (ExpenseID && "expense")}&id=${IncomeID || ExpenseID} `) }}
               datatype={(IncomeID && "income") || (ExpenseID && "expense")}
               id={ExpenseID}
             />

@@ -37,10 +37,16 @@ class TransactionsService extends BaseService
         try {
             $limit = $limit ?? 10;
 
-            $incomes = $this->getIncomeByAccountId($accountId, $limit);
-            $expenses = $this->getExpenseByAccountId($accountId, $limit);
+            $incomes = $this->getIncomeByAccountId($accountId, $limit / 2);
+            $expenses = $this->getExpenseByAccountId($accountId, $limit / 2);
 
             $transactions = array_merge($incomes->data, $expenses->data);
+
+            // usort($transactions, function ($a, $b) {
+            //     return strtotime($b['date']) - strtotime($a['date']);
+            // });
+
+            // $transactions = array_slice($transactions, 0, $limit);
 
             return ServiceResponse::send($transactions);
         } catch (mysqli_sql_exception $e) {

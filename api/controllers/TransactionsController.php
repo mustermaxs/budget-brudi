@@ -2,12 +2,16 @@
 
 require_once getcwd() . "/api/BaseController.php";
 require_once getcwd() . "/api/services/TransactionsService.php";
+require_once getcwd() . "/api/services/SavingsService.php";
 
 class TransactionsController extends BaseController
 {
+    private SavingsService $savingsService;
+
     protected function init()
     {
         $this->service = new TransactionsService();
+        $this->savingsService = new SavingsService();
     }
 
     private function getExpenses()
@@ -26,6 +30,24 @@ class TransactionsController extends BaseController
 
         else
             return $this->service->getIncomeByAccountId($this->request["accountId"]);
+    }
+
+    private function getSavedAmount()
+    {
+        $income = $this->request["amount"];
+        $res = $this->savingsService->getSavingsSettings($this->request["accountId"]);
+
+        if ($res->ok)
+            $res->data["savedAmount"] = $income * ($res->data["incomePercentage"] / 100);
+
+        return $res;
+    }
+
+    private function incomeHandler()
+    {
+        $savedAmountRes = $this->getSavedAmount();
+
+        return $this->savingsService->shareAmount($this->request["accountId"], $savedAmountRes->data["savedAmount"]);
     }
 
     public function get()
@@ -58,15 +80,16 @@ class TransactionsController extends BaseController
             && @$this->request["title"]
             && @$this->request["categoryID"]
         ) {
-            $insertedId = null;
 
-            if ($this->request["type"] == "income")
-                $insertedId = $this->service->createIncome($this->request["accountId"], $this->request["categoryID"], $this->request["title"], $this->request["date"], $this->request["amount"]);
+            if ($this->request["type"] == "income") {
+                $createIncomeRes = $this->service->createIncome($this->request["accountId"], $this->request["categoryID"], $this->request["title"], $this->request["date"], $this->request["amount"]);
 
-            else if ($this->request["type"] == "expense")
-                $insertedId = $this->service->createNewExpense($this->request["accountId"], $this->request["categoryID"], $this->request["title"], $this->request["date"], $this->request["amount"]);
+                if ($createIncomeRes->ok)
+                    $res = $this->incomeHandler();
+            } else if ($this->request["type"] == "expense")
+                $res = $this->service->createNewExpense($this->request["accountId"], $this->request["categoryID"], $this->request["title"], $this->request["date"], $this->request["amount"]);
 
-            if ($insertedId >= 1)
+            if ($res->ok)
                 Response::successResponse("created new transaction");
         }
 

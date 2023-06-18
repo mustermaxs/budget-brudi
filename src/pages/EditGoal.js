@@ -107,6 +107,7 @@ function EditGoal(props) {
       })
       .then((postRes) => {
         console.log(postRes);
+        navigate("/goals");
       });
     // TODO error modal & error handling
   };
@@ -123,7 +124,17 @@ function EditGoal(props) {
         },
       }
     )
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok)
+        {
+          msgModal.set({
+            type: "normal",
+            title: "Super",
+            message: "Deleted budget goal"
+          }).show();
+          return res.json();
+        }  
+      })
       .then((postRes) => {
         console.log(postRes);
         navigate("/goals");

@@ -29,7 +29,7 @@ const interceptFetch = async (resource, config, msgModal) => {
     msgModal.set({
       type: "error",
       title: "Error",
-      message: "Failed fetching data",
+      message: "Something went wrong",
       isVisible: true
     });
     msgModal.show();
