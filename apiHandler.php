@@ -49,6 +49,7 @@ $router->put("/api/transactions/:type[a]/:id[i]", true);
 $router->get("/api/goals", true);
 $router->get("/api/goals/:id[i]", true);
 $router->put("/api/goals/:id[i]", true);
+$router->put("/api/goals", true); //Test Route
 $router->post("/api/goals", true);
 $router->delete("/api/goals/:id[i]", true);
 

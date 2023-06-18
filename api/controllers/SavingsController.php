@@ -26,9 +26,9 @@ class SavingsController extends BaseController
 
         // update account saving settings
         $response = $this->service->updateSavingSettings($accountId, $incomePercentage, $mode, $nbrOfIncludedGoals, $shares);
-      
+
         //update share amount for all selected goals
-        $response = $this->goalsService->updateMultipleShares($shares);
+        $response = $this->goalsService->updateMultipleShares($shares, $accountId);
         if ($response->ok) {
             Response::successResponse("Settings updated successfully", $response);
         } else {

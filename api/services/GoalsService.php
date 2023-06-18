@@ -16,7 +16,6 @@ class GoalsService extends BaseService
             $data = $result->fetch_assoc();
 
             return $data['count'];
-
         } catch (mysqli_sql_exception $e) {
             return -1;
         }
@@ -41,12 +40,11 @@ class GoalsService extends BaseService
             $goalId = $stmt->insert_id; //returns the autoincrement ID Nr
 
             return ServiceResponse::send(array("goalId" => $goalId));
-
         } catch (mysqli_sql_exception $e) {
             return ServiceResponse::send($e);
-        
-        // } catch (Exception $e) {
-        // return ServiceResponse::send($e);
+
+            // } catch (Exception $e) {
+            // return ServiceResponse::send($e);
         }
     }
 
@@ -108,49 +106,64 @@ class GoalsService extends BaseService
             $result = $stmt->execute([$title, $amount, $date, $color, $accountId, $goalId]);
 
             return ServiceResponse::send(array("result" => $result));
-            
         } catch (mysqli_sql_exception $e) {
             return ServiceResponse::send($e);
         }
     }
 
-    
-  //Update Goal with share % 
-  public function updateShare($goalID, $share)
-  {
-      try {
-          // All the updates are made within begin_transaction --> 
-          //if an error occurs there will be a rollback and the update will be undone. 
-          //if no error occurs: changes are saved 
-          $this->conn->begin_transaction();
 
-          $query = "UPDATE Goal SET share = ? WHERE GoalID = ?";
+    //Update Goal with share % 
+    public function updateShare($goalID, $share)
+    {
+        try {
+            // All the updates are made within begin_transaction --> 
+            //if an error occurs there will be a rollback and the update will be undone. 
+            //if no error occurs: changes are saved 
+            $this->conn->begin_transaction();
 
-          $stmt = $this->conn->prepare($query);
+            $query = "UPDATE Goal SET share = ? WHERE GoalID = ?";
 
-          $stmt->bind_param("dd", $share, $goalID);
-          $stmt->execute();
+            $stmt = $this->conn->prepare($query);
 
-          $this->conn->commit();
+            $stmt->bind_param("dd", $share, $goalID);
+            $stmt->execute();
 
-          return ServiceResponse::success();
+            $this->conn->commit();
 
-      } catch (mysqli_sql_exception $e) {
-          $this->conn->rollback();
-          return ServiceResponse::send($e);
-      }
-  }
-  
-  public function updateMultipleShares($goals) {
-      foreach ($goals as $goal) {
-          $response = $this->updateShare($goal['GoalID'], $goal['share']);
-          if (!$response->ok) {
-              return $response;  // return immediately if any update fails
-          }
-      }
-  
-      return ServiceResponse::success();
-  }
+            return ServiceResponse::success();
+        } catch (mysqli_sql_exception $e) {
+            $this->conn->rollback();
+            return ServiceResponse::send($e);
+        }
+    }
+
+    public function updateMultipleShares($goals, $accountId)
+    {
+
+        $this->conn->begin_transaction();
+
+        try {
+            $query = "UPDATE Goal SET share = 0 WHERE F_accountID = ?";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("d", $accountId);
+            $stmt->execute();
+        } catch (Exception $e) {
+            $this->conn->rollback();
+            return ServiceResponse::fail($e);
+        }
+
+        $this->conn->commit();
+
+        foreach ($goals as $goal) {
+            $response = $this->updateShare($goal['GoalID'], $goal['share']);
+            if (!$response->ok) {
+                return $response;  // return immediately if any update fails
+            }
+        }
+
+        return ServiceResponse::success();
+    }
 
     public function deleteGoal($goalId)
     {
@@ -162,7 +175,6 @@ class GoalsService extends BaseService
             $stmt->execute();
 
             return ServiceResponse::success();
-            
         } catch (mysqli_sql_exception $e) {
             return ServiceResponse::send($e);
         }
