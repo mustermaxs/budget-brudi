@@ -67,7 +67,9 @@ class GoalsController extends BaseController
         //for shares % to be updated for several goals
         if (isset($this->request["goals"])) {
             $goals = $this->request["goals"];
-            $response = $this->service->updateMultipleShares($goals);
+            $accountId = $this->request["accountId"];
+            $response = $this->service->updateMultipleShares($goals, $accountId);
+
 
             if ($response->ok) {
                 Response::successResponse("Goal shares updated successfully");
