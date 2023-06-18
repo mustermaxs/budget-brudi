@@ -44,6 +44,12 @@ function SavingsSettings(props) {
   const nbrOfIncludedGoalsFetched = useRef(1);
 
   useEffect(() => {
+
+
+    // TODO setSettings here
+  }, []);
+
+  useEffect(() => {
     fetch(`http://localhost/budget-brudi/api/accounts/${user.userId}`, {
       method: "GET",
       mode: "cors",
@@ -55,13 +61,8 @@ function SavingsSettings(props) {
     })
       .then((res) => res.json())
       .then((res) => {
-        setInput({ ...input, balance: res.data.balance });
+        setInput((prevValue) => ({ ...prevValue, balance: res.data.balance }));
       });
-
-    // TODO setSettings here
-  }, []);
-
-  useEffect(() => {
     fetch("http://localhost/budget-brudi/api/savings", {
       method: "GET",
       mode: "cors",
@@ -87,32 +88,33 @@ function SavingsSettings(props) {
         //   mode: res.data.mode,
         // });
       });
+      fetch("http://localhost/budget-brudi/api/goals?limit=5&filter=upcoming", {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken.get()}`,
+          loadingAnim: "true",
+        },
+      })
+        .then((res) => {
+          if (res.ok) return res.json();
+          return Promise.reject(res);
+        })
+        .then((goals) => {
+          console.log(goals);
+          console.log(goals.data);
+  
+          nbrOfIncludedGoalsFetched.current = goals.data.length;
+          setCards(goals.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost/budget-brudi/api/goals?limit=5", {
-      method: "GET",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${jwtToken.get()}`,
-        loadingAnim: "true",
-      },
-    })
-      .then((res) => {
-        if (res.ok) return res.json();
-        return Promise.reject(res);
-      })
-      .then((goals) => {
-        console.log(goals);
-        console.log(goals.data);
 
-        nbrOfIncludedGoalsFetched.current = goals.data.length;
-        setCards(goals.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
   }, []);
 
   const createShareObj = () => {
@@ -132,25 +134,26 @@ function SavingsSettings(props) {
       setPercentages(getEqualPercentages(nbrSelectedGoals));
     else setPercentages(getIncrPercentageValues(nbrSelectedGoals));
 
-    setSelectedGoals(cards.slice(0, nbrSelectedGoals));
-    // setSettings({
-    //   ...settings,
-    //   ...input,
-    //   shares: createShareObj(),
-    //   mode: input.mode,
-    // });
+    console.log("nr of selected goals: ", nbrSelectedGoals);
+    let _selectedGoals = cards.slice(0, nbrSelectedGoals);
+    console.log("cards:", cards);
+    setSelectedGoals(_selectedGoals);
+    console.log("selected goals:", _selectedGoals);
+    // console.log("selected goals:", goals);
+
     let updatedShares = createShareObj();
 
-    setSettings((prevSettings) => ({
-      ...prevSettings,
+    setSettings({
+      ...settings,
       incomePercentage: input.incomePercentage,
       nbrOfIncludedGoals: input.nbrOfIncludedGoals,
       shares: updatedShares,
       mode: input.mode,
-    }));
-    console.log("shareobj:", settings.shares);
-    console.log("settings obj:", settings);
-    console.log("input obj:", input);
+    });
+    // REMOVE THIS
+    // console.log("shareobj:", settings.shares);
+    // console.log("settings obj:", settings);
+    // console.log("input obj:", input);
 
   }, [input.nbrOfIncludedGoals, input.mode, input.incomePercentage]);
 
@@ -341,7 +344,7 @@ function SavingsSettings(props) {
           </div>
         </InputCollection>
         <div style={{ minHeight: "20rem" }}>
-          {selectedGoals.map(
+          {selectedGoals && selectedGoals.map(
             ({ Title, Date, Amount, GoalID, Color, share }, index) => {
               return (
                 <>

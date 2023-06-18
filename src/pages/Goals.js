@@ -96,7 +96,7 @@ function Goals() {
           <GoalsChart title="income" labels={chartLabels} data={chartData} colors={chartDataColor} />
 
         </div>
-        {cards.map(({ Title, Date, Amount, GoalID, Color }) => {
+        {cards.map(({ Title, Date, Amount, GoalID, Color, savedAmount }) => {
           return (
             <Card
               type="goals"
@@ -104,6 +104,7 @@ function Goals() {
               date={Date}
               price={Amount}
               color={Color}
+              savedAmount={savedAmount}
               key={GoalID}
               id={GoalID}
               onClick={redirectToGoal}
