@@ -70,6 +70,16 @@ function Goals() {
         return Promise.reject(res);
       })
       .then((goals) => {
+        if (goals.data.length === 0)
+        {
+          msgModal.set({
+            type: "normal",
+            title: "Info",
+            message: "You don't have any goals yet"
+          }).show();
+
+          return;
+        }
         setChartLabels(goals.data.map(goal => goal.Title));
         setChartData(goals.data.map(goal => parseFloat(goal.Amount)));
         setChartDataColor(goals.data.map(goal => goal.Color));
