@@ -105,7 +105,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    width: fit-content;
+    width: inherit;
     height: 80px;
   }
   
