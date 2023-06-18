@@ -44,8 +44,6 @@ function SavingsSettings(props) {
   const nbrOfIncludedGoalsFetched = useRef(1);
 
   useEffect(() => {
-
-
     // TODO setSettings here
   }, []);
 
@@ -81,45 +79,37 @@ function SavingsSettings(props) {
           nbrOfIncludedGoals: res.data.nbrOfIncludedGoals,
           mode: res.data.mode,
         }));
-        // setSettings({
-        //   ...input,
-        //   percentage: res.data.percentage,
-        //   nbrOfIncludedGoals: res.data.nbrOfIncludedGoals,
-        //   mode: res.data.mode,
-        // });
+
       });
-      fetch("http://localhost/budget-brudi/api/goals?limit=5&filter=upcoming", {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwtToken.get()}`,
-          loadingAnim: "true",
-        },
+    fetch("http://localhost/budget-brudi/api/goals?limit=5&filter=upcoming", {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken.get()}`,
+        loadingAnim: "true",
+      },
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+        return Promise.reject(res);
       })
-        .then((res) => {
-          if (res.ok) return res.json();
-          return Promise.reject(res);
-        })
-        .then((goals) => {
-          console.log(goals);
-          console.log(goals.data);
-  
-          nbrOfIncludedGoalsFetched.current = goals.data.length;
-          setCards(goals.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      .then((goals) => {
+        console.log(goals);
+        console.log(goals.data);
+
+        nbrOfIncludedGoalsFetched.current = goals.data.length;
+        setCards(goals.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
-  useEffect(() => {
-
-  }, []);
-
-  const createShareObj = () => {
-    return selectedGoals.map(({ GoalID }, index) => {
-      return { GoalID: GoalID, share: percentages[index] };
+  const createShareObj = (_selectedGoals, _percentages) => {
+    console.log("createSha...", _selectedGoals);
+    return _selectedGoals.map(({ GoalID }, index) => {
+      return { GoalID: GoalID, share: _percentages[index] };
     });
   };
 
@@ -130,18 +120,22 @@ function SavingsSettings(props) {
     if (input.nbrOfIncludedGoals <= nbrOfIncludedGoalsFetched.current)
       nbrSelectedGoals = input.nbrOfIncludedGoals;
 
+    console.log("nr of select goals:", nbrSelectedGoals);
+
+    var _percentages;
+
     if (input.mode === "equally")
-      setPercentages(getEqualPercentages(nbrSelectedGoals));
-    else setPercentages(getIncrPercentageValues(nbrSelectedGoals));
+      _percentages = getEqualPercentages(nbrSelectedGoals);
+    else _percentages = getIncrPercentageValues(nbrSelectedGoals);
 
-    console.log("nr of selected goals: ", nbrSelectedGoals);
+    console.log("input state:", input);
+    console.log("percentages:", _percentages);
+
     let _selectedGoals = cards.slice(0, nbrSelectedGoals);
-    console.log("cards:", cards);
     setSelectedGoals(_selectedGoals);
-    console.log("selected goals:", _selectedGoals);
-    // console.log("selected goals:", goals);
 
-    let updatedShares = createShareObj();
+    let updatedShares = createShareObj(_selectedGoals, _percentages);
+    setPercentages(_percentages);
 
     setSettings({
       ...settings,
@@ -150,12 +144,9 @@ function SavingsSettings(props) {
       shares: updatedShares,
       mode: input.mode,
     });
-    // REMOVE THIS
-    // console.log("shareobj:", settings.shares);
-    // console.log("settings obj:", settings);
-    // console.log("input obj:", input);
-
   }, [input.nbrOfIncludedGoals, input.mode, input.incomePercentage]);
+
+  useEffect(() => {}, [percentages]);
 
   /* for number of goals to include range slider */
   const marks = [
@@ -198,7 +189,7 @@ function SavingsSettings(props) {
     let percentageBubbleValues = {
       5: [50, 25, 12.5, 6.25, 6.25],
       4: [50, 35, 12.5, 12.5],
-      3: [60, 20, 10],
+      3: [60, 25, 15],
       2: [50, 50],
       1: [100],
     };
@@ -344,29 +335,33 @@ function SavingsSettings(props) {
           </div>
         </InputCollection>
         <div style={{ minHeight: "20rem" }}>
-          {selectedGoals && selectedGoals.map(
-            ({ Title, Date, Amount, GoalID, Color, share }, index) => {
-              return (
-                <>
-                  <div className="percentageGoalRow">
-                    <PercentageBubble value={percentages[index]} key={index} />
+          {selectedGoals &&
+            selectedGoals.map(
+              ({ Title, Date, Amount, GoalID, Color, share }, index) => {
+                return (
+                  <>
+                    <div className="percentageGoalRow">
+                      <PercentageBubble
+                        value={percentages[index]}
+                        key={index}
+                      />
 
-                    <Card
-                      size="small"
-                      type="goals"
-                      title={Title}
-                      date={Date}
-                      price={Amount}
-                      color={Color}
-                      key={GoalID}
-                      id={GoalID}
-                      onClick={redirectToGoal}
-                    />
-                  </div>
-                </>
-              );
-            }
-          )}
+                      <Card
+                        size="small"
+                        type="goals"
+                        title={Title}
+                        date={Date}
+                        price={Amount}
+                        color={Color}
+                        key={GoalID}
+                        id={GoalID}
+                        onClick={redirectToGoal}
+                      />
+                    </div>
+                  </>
+                );
+              }
+            )}
         </div>
         <BbBtn type="button" onClick={handleSubmit} content="Save" />
       </ContentWrapper>
