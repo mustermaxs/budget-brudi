@@ -62,12 +62,14 @@ function Registration() {
             name="password"
             placeholder="Password"
             label="Password"
+            type="password"
             onChange={(value) => handleChange("password", value)}
           />{" "}
           <BBInput
             id="passwordrepeat"
             name="passwordrepeat"
             placeholder="Repeat Password"
+            type="password"
             onChange={(value) => handleChange("passwordrepeat", value)}
           />
         </InputCollection>
