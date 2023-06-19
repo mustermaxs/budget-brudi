@@ -200,7 +200,7 @@ function EditGoal(props) {
         {/* TODO percentage */}
         {inputValue.share > 0 ? (
           <div>
-            You're saving <span style={{color: "green"}}>{inputValue.share}%</span> of your income for this goal.
+            You're saving <span style={{color: "green"}}>{(parseFloat(inputValue.share)).toFixed(2)}%</span> of your income for this goal.
             {/* <span>Dedicated percentage</span> */}
             {/* <div className="badge">{inputValue.Percentage}%</div> */}
           </div>

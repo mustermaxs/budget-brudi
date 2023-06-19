@@ -54,15 +54,21 @@ ADD COLUMN nbrOfGoals INT;                // to how many goals the amount will b
     {
 
         try {
+            // BUG sollte array von objekten zurückgeben?
+            // mit while $row... 
             $query = "CALL getShares(?)";
 
             $stmt = $this->conn->prepare($query);
             $stmt->bind_param("d", $accountId);
             $stmt->execute();
             $result = $stmt->get_result();
-            $data = $result->fetch_array(MYSQLI_ASSOC);
+            $rows = [];
 
-            return ServiceResponse::success($data);
+            while ($row = $result->fetch_assoc()) {
+                $rows[] = $row;
+            }
+
+            return ServiceResponse::success($rows);
         } catch (mysqli_sql_exception $e) {
             return ServiceResponse::fail($e);
         }
@@ -71,12 +77,17 @@ ADD COLUMN nbrOfGoals INT;                // to how many goals the amount will b
     public function shareAmount($accountId, $savedAmount)
     {
 
-        $shares[] = $this->getShares($accountId)->data;
+        $sharesRes = $this->getShares($accountId);
         $this->conn->begin_transaction();
+
+        if (!$sharesRes->ok)
+            return $sharesRes;
+
+        $shares = $sharesRes->data;
 
         try {
             foreach ($shares as $share) {
-                $savedAmountGoal = $savedAmount * ($share["share"] / 100);
+                $savedAmountGoal = $savedAmount * ($share["share"] / 100); 
 
                 $query = "UPDATE Goal SET savedAmount = savedAmount + ?
                 WHERE GoalID = ?";

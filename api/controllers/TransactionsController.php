@@ -93,7 +93,7 @@ class TransactionsController extends BaseController
                 Response::successResponse("created new transaction");
         }
 
-        Response::errorResponse("creating new transaction failed");
+        Response::errorResponse("creating new transaction failed", $res);
     }
 
     public function put()

@@ -8,10 +8,7 @@ class AccountService extends BaseService
     {
         try {
             $query = "
-        SELECT a.Balance as balance, SUM(e.Amount) as expenses, SUM(i.Amount) as income
-        FROM Account a
-        JOIN Expense e ON e.F_accountID = a.AccountId
-        JOIN Income i ON i.F_accountID = a.AccountId
+        SELECT a.* FROM Account a
         WHERE a.AccountId = ?;";
 
             $stmt = $this->conn->prepare($query);
