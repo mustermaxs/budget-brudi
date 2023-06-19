@@ -45,12 +45,6 @@ function SavingsSettings(props) {
   const nbrOfIncludedGoalsFetched = useRef(1);
 
   useEffect(() => {
-    // TODO setSettings here
-  }, []);
-  
-
-
-  useEffect(() => {
     fetch(`http://localhost/budget-brudi/api/accounts/${user.userId}`, {
       method: "GET",
       mode: "cors",
@@ -267,6 +261,10 @@ function SavingsSettings(props) {
   };
 
   const handleSubmit = () => {
+    console.log("SETTINGS", settings)
+    if (settings.incomePercentage === null)
+      return;
+    
     fetch(`http://localhost/budget-brudi/api/savings/`, {
       method: "PUT",
       mode: "cors",
