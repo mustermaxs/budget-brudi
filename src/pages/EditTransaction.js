@@ -9,7 +9,7 @@ import "../components/widgets/colorlabelpicker.css";
 import { useMsgModal } from "../contexts/ModalContext";
 
 function EditTransaction() {
-    const {msgModal} = useMsgModal();
+    const { msgModal } = useMsgModal();
     const [searchParams] = useSearchParams();
     const transactionType = searchParams.get("type");
     const navigate = useNavigate();
@@ -92,13 +92,12 @@ function EditTransaction() {
                 "Authorization": `Bearer ${jwtToken.get()}`
             }
         }).then(res => {
-            if (res.ok)
-            {
+            if (res.ok) {
                 msgModal.set({
                     type: "normal",
                     title: "Super",
                     message: "Updated transaction"
-                  }).show();
+                }).show();
                 res.json();
             }
         }).then(response => {
@@ -141,6 +140,7 @@ function EditTransaction() {
                         name="type"
                         onChange={(e) => setType(e.target.value)}
                         style={inputStyles}
+                        disabled
                         value={type}
                     >
                         <option key="0" value="income">
@@ -159,6 +159,7 @@ function EditTransaction() {
                         currency="€"
                         placeholder="3000.00"
                         size="small"
+                        disabled={true}
                         onChange={(e) => setAmount(e.target.value)}
                     />
                     <BBInput
@@ -167,6 +168,7 @@ function EditTransaction() {
                         type="date"
                         value={date}
                         label="Date"
+                        disabled={true}
                         onChange={(e) => setDate(e.target.value)}
                     />
                     <BbBtn content="save" onClick={handleSubmit} type="submit" style={buttonStyles} />

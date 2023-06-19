@@ -22,6 +22,7 @@ function BBInput(props) {
         id={props.id}
         name={props.name}
         value={props.value}
+        disabled={props.disabled}
         className={
           "bb-input " + (props.size === undefined ? "large" : props.size)
         }
@@ -40,6 +41,7 @@ function BBInput(props) {
           name={props.name}
           onChange={props.onChange}
           value={props.value}
+          disabled={props.disabled}
           className={
             "bb-input currency " +
             (props.size === undefined ? "large" : props.size)
@@ -62,6 +64,7 @@ function BBInput(props) {
         name={props.name}
         onChange={props.onChange}
         value={props.value}
+        disabled={props.disabled}
         className={
           "bb-input " + (props.size === undefined ? "large" : props.size)
         }

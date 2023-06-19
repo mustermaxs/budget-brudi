@@ -5,7 +5,6 @@ class UsersService extends BaseService
 {
     public function RegisterUser($firstname, $lastname, $username, $password)
     {
-
         try {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
@@ -15,15 +14,22 @@ class UsersService extends BaseService
             $stmt->bind_param("ssss", $username, $hashedPassword, $firstname, $lastname);
             $stmt->execute();
 
+            $userId = $this->conn->insert_id;
+
+            $defaultMode = "incremental";
+            $defaultIncomePercentage = 0;
+            $defaultNbrOfIncludedGoals = 0;
+
+            $query = "INSERT INTO savingsservice (F_accountID, mode, incomePercentage, nbrOfIncludedGoals) VALUES (?, ?, ?, ?)";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("isii", $userId, $defaultMode, $defaultIncomePercentage, $defaultNbrOfIncludedGoals);
+            $stmt->execute();
+
             return ServiceResponse::success();
         } catch (mysqli_sql_exception $e) {
             return ServiceResponse::fail($e);
         }
-
-
-        //$userId = $stmt->insert_id;
-
-        //return $userId;
     }
 
     public function getUserById(int $userId)
