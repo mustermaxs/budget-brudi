@@ -31,6 +31,21 @@ function BBInput(props) {
       ></input>
     );
   };
+  const inputTypePassword = () => {
+    return (
+      <input
+        placeholder={props.placeholder}
+        id={props.id}
+        name={props.name}
+        value={props.value}
+        className={
+          "bb-input " + (props.size === undefined ? "large" : props.size)
+        }
+        type="password"
+        onChange={props.onChange}
+      ></input>
+    );
+  };
 
   const inputTypeCurrency = () => {
     return (
@@ -98,6 +113,7 @@ function BBInput(props) {
     else if (props.type === "currency") return inputTypeCurrency();
     else if (props.type === "date") return inputTypeDate();
     else if (props.type === "select") return inputTypeSelect();
+    else if (props.type === "password") return inputTypePassword();
     else return inputTypeText();
   };
 
