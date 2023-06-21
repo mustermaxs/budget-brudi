@@ -27,6 +27,34 @@ function Analysis(props) {
     return date.getMonth();
   }
 
+  const calculateForecast = (balances) => {
+
+    if (balances.length < 2) {
+      return [];
+    }
+
+    let totalChanges = 0;
+
+    // Calculate the total changes between consecutive balances
+    for (let i = 1; i < balances.length; i++) {
+      totalChanges += balances[i] - balances[i - 1];
+    }
+
+    // Calculate the average change per balance
+    let avgChange = totalChanges / (balances.length - 1);
+
+    let forecast = [];
+
+    // Generate a forecast for the next 3 balances
+    for (let i = 1; i <= 3; i++) {
+
+      // Calculate the next balance based on the average change and previous balance
+      forecast.push(balances[balances.length - 1] + avgChange * i);
+    }
+
+    return forecast;
+  }
+
   // gets dates from start of year until current month
   // returns them in array
   const getMonthLabels = () => {
@@ -123,24 +151,17 @@ function Analysis(props) {
     }).then(balanceData => {
       if (!renderChart.current)
         return;
+
+      balanceData = [1000, 1800, 1400, 1800, 1000, 1800];
+
       setBalances(balanceData);
 
-      // dummy forecast data
-      const forecastOne = parseInt(balanceData[balanceData.length - 1]) + balanceData[balanceData.length - 1] / 2;
-      const forecastTwo = forecastOne + forecastOne / 2;
-      const forecastThree = forecastTwo + forecastTwo / 3;
-
-      setForecastData([...Array(currentMonthIndex()).fill(null), balanceData[balanceData.length - 1], forecastOne, forecastTwo, forecastThree])
+      setForecastData([...Array(currentMonthIndex()).fill(null), balanceData[balanceData.length - 1], ...calculateForecast(balanceData)]);
 
       renderChart.current = false;
       console.log("balances: ", balanceData);
     })
   }, []);
-
-
-  useEffect(() => {
-    console.log("forecastData:", forecastData)
-  }, [forecastData])
 
   const style = {
     marginTop: "2rem",
