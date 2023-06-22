@@ -52,7 +52,10 @@ class TransactionsController extends BaseController
 
     public function get()
     {
-        if (!isset($this->request["type"]))     // /api/transactions/  -> get all transactions
+        if (@$this->request["summary"] == "timespan")
+            $response = $this->service->getTransactionsInTimeSpan($this->request["accountId"], $this->request["start"], $this->request["end"]);
+
+        else if (!isset($this->request["type"]))     // /api/transactions/  -> get all transactions
             $response = $this->service->getAllTransactionsByAccountId($this->request["accountId"], $this->request["limit"]);
 
         else if ($this->request["type"] == "expense")

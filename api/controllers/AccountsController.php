@@ -15,21 +15,21 @@ class AccountsController extends BaseController
         $res = null;
 
         if (
-            isset($this->request["month"])
+            isset($this->request["start"])
             &&
-            isset($this->request["year"])
+            isset($this->request["end"])
         ) {
-            $year = $this->request["year"];
-            $month = $this->request["month"];
+            $startDate = $this->request["start"];
+            $endDate = $this->request["end"];
             $accountId = $this->request["accountId"];
 
-            $res = $this->service->getBalanceByMonthYearAccountId($month, $year, $accountId);
+            $res = $this->service->getBalanceByMonthYearAccountId($accountId, $startDate, $endDate);
         }
 
         if ($res != null && $res->ok)
-            Response::successResponse("fetched account balance successfully", $res->data);
+            Response::successResponse("fetched transactions in timespan successfully", $res->data);
 
-        Response::errorResponse("fetching account balance failed", $res->message);
+        Response::errorResponse("fetching transactions in timespan failed", $res);
     }
 
     public function get()
@@ -37,7 +37,7 @@ class AccountsController extends BaseController
 
         $this->prohibitForeignUserAccess();
 
-        if (isset($this->request["method"]) && $this->request["method"] == "date")
+        if (isset($this->request["method"]) && $this->request["method"] == "timespan")
             $res = $this->getBalanceByDate();
 
         else
