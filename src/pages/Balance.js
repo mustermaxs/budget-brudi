@@ -54,6 +54,38 @@ function Analysis(props) {
     console.log(dates);
   };
 
+  const calculateForecast = (balances) => {
+
+    if (balances.length < 3) {
+      return [];
+    }
+
+    let totalChanges = 0;
+
+    // Convert the net balance strings to numbers
+    let netBalances = balances.map(balance => parseFloat(balance.net));
+
+    // Calculate the total changes between last 3 consecutive balances
+    for (let i = netBalances.length - 1; i > netBalances.length - 4; i--) {
+      totalChanges += (netBalances[i] - netBalances[i - 1]);
+    }
+
+    // Calculate the average change per balance
+    let avgChange = totalChanges / 2;
+
+    let forecast = [];
+
+    // Generate a forecast for the next 3 balances
+    for (let i = 1; i <= 3; i++) {
+
+      // Calculate the next balance based on the average change and previous balance
+      forecast.push(netBalances[netBalances.length - 1] + avgChange * i);
+    }
+
+    return forecast;
+  }
+
+
   function calculateGoalSums(goals) {
     const goalSums = Array(12).fill(0);
 
@@ -128,7 +160,7 @@ function Analysis(props) {
     const balancesPromise = new Promise((resolve, reject) => {
       if (!renderChart.current) reject();
       const currentYear = new Date().getFullYear();
-      const currentMonth = new Date().getMonth();
+      const currentMonth = new Date().getMonth() + 1;
       const yearStart = currentYear - 1;
       const monthToString = (month) => month < 10 && "0" + month;
 
@@ -146,21 +178,19 @@ function Analysis(props) {
         .then((res) => res.json())
         .then((res) => {
           let transactions = res.data;
-          console.log("unedited: ",transactions);
-          
+          console.log("unedited: ", transactions);
+
           var monthIndex = 0;
           var transactionIndex = 0;
 
-          do
-          {
+          do {
             monthIndex = monthIndex % 12;
-            
-            let currentTransMonth = new Date(transactions[monthIndex].Date).getMonth()+1;
-            
-            if (currentTransMonth !== monthIndex+1)
-            {
-              let date = `${currentYear}-${monthToString(monthIndex +1)}`
-              transactions.insert(monthIndex, {income: 0.00, expense: 0.00, Date: date});
+
+            let currentTransMonth = new Date(transactions[monthIndex].Date).getMonth() + 1;
+
+            if (currentTransMonth !== monthIndex + 1) {
+              let date = `${currentYear}-${monthToString(monthIndex + 1)}`
+              transactions.insert(monthIndex, { income: 0.00, expense: 0.00, Date: date });
             }
 
             let income = transactions[monthIndex].income ?? 0.00;
@@ -171,7 +201,7 @@ function Analysis(props) {
 
             monthIndex++;
           } while (monthIndex !== currentMonth);
-          console.log("tran:",transactions);
+          console.log("tran:", transactions);
 
 
           resolve(transactions);
@@ -180,29 +210,12 @@ function Analysis(props) {
       if (!renderChart.current) return;
       setBalances(balanceData);
 
-      // dummy forecast data
-      const forecastOne =
-        parseInt(balanceData[balanceData.length - 1]) +
-        balanceData[balanceData.length - 1] / 2;
-      const forecastTwo = forecastOne + forecastOne / 2;
-      const forecastThree = forecastTwo + forecastTwo / 3;
-
-      setForecastData([
-        ...Array(currentMonthIndex()).fill(null),
-        balanceData[balanceData.length - 1],
-        forecastOne,
-        forecastTwo,
-        forecastThree,
-      ]);
+      setForecastData([...Array(currentMonthIndex()).fill(null), 0, ...calculateForecast(balanceData)]);
 
       renderChart.current = false;
       console.log("balances: ", balanceData);
     });
   }, []);
-
-  useEffect(() => {
-    console.log("forecastData:", forecastData);
-  }, [forecastData]);
 
   const style = {
     marginTop: "2rem",
@@ -217,23 +230,27 @@ function Analysis(props) {
     ...months.slice(currentMonthIndex() + 1, currentMonthIndex() + 4),
   ];
 
+  console.log("labelsWithForecast", labelsWithForecast)
+
+
+  console.log("forecastData", forecastData)
   const monthlyTransactions = () => {
     return (
       balances.map((transaction) => (
         <>
-        <tr>
-          <td><span style={{textDecoration: "underline"}}>{transaction.Date}</span></td>
-          <td></td>
+          <tr>
+            <td><span style={{ textDecoration: "underline" }}>{transaction.Date}</span></td>
+            <td></td>
           </tr>
           <tr>
             <td>Income</td>
-          <td className="money income">{transaction.income}</td>
-        </tr>
-        <tr>
-          <td>Expense</td>
-          <td className="money expense">{transaction.expense}</td>
-        </tr>
-        
+            <td className="money income">{transaction.income}</td>
+          </tr>
+          <tr>
+            <td>Expense</td>
+            <td className="money expense">{transaction.expense}</td>
+          </tr>
+
         </>)
       )
     )

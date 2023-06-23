@@ -6,11 +6,10 @@ const BalanceChart = (props) => {
     const chartRef = useRef();
 
     useEffect(() => {
-        loadingAnim.show();
         const ctx = chartRef.current.getContext("2d");
 
         let balancesRadius = Array(props.balances.length).fill(3);
-        balancesRadius[balancesRadius.length - 1] = 0; // Hide last data point to avoid overlapping of last balance node and first forecast node
+        balancesRadius[balancesRadius.length - 1] = 0;
 
         const data = {
             labels: props.labels,
@@ -21,6 +20,22 @@ const BalanceChart = (props) => {
                     data: props.balances.map(data => data.net),
                     backgroundColor: "rgba(54, 162, 235, 0.2)",
                     borderColor: "rgba(54, 162, 235, 1)",
+                },
+                {
+                    type: 'bar',
+                    label: "Income",
+                    data: props.balances.map(data => data.income),
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    stack: 'Stack 0',
+                },
+                {
+                    type: 'bar',
+                    label: "Expenses",
+                    data: props.balances.map(data => data.expense),
+                    backgroundColor: "rgba(192, 75, 75, 0.2)",
+                    borderColor: "rgba(192, 75, 75, 1)",
+                    stack: 'Stack 0',
                 },
                 {
                     type: 'line',
@@ -44,22 +59,25 @@ const BalanceChart = (props) => {
             scales: {
                 y: {
                     beginAtZero: true,
+                    stacked: true,
                 },
+                x: {
+                    beginAtZero: true,
+                    stacked: true,
+                }
             },
         };
 
         const chartInstance = new Chart(ctx, {
-            type: "mixed",
+            type: "bar",
             data: data,
             options: options,
         });
 
-        loadingAnim.hide();
-
         return () => {
             chartInstance.destroy();
         };
-    }, [props.balances, props.forecast, props.goalData, props.labels]);
+    }, [props.balances, props.labels]);
 
     return <canvas style={props.style} ref={chartRef}></canvas>;
 };
