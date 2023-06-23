@@ -16,16 +16,6 @@ class UsersService extends BaseService
 
             $userId = $this->conn->insert_id;
 
-            $defaultMode = "incremental";
-            $defaultIncomePercentage = 0;
-            $defaultNbrOfIncludedGoals = 0;
-
-            $query = "INSERT INTO savingsservice (F_accountID, mode, incomePercentage, nbrOfIncludedGoals) VALUES (?, ?, ?, ?)";
-
-            $stmt = $this->conn->prepare($query);
-            $stmt->bind_param("isii", $userId, $defaultMode, $defaultIncomePercentage, $defaultNbrOfIncludedGoals);
-            $stmt->execute();
-
             return ServiceResponse::success();
         } catch (mysqli_sql_exception $e) {
             return ServiceResponse::fail($e);

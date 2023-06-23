@@ -207,4 +207,29 @@ class TransactionsService extends BaseService
             return ServiceResponse::send($e);
         }
     }
+
+        /**
+     * $dateStart, $dateEnd : string, e.g. "2023-01"
+     */
+    public function getTransactionsInTimeSpan($accountId, $dateStart, $dateEnd)
+    {
+        try {
+            $query = "
+        CALL transactionInTimeSpan(?,?,?);";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("dss", $accountId, $dateStart, $dateEnd);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            $rows = [];
+
+            while ($row = $result->fetch_assoc())
+                $rows[] = $row;
+            
+            return ServiceResponse::send($rows);
+        } catch (Exception $e) {
+            return ServiceResponse::send($e);
+        }
+    }
 }
