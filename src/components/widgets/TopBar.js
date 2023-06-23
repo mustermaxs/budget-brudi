@@ -4,8 +4,10 @@ import HamburgerIcon from "./Hamburger";
 import "./topBar.css";
 import { UserContext } from "../../contexts/UserContext";
 import BudgetbuddyLogo from "../../assets/icons/icons_raw/BudgetbuddyLogo.png";
+import { useNavigate } from "react-router-dom";
 
 function TopBar(props) {
+  const navigate = useNavigate();
   const { user, handleLogout } = useContext(UserContext);
 
   const toggleMenu = () => {
@@ -18,7 +20,7 @@ function TopBar(props) {
         <div>
           <span className="topBarTitle">{props.pageTitle}</span>
         </div>
-{        !props.menuIsOpen && <div class="bb-logo-wrapper">
+{        !props.menuIsOpen && <div class="bb-logo-wrapper" onClick={() => navigate("/home")}>
           <img src={BudgetbuddyLogo} alt="Logo" />
         </div>}
         {/* {`${user && user.role}`} */}
