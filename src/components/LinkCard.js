@@ -6,7 +6,7 @@ function LinkCard({title, href, icon})
 
     const iconStyle = (() => {
         const categoryMapping = {
-          "Profile": "hubi",
+          "Profile": "user",
           "Transaction": "cash-flow",
           "Goals": "rocket",
           "Balance": "research",

@@ -21,3 +21,14 @@
         display: none;
     }
 }
+
+.bb-logo-wrapper {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+  
+  .bb-logo-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }

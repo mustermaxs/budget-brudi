@@ -2,10 +2,10 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import HamburgerIcon from "./Hamburger";
 import "./topBar.css";
-import { UserContext } from "../../contexts/UserContext"
+import { UserContext } from "../../contexts/UserContext";
+import BudgetbuddyLogo from "../../assets/icons/icons_raw/BudgetbuddyLogo.png";
 
 function TopBar(props) {
-
   const { user, handleLogout } = useContext(UserContext);
 
   const toggleMenu = () => {
@@ -18,6 +18,9 @@ function TopBar(props) {
         <div>
           <span className="topBarTitle">{props.pageTitle}</span>
         </div>
+{        !props.menuIsOpen && <div class="bb-logo-wrapper">
+          <img src={BudgetbuddyLogo} alt="Logo" />
+        </div>}
         {/* {`${user && user.role}`} */}
 
         <div
