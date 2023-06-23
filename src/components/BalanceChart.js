@@ -18,7 +18,7 @@ const BalanceChart = (props) => {
                 {
                     type: 'line',
                     label: "Balance",
-                    data: props.balances,
+                    data: props.balances.map(data => data.net),
                     backgroundColor: "rgba(54, 162, 235, 0.2)",
                     borderColor: "rgba(54, 162, 235, 1)",
                 },
