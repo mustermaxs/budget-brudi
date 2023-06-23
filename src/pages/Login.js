@@ -7,8 +7,11 @@ import BbBtn from "../components/widgets/BbBtn";
 import useValue from "../hooks/useValue";
 import SplashScreen from "./SplashScreen";
 import { jwtToken } from "../contexts/UserContext";
+import { useMsgModal } from "../contexts/ModalContext";
+
 
 function Login() {
+  const { msgModal } = useMsgModal();
   const [inputValue, handleChange] = useValue({
     username: null,
     password: null,
@@ -22,13 +25,16 @@ function Login() {
     try {
       await handleLogin(inputValue);
 
-      if (jwtToken.get() !== null)
-      {
+      if (jwtToken.get() !== null) {
         navigate("/home");
       }
     } catch (error) {
       console.error(error);
-      alert("Login failed");
+      msgModal.set({
+        type: "error",
+        title: "Error",
+        message: "Login failed"
+      }).show();
     }
 
   };
