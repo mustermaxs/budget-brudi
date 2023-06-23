@@ -108,7 +108,7 @@ function Analysis(props) {
   // GET GOALS
   useEffect(() => {
     loadingAnim.show();
-    fetch("http://localhost/budget-brudi/api/goals", {
+    fetch("http://localhost/budget-brudi/api/goals?limit=5&filter=upcomin", {
       method: "GET",
       mode: "cors",
       headers: {
