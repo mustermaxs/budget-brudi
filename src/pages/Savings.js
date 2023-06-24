@@ -56,7 +56,7 @@ function SavingsSettings(props) {
     })
       .then((res) => res.json())
       .then((res) => {
-        setInput((prevValue) => ({ ...prevValue, balance: res.data.balance }));
+        setInput((prevValue) => ({ ...prevValue, balance: res.data.Balance }));
       });
     fetch("http://localhost/budget-brudi/api/savings", {
       method: "GET",
