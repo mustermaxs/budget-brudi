@@ -28,6 +28,8 @@ function SavingsSettings(props) {
     nbrOfIncludedGoals: 1,
     mode: "equally",
     balance: 0,
+    sumIncome: 0,
+    countIncome: 0
   });
   const [cards, setCards] = useState([]);
   const [fetchedGoals, setFetchedGoals] = useState([]);
@@ -44,6 +46,12 @@ function SavingsSettings(props) {
   // for calculations
   const nbrOfIncludedGoalsFetched = useRef(1);
 
+  const avgIncomePerMonth = (sumIncome, countIncome) => {
+    if (sumIncome > 0 && countIncome > 0)
+      return (sumIncome / countIncome).toFixed(2);
+    return 0.00;
+  }
+
   useEffect(() => {
     fetch(`http://localhost/budget-brudi/api/accounts/${user.userId}`, {
       method: "GET",
@@ -56,7 +64,9 @@ function SavingsSettings(props) {
     })
       .then((res) => res.json())
       .then((res) => {
-        setInput((prevValue) => ({ ...prevValue, balance: res.data.Balance }));
+        setInput((prevValue) => ({ ...prevValue, balance: res.data.Balance,
+        sumIncome: res.data.sumIncome,
+      countIncome: res.data.countIncome }));
       });
     fetch("http://localhost/budget-brudi/api/savings", {
       method: "GET",
@@ -312,13 +322,13 @@ function SavingsSettings(props) {
           </ThemeProvider>
           <p>
             <div style={{ textAlign: "center" }}>
-              <span>&#8709; income / month: {input.balance ?? "0.00"} €</span>
+              <span>&#8709; income / month: {avgIncomePerMonth(input.sumIncome, input.countIncome)} €</span>
             </div>
             <div style={{ textAlign: "center" }}>
               <span>
                 &#8709; amount saved / month:{" "}
-                {input.incomePercentage > 0 && input.balance > 0
-                  ? (input.balance * (input.incomePercentage / 100)).toFixed(2)
+                {input.incomePercentage > 0
+                  ? (avgIncomePerMonth(input.sumIncome, input.countIncome) * (input.incomePercentage / 100)).toFixed(2)
                   : "0.00"}{" "}
                 €
               </span>
