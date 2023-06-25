@@ -1,6 +1,7 @@
 <?php
 require_once getcwd() . "/api/Response.php";
-
+define("AUTHENTICATE", true);
+define("NO_AUTH", false);
 /**
  * request parameters stored in $request, get with Router::request()
  * add route with get/ put / post / delete

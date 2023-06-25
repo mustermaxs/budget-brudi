@@ -1,9 +1,7 @@
 <?php
 
 define("DISPLAY_DB_ERRORS", true);
-define("USE_LOCAL_DB", true);
-define("AUTHENTICATE", true);
-define("NO_AUTH", false);
+define("USE_LOCAL_DB", false);
 
 require_once "./api/router.php";
 require_once getcwd() . "/api/Authenticator.php";
@@ -37,7 +35,7 @@ $router = new Router($baseURL, $apiDir);
 
 // true = private api route -> authentication is needed
 // false = public api route  
-$router->post("/api/login", NO_AUTH);
+$router->post("/api/login", NO_AUTH);true
 $router->get("/api/users/:id[i]", AUTHENTICATE);
 $router->post("/api/users", NO_AUTH);
 $router->put("/api/users/:id[i]", AUTHENTICATE);
