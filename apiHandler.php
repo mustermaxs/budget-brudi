@@ -35,7 +35,7 @@ $router = new Router($baseURL, $apiDir);
 
 // true = private api route -> authentication is needed
 // false = public api route  
-$router->post("/api/login", NO_AUTH);true
+$router->post("/api/login", NO_AUTH);
 $router->get("/api/users/:id[i]", AUTHENTICATE);
 $router->post("/api/users", NO_AUTH);
 $router->put("/api/users/:id[i]", AUTHENTICATE);
