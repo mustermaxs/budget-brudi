@@ -42,7 +42,7 @@ function Menu(props) {
         onToggle={() => setIsOpen(!isOpen)}
         pageTitle={getPageTitleByHref(path)}
       />
-      <SlideMenu onToggle={() => setIsOpen(!isOpen)} isOpen={isOpen}>
+      <SlideMenu closeMenu={() => setIsOpen(false)} onToggle={() => setIsOpen(!isOpen)} isOpen={isOpen}>
         {links}
         {user.isLoggedIn && (
           <li data-isactivelink={false} key={"logout"}>

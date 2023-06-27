@@ -1,9 +1,10 @@
 import "./slideMenu.css";
 import BudgetbuddyLogo from "../../assets/icons/icons_raw/BudgetbuddyLogo.png";
-
+import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 
-function SlideMenu({ isOpen, children, onToggle }) {
+function SlideMenu({ isOpen, children, onToggle, closeMenu }) {
+  const navigate = useNavigate();
   const initialPageLoad = useRef(true);
 
   const unsetInitialPageLoad = () => {
@@ -25,12 +26,12 @@ function SlideMenu({ isOpen, children, onToggle }) {
       <div className={wrapperClassName}>
 
         <div id="linksArea">
-        <div className="bb-logo-wrapper-slidemenu">
+        <div className="bb-logo-wrapper-slidemenu" onClick={() => {navigate("/home"); closeMenu()}}>
           <img src={BudgetbuddyLogo} alt="Logo" />
         </div>
           <ul className="slideMenuLinks">{children}</ul>
         </div>
-        <div id="closeOnClickArea" onClick={onToggle}></div>
+        <div id="closeOnClickArea" onClick={closeMenu}></div>
       </div>
     </>
   );

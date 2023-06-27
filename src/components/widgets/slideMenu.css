@@ -114,7 +114,7 @@
         position: relative;
         margin: 0 auto;
         top: 2rem;
-
+        cursor: pointer;
       }
       
       .bb-logo-wrapper-slidemenu img {
