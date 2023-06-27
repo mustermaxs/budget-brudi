@@ -25,7 +25,7 @@ class LoginController extends BaseController
             Response::successResponse("created token", $response);
 
         } else {
-            $this->errorResponse("login failed");
+           Response::errorResponse("login failed", $loginRequest);
         }
     }
 }
