@@ -25,7 +25,7 @@ function SlideMenu({ isOpen, children, onToggle }) {
       <div className={wrapperClassName}>
 
         <div id="linksArea">
-        <div class="bb-logo-wrapper-slidemenu">
+        <div className="bb-logo-wrapper-slidemenu">
           <img src={BudgetbuddyLogo} alt="Logo" />
         </div>
           <ul className="slideMenuLinks">{children}</ul>
