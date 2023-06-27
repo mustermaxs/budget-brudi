@@ -7,6 +7,9 @@ class LoginService extends BaseService
 {
     public function loginUser($username, $password)
     {
+        try {
+
+        
         $query = "
         SELECT *
         FROM User
@@ -37,6 +40,11 @@ class LoginService extends BaseService
             // TODO check if account exists, else -> handle error
             $accountId = $accountData["AccountId"];
         
-        return array("successful"=>true, "userId"=>$userId, "accountId"=>$accountId);
+        return ServiceResponse::success(array("successful"=>true, "userId"=>$userId, "accountId"=>$accountId));
+        }
+        catch(Exception $e)
+        {
+            return ServiceResponse::fail($e);
+        }
     }
 }

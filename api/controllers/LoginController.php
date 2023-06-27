@@ -16,10 +16,10 @@ class LoginController extends BaseController
 
         $loginRequest = $this->service->loginUser($this->request["username"], $this->request["password"]);
 
-        if ($loginRequest["successful"]){
+        if ($loginRequest->ok){
             
             $auth = new Authenticator();
-            $token = $auth->createToken($this->request["username"], $loginRequest["userId"], $loginRequest["accountId"]);
+            $token = $auth->createToken($this->request["username"], $loginRequest->data["userId"], $loginRequest->data["accountId"]);
             $response = array("token"=>  $token);
             
             Response::successResponse("created token", $response);
